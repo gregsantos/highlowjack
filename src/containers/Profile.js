@@ -1,54 +1,56 @@
-import React, { useState, useContext } from "react";
-import { P, H1, Button, Input, Form, BodyWrapper } from "../components";
-import { ToastContext } from "../contexts/toastContext";
-import { UserContext } from "../contexts/userContext";
-import firebase from "../firebase.js";
-import "firebase/firestore";
+import React, { useState, useContext } from 'react'
+import { useColorMode } from 'theme-ui'
+import { P, H1, Button, Input, Form, BodyWrapper } from '../components'
+import { ToastContext } from '../contexts/toastContext'
+import { UserContext } from '../contexts/userContext'
+import firebase from '../firebase.js'
+import 'firebase/firestore'
 
 const Profile = () => {
-  const { userState, userDispatch } = useContext(UserContext);
-  const [firstName, setFirstName] = useState(userState.userData.firstName);
-  const [lastName, setLastName] = useState(userState.userData.lastName);
-  const [loadState, setloadState] = useState(false);
-  const { sendMessage } = useContext(ToastContext);
-  const db = firebase.firestore();
+  const { userState, userDispatch } = useContext(UserContext)
+  const [colorMode, setColorMode] = useColorMode()
+  const [firstName, setFirstName] = useState(userState.userData.firstName)
+  const [lastName, setLastName] = useState(userState.userData.lastName)
+  const [loadState, setloadState] = useState(false)
+  const { sendMessage } = useContext(ToastContext)
+  const db = firebase.firestore()
 
   const onClickSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
     if (firstName && lastName) {
       if (
         firstName !== userState.userData.firstName ||
         lastName !== userState.userData.lastName
       ) {
-        setloadState(true);
-        db.collection("users")
+        setloadState(true)
+        db.collection('users')
           .doc(firebase.auth().currentUser.uid)
           .update({
             firstName: firstName,
-            lastName: lastName
+            lastName: lastName,
           })
           .then(() => {
-            setloadState(false);
+            setloadState(false)
             userDispatch({
-              type: "updateProfile",
+              type: 'updateProfile',
               payload: {
                 firstName: firstName,
-                lastName: lastName
-              }
-            });
-            sendMessage("Update successful!");
+                lastName: lastName,
+              },
+            })
+            sendMessage('Update successful!')
           })
           .catch(err => {
-            setloadState(false);
-            sendMessage(err.message);
-          });
+            setloadState(false)
+            sendMessage(err.message)
+          })
       } else {
-        sendMessage("You didn't enter any new information.");
+        sendMessage("You didn't enter any new information.")
       }
     } else {
-      sendMessage("You can't leave any of your information blank.");
+      sendMessage("You can't leave any of your information blank.")
     }
-  };
+  }
 
   return (
     <BodyWrapper>
@@ -58,18 +60,18 @@ const Profile = () => {
         <div>
           <Input
             onChange={e => setFirstName(e.target.value)}
-            name="firstName"
-            placeholder="First name"
-            autoComplete="given-name"
+            name='firstName'
+            placeholder='First name'
+            autoComplete='given-name'
             value={firstName}
           />
         </div>
         <div>
           <Input
             onChange={e => setLastName(e.target.value)}
-            name="lastName"
-            placeholder="Last name"
-            autoComplete="family-name"
+            name='lastName'
+            placeholder='Last name'
+            autoComplete='family-name'
             value={lastName}
           />
         </div>
@@ -79,8 +81,17 @@ const Profile = () => {
           </Button>
         </div>
       </Form>
+      <div>
+        <Button
+          onClick={e => {
+            setColorMode(colorMode === 'main' ? 'dark' : 'main')
+          }}
+        >
+          Toggle {colorMode === 'main' ? 'Dark' : 'Light'}
+        </Button>
+      </div>
     </BodyWrapper>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

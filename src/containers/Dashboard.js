@@ -1,21 +1,29 @@
 /** @jsx jsx */
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, Suspense } from 'react'
 import 'firebase/firestore'
 import { jsx } from 'theme-ui'
 import { P, H1, Button, Input, Form, BodyWrapper } from '../components'
 import { UserContext } from '../contexts/userContext'
 import { ToastContext } from '../contexts/toastContext'
 import firebase from '../firebase.js'
-import { useColorMode } from 'theme-ui'
+import ErrorBoundary from '../components/ErrorBoundary'
+
+const ROOM_STATE = {
+  OPEN: 1,
+  FULL: 2,
+  PRIVATE: 3,
+}
 
 const Dashboard = () => {
+  const { userState, userDispatch } = useContext(UserContext)
+  const { sendMessage } = useContext(ToastContext)
   const [firstName, setFirstName] = useState(null)
   const [lastName, setLastName] = useState(null)
   const [moreInfoComplete, setMoreInfoComplete] = useState(false)
-  const { userState, userDispatch } = useContext(UserContext)
-  const { sendMessage } = useContext(ToastContext)
-  const [colorMode, setColorMode] = useColorMode()
+  const [openRooms, setOpenRooms] = useState([])
+
   const db = firebase.firestore()
+  const roomsRef = db.collection('roomDetail')
 
   useEffect(() => {
     if (
@@ -25,6 +33,24 @@ const Dashboard = () => {
     ) {
       requestNotifications()
     }
+  }, [])
+
+  const fetchRooms = async () => {
+    try {
+      const roomsArr = []
+      const querySnapshot = await roomsRef.get()
+      querySnapshot.forEach(doc => {
+        roomsArr.push({ id: doc.id, ...doc.data() })
+      })
+      console.log(roomsArr)
+      setOpenRooms(roomsArr)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchRooms()
   }, [])
 
   const requestNotifications = () => {
@@ -112,37 +138,42 @@ const Dashboard = () => {
   }
 
   const dashboard = () => {
+    const handleJoinRoom = async () => {
+      const currentRoom = {
+        creator: userState.userId,
+        state: ROOM_STATE.OPEN,
+      }
+      try {
+        const newRoomRef = await roomsRef.add(currentRoom)
+        console.log('Room created with ID: ', newRoomRef.id)
+      } catch (error) {
+        console.error('Error adding document: ', error)
+      }
+    }
+
     return (
       <BodyWrapper>
         <H1>Dashboard</H1>
         <P>
-          So this is your dashboard. Maybe you'll put a few graphs here, you've
-          always wanted to try out D3. Maybe a news feed, or updates on new
-          features.
+          Join an open room or create a private one <br />
+          to play games, watch videos, and chat with your Cliq.
         </P>
         <Button
           onClick={e => {
-            setColorMode(colorMode === 'main' ? 'dark' : 'main')
+            handleJoinRoom()
           }}
         >
-          Toggle {colorMode === 'main' ? 'Dark' : 'Light'}
+          Join Room
         </Button>
-        <P>
-          So this is your dashboard. Maybe you'll put a few graphs here, you've
-          always wanted to try out D3. Maybe a news feed, or updates on new
-          features.
-        </P>
-        <footer
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            p: 2,
-            variant: 'layout.footer',
-          }}
-        >
-          FOOTER
-        </footer>
+        <ErrorBoundary>
+          <Suspense fallback={<div>Loading...</div>}>
+            <ul>
+              {openRooms.map((room, i) => (
+                <li key={i}>Room ID: {room.id}</li>
+              ))}
+            </ul>
+          </Suspense>
+        </ErrorBoundary>
       </BodyWrapper>
     )
   }

@@ -3,6 +3,9 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
+    match /roomDetail/{id} {
+      allow read, write: if true;
+    }
     match /users/{uid} {
       allow write: if request.resource.data.keys().hasOnly(['email']) || 
       request.resource.data.firstName is string

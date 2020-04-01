@@ -45,7 +45,23 @@ export default {
   styles: {
     ...tailwind.styles,
   },
-  layout: {},
+  layout: {
+    container: {
+      padding: '2',
+      maxWidth: 'container',
+      mx: 'auto',
+      backgroundColor: 'lightblue',
+      borderColor: 'secondary',
+      borderStyle: 'solid',
+    },
+    header: {
+      color: 'white',
+      backgroundColor: 'primary',
+    },
+    footer: {
+      color: 'secondary',
+    },
+  },
   buttons: {
     primary: {
       color: 'text',
@@ -60,6 +76,14 @@ export default {
     caps: {
       textTransform: 'uppercase',
       letterSpacing: '0.1em',
+    },
+  },
+  links: {
+    nav: {
+      px: 2,
+      py: 1,
+      textTransform: 'uppercase',
+      letterSpacing: '0.2em',
     },
   },
 }

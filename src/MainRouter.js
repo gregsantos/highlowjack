@@ -11,6 +11,7 @@ import SignIn from './containers/SignIn'
 import Dashboard from './containers/Dashboard'
 import Confirmed from './containers/Confirmed'
 import Profile from './containers/Profile'
+import Room from './containers/Room'
 import Header from './containers/Header'
 import PrivacyPolicy from './containers/PrivacyPolicy'
 import { UserContext } from './contexts/userContext'
@@ -141,6 +142,10 @@ const MainRouter = () => {
                   <Route
                     path={'/profile'}
                     render={() => routeWithAuth(<Profile />)}
+                  />
+                  <Route
+                    path={'/room/:id'}
+                    render={() => routeWithAuth(<Room />)}
                   />
                   <Route
                     path={'/privacy-policy'}

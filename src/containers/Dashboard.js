@@ -24,6 +24,7 @@ const Dashboard = () => {
 
   const db = firebase.firestore()
   const roomsRef = db.collection('roomDetail')
+  const queueRef = db.collection('queue')
 
   useEffect(() => {
     if (
@@ -42,7 +43,6 @@ const Dashboard = () => {
       querySnapshot.forEach(doc => {
         roomsArr.push({ id: doc.id, ...doc.data() })
       })
-      console.log(roomsArr)
       setOpenRooms(roomsArr)
     } catch (error) {
       console.log(error)
@@ -139,16 +139,24 @@ const Dashboard = () => {
 
   const dashboard = () => {
     const handleJoinRoom = async () => {
-      const currentRoom = {
-        creator: userState.userId,
-        state: ROOM_STATE.OPEN,
-      }
       try {
-        const newRoomRef = await roomsRef.add(currentRoom)
-        console.log('Room created with ID: ', newRoomRef.id)
+        await queueRef.doc(userState.userId).set({
+          userId: userState.userId,
+        })
+        console.log('Added user to queue')
+        // cloud function triggered by add to queue
       } catch (error) {
         console.error('Error adding document: ', error)
       }
+      /*       try {
+        const newRoomRef = await roomsRef.add({
+          creator: userState.userId,
+          state: ROOM_STATE.OPEN,
+        })
+        console.log('Room created with ID: ', newRoomRef.id)
+      } catch (error) {
+        console.error('Error adding document: ', error)
+      } */
     }
 
     return (

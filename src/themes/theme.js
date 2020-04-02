@@ -48,11 +48,10 @@ export default {
   layout: {
     container: {
       padding: '2',
-      maxWidth: 'container',
-      mx: 'auto',
       backgroundColor: 'lightblue',
       borderColor: 'secondary',
       borderStyle: 'solid',
+      borderWidth: 'thin',
     },
     header: {
       color: 'white',

@@ -42,7 +42,6 @@ const BodyOuter = styled.div`
 `
 
 const BodyWrapper = styled.div`
-  padding: 0px 0px;
   padding-top: ${metrics.headerHeight}px;
   width: 100%;
   @media (max-width: 480px) {

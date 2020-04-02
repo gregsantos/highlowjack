@@ -47,8 +47,12 @@ export default {
   },
   layout: {
     container: {
+      // container centers children on x and y axis
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      mx: 'auto',
       padding: '2',
-      backgroundColor: 'lightblue',
       borderColor: 'secondary',
       borderStyle: 'solid',
       borderWidth: 'thin',

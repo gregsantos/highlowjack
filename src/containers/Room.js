@@ -2,11 +2,12 @@
 import { jsx } from 'theme-ui'
 import { Styled } from 'theme-ui'
 import { P, H1, Button, Input, Form, RoomWrapper } from '../components'
+import '../css/cards.css'
 
 const members = [
-  { id: 1, title: 'Post 1', date: '010120', excerpt: 'Lorum Ips...' },
-  { id: 1, title: 'Post 1', date: '010120', excerpt: 'Lorum Ips...' },
-  { id: 1, title: 'Post 1', date: '010120', excerpt: 'Lorum Ips...' },
+  { id: 1, title: 'Score', date: '010120', excerpt: 'Lorum Ips...' },
+  { id: 1, title: 'Bid', date: '010120', excerpt: 'Lorum Ips...' },
+  { id: 1, title: 'Bidder', date: '010120', excerpt: 'Lorum Ips...' },
 ]
 
 export const Container = props => (
@@ -25,7 +26,6 @@ const RoomPage = () => (
         display: 'grid',
         gridGap: 2, // theme.space[4]
         // use arrays for mobile-first responsive styles
-        backgroundColor: 'black',
         height: '100%',
         gridTemplateColumns: [
           'auto', // default to a stacked layout on small screens
@@ -36,7 +36,7 @@ const RoomPage = () => (
       <main
         sx={{
           height: '100%',
-          backgroundColor: 'red',
+          backgroundColor: 'tomato',
         }}
       >
         <Container
@@ -58,13 +58,14 @@ const RoomPage = () => (
                 '1fr 2fr 1fr', // use columns for larger screens
               ],
               '& :nth-child(odd)': {
-                backgroundColor: '#63B3ED',
+                // backgroundColor: '#63B3ED',
               },
             }}
           >
             <div
               sx={{
                 p: 1,
+                backgroundColor: '#63B3ED',
               }}
             >
               1
@@ -79,6 +80,7 @@ const RoomPage = () => (
             <div
               sx={{
                 p: 1,
+                backgroundColor: '#63B3ED',
               }}
             >
               3
@@ -90,13 +92,14 @@ const RoomPage = () => (
             >
               4
             </div>
-            <div
-              sx={{
-                p: 1,
-              }}
-            >
-              5
-            </div>
+            <Container>
+              <div
+                className='card hA  shadow no-border'
+                sx={{
+                  fontSize: [2, 4, 7],
+                }}
+              />
+            </Container>
             <div
               sx={{
                 p: 1,
@@ -107,6 +110,7 @@ const RoomPage = () => (
             <div
               sx={{
                 p: 1,
+                backgroundColor: '#63B3ED',
               }}
             >
               7
@@ -121,6 +125,7 @@ const RoomPage = () => (
             <div
               sx={{
                 p: 1,
+                backgroundColor: '#63B3ED',
               }}
             >
               9
@@ -170,7 +175,7 @@ const RoomPage = () => (
             ))}
           </ul>
         </Container>
-        <Container sx={{ height: '100%' }}>
+        <Container>
           <div
             sx={{
               height: 'inherit',
@@ -181,17 +186,15 @@ const RoomPage = () => (
                 'auto', // default to a stacked layout on small screens
                 '1fr 1fr 1fr', // use columns for larger screens
               ],
-              '& :nth-child(odd)': {
-                backgroundColor: '#63B3ED',
-              },
+              '& :nth-child(odd)': {},
             }}
           >
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
-            <div>5</div>
-            <div>6</div>
+            {['♠A', '♠K', '♦A', '♣J', '♣06', '♥09'].map(card => (
+              <div
+                className={`card ${card}`}
+                sx={{ fontSize: [2, null, 4] }}
+              ></div>
+            ))}
           </div>
         </Container>
       </aside>

@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
 import { Styled } from 'theme-ui'
+import { FaUserSecret } from 'react-icons/fa'
 import { P, H1, Button, Input, Form, RoomWrapper } from '../components'
 import '../css/cards.css'
 
@@ -35,103 +36,90 @@ const RoomPage = () => (
     >
       <main
         sx={{
-          height: '100%',
-          backgroundColor: 'tomato',
+          height: 'inherit',
+          display: 'grid',
+          gridGap: 2, // theme.space[4]
+          // use arrays for mobile-first responsive styles
+          gridTemplateColumns: [
+            'auto', // default to a stacked layout on small screens
+            'minmax(50px, 300px) 2fr minmax(50px, 300px)', // use columns for larger screens
+          ],
+          gridTemplateRows: [
+            '1fr 2fr 1fr', // use columns for larger screens
+          ],
+          '& :nth-child(odd)': {
+            // backgroundColor: '#63B3ED',
+          },
         }}
       >
-        <Container
+        <div
           sx={{
-            height: '100%',
+            p: 1,
+            backgroundColor: '#63B3ED',
           }}
         >
+          <FaUserSecret size='45px' />
+        </div>
+        <div
+          sx={{
+            p: 1,
+          }}
+        >
+          2
+        </div>
+        <div
+          sx={{
+            p: 1,
+            backgroundColor: '#63B3ED',
+          }}
+        >
+          3
+        </div>
+        <div
+          sx={{
+            p: 1,
+          }}
+        >
+          4
+        </div>
+        <Container>
           <div
+            className='card hA  shadow no-border'
             sx={{
-              height: 'inherit',
-              display: 'grid',
-              gridGap: 2, // theme.space[4]
-              // use arrays for mobile-first responsive styles
-              gridTemplateColumns: [
-                'auto', // default to a stacked layout on small screens
-                'minmax(50px, 300px) 2fr minmax(50px, 300px)', // use columns for larger screens
-              ],
-              gridTemplateRows: [
-                '1fr 2fr 1fr', // use columns for larger screens
-              ],
-              '& :nth-child(odd)': {
-                // backgroundColor: '#63B3ED',
-              },
+              fontSize: [2, 4, 7],
             }}
-          >
-            <div
-              sx={{
-                p: 1,
-                backgroundColor: '#63B3ED',
-              }}
-            >
-              1
-            </div>
-            <div
-              sx={{
-                p: 1,
-              }}
-            >
-              2
-            </div>
-            <div
-              sx={{
-                p: 1,
-                backgroundColor: '#63B3ED',
-              }}
-            >
-              3
-            </div>
-            <div
-              sx={{
-                p: 1,
-              }}
-            >
-              4
-            </div>
-            <Container>
-              <div
-                className='card hA  shadow no-border'
-                sx={{
-                  fontSize: [2, 4, 7],
-                }}
-              />
-            </Container>
-            <div
-              sx={{
-                p: 1,
-              }}
-            >
-              6
-            </div>
-            <div
-              sx={{
-                p: 1,
-                backgroundColor: '#63B3ED',
-              }}
-            >
-              7
-            </div>
-            <div
-              sx={{
-                p: 1,
-              }}
-            >
-              8
-            </div>
-            <div
-              sx={{
-                p: 1,
-                backgroundColor: '#63B3ED',
-              }}
-            >
-              9
-            </div>
-          </div>
+          />
         </Container>
+        <div
+          sx={{
+            p: 1,
+          }}
+        >
+          6
+        </div>
+        <div
+          sx={{
+            p: 1,
+            backgroundColor: '#63B3ED',
+          }}
+        >
+          7
+        </div>
+        <div
+          sx={{
+            p: 1,
+          }}
+        >
+          8
+        </div>
+        <div
+          sx={{
+            p: 1,
+            backgroundColor: '#63B3ED',
+          }}
+        >
+          9
+        </div>
       </main>
       <aside sx={{ display: 'flex', flexDirection: 'column' }}>
         <Container>

@@ -30,97 +30,62 @@ const RoomPage = () => (
         height: '100%',
         gridTemplateColumns: [
           'auto', // default to a stacked layout on small screens
-          '3fr minmax(200px, 1fr)', // use columns for larger screens
+          '3fr minmax(320px, 1fr)', // use columns for larger screens
         ],
       }}
     >
       <main
         sx={{
-          height: 'inherit',
+          height: '100%',
           display: 'grid',
           gridGap: 2, // theme.space[4]
           // use arrays for mobile-first responsive styles
           gridTemplateColumns: [
-            'auto', // default to a stacked layout on small screens
-            'minmax(50px, 300px) 2fr minmax(50px, 300px)', // use columns for larger screens
+            // default to a stacked layout on small screens
+            'repeat(3, 1fr)', // use columns for larger screens
           ],
           gridTemplateRows: [
-            '1fr 2fr 1fr', // use columns for larger screens
+            '2fr 220px 2fr', // use columns for larger screens
           ],
-          '& :nth-child(odd)': {
-            // backgroundColor: '#63B3ED',
+          '& :nth-child(even)': {
+            backgroundColor: '#63B3ED',
           },
         }}
       >
-        <div
-          sx={{
-            p: 1,
-            backgroundColor: '#63B3ED',
-          }}
-        >
-          <FaUserSecret size='45px' />
+        <div>
+          <Container>
+            <FaUserSecret size='75%' />
+          </Container>
         </div>
-        <div
-          sx={{
-            p: 1,
-          }}
-        >
-          2
+        <div />
+        <div>
+          <Container>
+            <FaUserSecret size='75%' />
+          </Container>
         </div>
-        <div
-          sx={{
-            p: 1,
-            backgroundColor: '#63B3ED',
-          }}
-        >
-          3
-        </div>
-        <div
-          sx={{
-            p: 1,
-          }}
-        >
-          4
-        </div>
+        <div />
         <Container>
           <div
             className='card hA  shadow no-border'
             sx={{
-              fontSize: [2, 4, 7],
+              fontSize: [2, 4, 6],
             }}
           />
         </Container>
-        <div
-          sx={{
-            p: 1,
-          }}
-        >
-          6
+        <div />
+        <div sx={{ justifySelf: 'start', alignSelf: 'end' }}>
+          <Container>
+            <FaUserSecret size='75%' />
+          </Container>
         </div>
-        <div
-          sx={{
-            p: 1,
-            backgroundColor: '#63B3ED',
-          }}
-        >
-          7
-        </div>
-        <div
-          sx={{
-            p: 1,
-          }}
-        >
-          8
-        </div>
-        <div
-          sx={{
-            p: 1,
-            backgroundColor: '#63B3ED',
-          }}
-        >
-          9
+        <div />
+        <div sx={{ justifySelf: 'end', alignSelf: 'end' }}>
+          <Container>
+            <FaUserSecret size='75%' />
+          </Container>
         </div>
       </main>
+
       <aside sx={{ display: 'flex', flexDirection: 'column' }}>
         <Container>
           <ul

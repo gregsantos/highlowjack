@@ -1,8 +1,11 @@
-import { metrics } from "../themes";
-import { createGlobalStyle } from "styled-components";
+import { metrics } from '../themes'
+import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
+  * {
+    box-sizing: border-box;
+  }
   html {
     height: 100%;
     width: 100%;
@@ -41,6 +44,6 @@ const GlobalStyle = createGlobalStyle`
   }
   #root {
       height: 100%;
-  }`;
+  }`
 
-export default GlobalStyle;
+export default GlobalStyle

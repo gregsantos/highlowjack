@@ -1,18 +1,9 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
-import { Styled } from 'theme-ui'
+import { Container } from 'theme-ui'
 import { FaUserSecret } from 'react-icons/fa'
 import { P, H1, Button, Input, Form, RoomWrapper } from '../components'
 import '../css/cards.css'
-
-export const Container = props => (
-  <div
-    {...props}
-    sx={{
-      variant: 'layout.container',
-    }}
-  />
-)
 
 const RoomPage = () => (
   <RoomWrapper>
@@ -89,7 +80,7 @@ const RoomPage = () => (
       >
         <Container>
           <div>
-            {['♠A', '♠K', '♦A', '♣J', '♣06', '♥09'].map(card => (
+            {['♠A', '♠K', '♦A', '♣J', '♣06', '♥09'].map((card) => (
               <div
                 className={`card ${card}`}
                 sx={{ fontSize: [2, null, 4] }}

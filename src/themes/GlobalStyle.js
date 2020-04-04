@@ -3,16 +3,13 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
-  * {
-    box-sizing: border-box;
-  }
   html {
     height: 100%;
     width: 100%;
     overflow: hidden;
     font-size: ${metrics.baseUnit}px;
-    background-color: ${props => props.theme.background};
-    color: ${props => props.theme.mainText};
+    background-color: ${(props) => props.theme.background};
+    color: ${(props) => props.theme.mainText};
     @media (max-width: 480px){ 
       font-size: ${metrics.baseUnit}px;
     }
@@ -35,11 +32,11 @@ const GlobalStyle = createGlobalStyle`
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus,
     input:-webkit-autofill:active {
-      -webkit-box-shadow: 0 0 0px 1000px ${props =>
+      -webkit-box-shadow: 0 0 0px 1000px ${(props) =>
         props.theme.background} inset;
-      box-shadow: 0 0 0px 1000px ${props => props.theme.background} inset;
-      -webkit-text-fill-color: ${props => props.theme.mainText} !important;
-      background-color: ${props => props.theme.background} !important;
+      box-shadow: 0 0 0px 1000px ${(props) => props.theme.background} inset;
+      -webkit-text-fill-color: ${(props) => props.theme.mainText} !important;
+      background-color: ${(props) => props.theme.background} !important;
     }
   }
   #root {

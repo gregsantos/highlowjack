@@ -12,6 +12,7 @@ import Dashboard from './containers/Dashboard'
 import Confirmed from './containers/Confirmed'
 import Profile from './containers/Profile'
 import Room from './containers/Room'
+import Game from './containers/Game'
 import Header from './containers/Header'
 import PrivacyPolicy from './containers/PrivacyPolicy'
 import { UserContext } from './contexts/userContext'
@@ -54,13 +55,13 @@ const MainRouter = () => {
       body: 'shoop',
     })
 
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (!!user) {
         const uid = firebase.auth().currentUser.uid
         db.collection('users')
           .doc(uid)
           .get()
-          .then(res => {
+          .then((res) => {
             if (res.data() && res.data().firstName) {
               userDispatch(
                 { type: 'updateProfile', payload: res.data() },
@@ -88,7 +89,7 @@ const MainRouter = () => {
     )
   }
 
-  const routeWithAuth = destination => {
+  const routeWithAuth = (destination) => {
     return !userId ? (
       <Redirect
         to={{
@@ -100,7 +101,7 @@ const MainRouter = () => {
     )
   }
 
-  const reRouteIfAuthenticated = destination => {
+  const reRouteIfAuthenticated = (destination) => {
     return userId ? (
       <Redirect
         to={{
@@ -146,6 +147,10 @@ const MainRouter = () => {
                   <Route
                     path={'/room/:id'}
                     render={() => routeWithAuth(<Room />)}
+                  />
+                  <Route
+                    path={'/game/:id'}
+                    render={() => routeWithAuth(<Game />)}
                   />
                   <Route
                     path={'/privacy-policy'}

@@ -47,10 +47,11 @@ const BodyWrapper = styled.div`
   @media (max-width: 480px) {
     width: 100%;
     margin-top: 0px;
+    margin-bottom: 47px;
   }
 `
 
-const RoomWrapper = props => {
+const RoomWrapper = (props) => {
   const scrollRef = useRef()
 
   useEffect(() => {

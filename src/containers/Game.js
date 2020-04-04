@@ -10,7 +10,7 @@ const GamePage = () => (
     <div
       sx={{
         display: 'flex',
-        flexWrap: 'wrap',
+        flexDirection: ['column', 'column', 'row', 'row'],
         height: '100%',
         backgroundColor: 'black',
         border: 'solid',
@@ -20,13 +20,15 @@ const GamePage = () => (
       <main
         sx={{
           backgroundColor: 'red',
-          width: ['100%', '100%', '75%'],
+          height: ['100vw', '100vw', '100%', '100%'],
+          width: ['100%', '100%', '70%', '75%'],
         }}
       ></main>
       <aside
         sx={{
-          backgroundColor: 'green',
-          width: ['100%', '100%', '25%'],
+          backgroundColor: 'blue',
+          height: ['100vw', '80vw', '100%', '100%'],
+          flexGrow: '1',
         }}
       ></aside>
     </div>

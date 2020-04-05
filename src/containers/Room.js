@@ -10,85 +10,27 @@ const RoomPage = () => (
     <div
       sx={{
         display: 'grid',
-        gridGap: 2, // theme.space[4]
-        // use arrays for mobile-first responsive styles
+        gridGap: 1, // theme.space[4]
         height: '100%',
-        gridTemplateColumns: [
-          'auto',
-          '1', // default to a stacked layout on small screens
-          '3fr 1fr', // use columns for larger screens
-        ],
+        gridTemplateColumns: ['100%', 'repeat(4, 1fr)'],
+        gridTemplateRows: ['repeat(4, 1fr)', 'repeat(3, 1fr)'],
       }}
     >
       <main
         sx={{
-          display: 'grid',
-          gridGap: 2, // theme.space[4]
-          // use arrays for mobile-first responsive styles
-          gridTemplateColumns: [
-            // default to a stacked layout on small screens
-            'repeat(3, 1fr)', // use columns for larger screens
-          ],
-          gridTemplateRows: [
-            '2fr 220px 2fr', // use columns for larger screens
-          ],
-          '& :nth-child(even)': {
-            backgroundColor: '#63B3ED',
-          },
+          backgroundColor: 'red',
+          gridColumn: ['auto', '1 / span 3'],
+          gridRow: ['1 / 3', '1 / span 4'],
         }}
-      >
-        <div sx={{ justifySelf: 'start', alignSelf: 'start' }}>
-          <Container>
-            <FaUserSecret size='75%' />
-          </Container>
-        </div>
-        <div />
-        <div sx={{ justifySelf: 'end', alignSelf: 'start' }}>
-          <Container>
-            <FaUserSecret size='75%' />
-          </Container>
-        </div>
-        <div />
-        <Container>
-          <div
-            className='card hA  shadow no-border'
-            sx={{
-              fontSize: [2, 4, 6],
-            }}
-          />
-        </Container>
-        <div />
-        <div sx={{ justifySelf: 'start', alignSelf: 'end' }}>
-          <Container>
-            <FaUserSecret size='75%' />
-          </Container>
-        </div>
-        <div />
-        <div sx={{ justifySelf: 'end', alignSelf: 'end' }}>
-          <Container>
-            <FaUserSecret size='75%' />
-          </Container>
-        </div>
-      </main>
+      ></main>
 
       <aside
         sx={{
           backgroundColor: 'black',
-          display: 'flex',
-          flexDirection: 'column',
+          gridColumn: ['auto', '4 / 5'],
+          gridRow: ['3 / 4', '1 / span 4'],
         }}
-      >
-        <Container>
-          <div>
-            {['♠A', '♠K', '♦A', '♣J', '♣06', '♥09'].map((card) => (
-              <div
-                className={`card ${card}`}
-                sx={{ fontSize: [2, null, 4] }}
-              ></div>
-            ))}
-          </div>
-        </Container>
-      </aside>
+      ></aside>
     </div>
   </RoomWrapper>
 )

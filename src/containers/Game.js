@@ -10,7 +10,7 @@ const GamePage = () => (
     <div
       sx={{
         display: 'flex',
-        flexDirection: ['column', 'column', 'column', 'row'],
+        flexWrap: 'wrap',
         height: '100%',
         backgroundColor: 'black',
         border: 'solid',
@@ -19,75 +19,29 @@ const GamePage = () => (
     >
       <main
         sx={{
+          flexGrow: 99999,
+          flexBasis: 0,
+          minWidth: 769,
           backgroundColor: 'red',
-          height: ['100vw', '100vw', '100%', '100%'],
-          width: ['100%', '100%', '100%', '75%'],
         }}
-      >
-        <div
-          sx={{
-            display: 'grid',
-            gridGap: 2,
-            gridTemplateColumns: ['repeat(3, 1fr)'],
-            gridTemplateRows: ['repeat(3, 1fr)'],
-            height: '100%',
-            '& :nth-child(even)': {
-              backgroundColor: '#63B3ED',
-            },
-          }}
-        >
-          <div sx={{ justifySelf: 'start', alignSelf: 'start' }}>
-            <Container>
-              <FaUserSecret size='75%' />
-            </Container>
-          </div>
-          <div />
-          <div sx={{ justifySelf: 'end', alignSelf: 'start' }}>
-            <Container>
-              <FaUserSecret size='75%' />
-            </Container>
-          </div>
-          <div />
-          <Container>
-            <div
-              className='card hA  shadow no-border'
-              sx={{
-                fontSize: [2, 4, 6],
-              }}
-            />
-          </Container>
-          <div />
-          <div sx={{ justifySelf: 'start', alignSelf: 'end' }}>
-            <Container>
-              <FaUserSecret size='75%' />
-            </Container>
-          </div>
-          <div />
-          <div sx={{ justifySelf: 'end', alignSelf: 'end' }}>
-            <Container>
-              <FaUserSecret size='75%' />
-            </Container>
-          </div>
-        </div>
-      </main>
+      ></main>
       <aside
         sx={{
-          backgroundColor: 'blue',
-          height: ['100vw', '80vw', '100%', '100%'],
-          flexGrow: '1',
+          flexGrow: 1,
+          flexBasis: 'sidebar',
+          backgroundColor: 'green',
         }}
       >
-        <Flex sx={{ flexDirection: 'column', height: '100%' }}>
-          <Box p={2} bg='green' sx={{ flex: '1 1 auto' }}>
-            Cards
-          </Box>
-          <Box p={2} bg='primary' sx={{ flex: '1 1 auto' }}>
-            Flex
-          </Box>
-          <Box p={2} bg='muted' sx={{ flex: '1 1 auto' }}>
-            Box
-          </Box>
-        </Flex>
+        <Container>
+          <div>
+            {['♠A', '♠K', '♦A', '♣J', '♣06', '♥09'].map((card) => (
+              <div
+                className={`card ${card}`}
+                sx={{ fontSize: [1, 2, 3, 4] }}
+              ></div>
+            ))}
+          </div>
+        </Container>
       </aside>
     </div>
   </RoomWrapper>

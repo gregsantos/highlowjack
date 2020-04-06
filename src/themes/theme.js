@@ -6,8 +6,9 @@ export default {
   sizes: {
     ...tailwind.sizes,
     container: 768,
+    sidebar: 308,
   },
-  breakpoints: ['485px', '769px', '1025px', '1367px'],
+  // breakpoints: ['485px', '769px', '1025px', '1367px'],
   //  breakpoints: ['40em', '56em', '64em',],
   // this enables the color modes feature
   // and is used as the name for the top-level colors object

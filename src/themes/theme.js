@@ -6,7 +6,7 @@ export default {
   sizes: {
     ...tailwind.sizes,
     container: 768,
-    sidebar: 308,
+    sidebar: 420,
   },
   // breakpoints: ['485px', '769px', '1025px', '1367px'],
   //  breakpoints: ['40em', '56em', '64em',],

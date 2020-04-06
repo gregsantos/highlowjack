@@ -16,7 +16,8 @@ const RoomPage = () => (
           `"main" auto
            "aside" auto
           / 100%`,
-          null,
+          `"main aside" auto
+          / 65% 35%`,
           `"main aside" auto
           / 70% 30%`,
         ],

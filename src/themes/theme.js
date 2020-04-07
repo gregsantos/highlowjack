@@ -8,7 +8,7 @@ export default {
     container: 768,
     sidebar: 420,
   },
-  breakpoints: ['485px', '1025px', '1025px'],
+  breakpoints: ['485px', '1025px', null],
   //  breakpoints: ['40em', '56em', '64em',],
   // this enables the color modes feature
   // and is used as the name for the top-level colors object
@@ -56,9 +56,9 @@ export default {
       alignItems: 'center',
       mx: 'auto',
       padding: '1',
-      borderColor: 'primary',
+      /*       borderColor: 'primary',
       borderStyle: 'solid',
-      borderWidth: 'thin',
+      borderWidth: 'thin', */
     },
     header: {
       color: 'white',

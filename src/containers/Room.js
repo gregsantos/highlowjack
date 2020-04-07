@@ -29,16 +29,61 @@ const RoomPage = () => (
     >
       <main
         sx={{
-          backgroundColor: 'red',
+          backgroundColor: '#63B3ED',
           gridArea: 'main',
         }}
-      ></main>
+      >
+        <div
+          sx={{
+            display: 'grid',
+            gridGap: 2,
+            gridTemplateColumns: ['repeat(3, 1fr)'],
+            gridTemplateRows: ['repeat(3, 1fr)'],
+            height: '100%',
+            '& :nth-child(even)': {
+              backgroundColor: 'white',
+            },
+          }}
+        >
+          <div sx={{ justifySelf: 'start', alignSelf: 'start' }}>
+            <Container>
+              <FaUserSecret size='75%' />
+            </Container>
+          </div>
+          <div />
+          <div sx={{ justifySelf: 'end', alignSelf: 'start' }}>
+            <Container>
+              <FaUserSecret size='75%' />
+            </Container>
+          </div>
+          <div />
+          <Container>
+            <div
+              className='card hA  shadow no-border'
+              sx={{
+                fontSize: [1, 3, 4],
+              }}
+            />
+          </Container>
+          <div />
+          <div sx={{ justifySelf: 'start', alignSelf: 'end' }}>
+            <Container>
+              <FaUserSecret size='75%' />
+            </Container>
+          </div>
+          <div />
+          <div sx={{ justifySelf: 'end', alignSelf: 'end' }}>
+            <Container>
+              <FaUserSecret size='75%' />
+            </Container>
+          </div>
+        </div>
+      </main>
 
       <aside
         sx={{
           backgroundColor: '#5C6AC4',
           gridArea: 'aside',
-          minWidth: '378px',
         }}
       >
         <div

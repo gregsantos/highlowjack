@@ -13,13 +13,14 @@ const RoomPage = () => (
         display: 'grid',
         gridGap: 1,
         gridTemplate: [
-          `"main" auto
+          `"main" 100vw
+           "aside" auto
+          / 100%`,
+          `"main" 55%
            "aside" auto
           / 100%`,
           `"main aside" auto
-          / 65% 35%`,
-          `"main aside" auto
-          / 70% 30%`,
+          / minmax(60%, 1fr) minmax(410px, 525px)`,
         ],
         backgroundColor: 'black',
         border: 'solid',
@@ -35,33 +36,34 @@ const RoomPage = () => (
 
       <aside
         sx={{
-          backgroundColor: 'green',
+          backgroundColor: '#5C6AC4',
           gridArea: 'aside',
+          minWidth: '378px',
         }}
       >
         <div
           sx={{
             backgroundColor: 'green',
+            padding: '10px 0px',
             display: 'grid',
+            justifyContent: 'center',
             gridGap: '1',
             gridTemplateColumns: [
-              'repeat(6, 1fr)',
-              'repeat(3, 1fr)',
-              'repeat(auto-fit, null, minmax(150px, 1fr))',
+              'repeat(auto-fit, 59px)',
+              'repeat(6, minmax(80px, 1fr))',
+              'repeat(3, minmax(92px, 1fr))',
             ],
-            // repeat(3, 1fr) repeat(auto-fit, 150px)
           }}
         >
           {['♠A', '♠K', '♦A', '♣J', '♣06', '♥09'].map((card) => (
             <div
               sx={{
-                backgroundColor: '#5C6AC4',
+                backgroundColor: 'green',
                 display: 'grid',
                 justifyContent: 'center',
-                padding: '2px',
               }}
             >
-              <div className={`card ${card}`} sx={{ fontSize: [1, 2, 3, 4] }} />
+              <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
             </div>
           ))}
         </div>

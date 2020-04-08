@@ -38,13 +38,12 @@ const RoomPage = () => (
             gridGap: 0,
             gridTemplateColumns: [
               '1fr minmax(auto, 1.2fr) 1fr',
-              null,
+              'minmax(1fr, 249px) auto minmax(1fr, 249px)',
               'minmax(225px, 1fr) minmax(auto, 1.2fr) minmax(225px, 1fr)',
-              // '1fr minmax(auto, 1.2fr) 1fr',
             ],
             gridTemplateRows: [
-              '1fr 1fr 1fr',
-              null,
+              '1fr minmax(auto, 1.2fr) 1fr',
+              '1fr 170px 1fr',
               '1fr minmax(auto, 1.2fr) 1fr',
             ],
             '& :nth-child(even)': {

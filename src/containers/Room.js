@@ -39,7 +39,8 @@ const RoomPage = () => (
             gridTemplateColumns: [
               '1fr minmax(auto, 1.2fr) 1fr',
               null,
-              '1fr minmax(auto, 1.2fr) 1fr',
+              'minmax(225px, 1fr) minmax(auto, 1.2fr) minmax(225px, 1fr)',
+              // '1fr minmax(auto, 1.2fr) 1fr',
             ],
             gridTemplateRows: [
               '1fr 1fr 1fr',
@@ -89,6 +90,7 @@ const RoomPage = () => (
       <aside
         sx={{
           backgroundColor: '#5C6AC4',
+          minWidth: '375px',
           gridArea: 'aside',
           display: 'flex',
           flexDirection: 'column',

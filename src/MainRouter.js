@@ -146,7 +146,7 @@ const MainRouter = () => {
                   />
                   <Route
                     path={'/room/:id'}
-                    render={() => routeWithAuth(<Room />)}
+                    render={(props) => routeWithAuth(<Room {...props} />)}
                   />
                   <Route
                     path={'/game/:id'}

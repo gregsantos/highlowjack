@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { useState, useContext, useEffect, Suspense } from 'react'
+import { Link } from 'react-router-dom'
 import 'firebase/firestore'
 import { jsx } from 'theme-ui'
 import { P, H1, Button, Input, Form, BodyWrapper } from '../components'
@@ -40,7 +41,7 @@ const Dashboard = () => {
     try {
       const roomsArr = []
       const querySnapshot = await roomsRef.get()
-      querySnapshot.forEach(doc => {
+      querySnapshot.forEach((doc) => {
         roomsArr.push({ id: doc.id, ...doc.data() })
       })
       setOpenRooms(roomsArr)
@@ -54,28 +55,28 @@ const Dashboard = () => {
   }, [])
 
   const requestNotifications = () => {
-    Notification.requestPermission().then(permission => {
+    Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         const messaging = firebase.messaging()
         messaging
           .getToken()
-          .then(currentToken => {
+          .then((currentToken) => {
             db.collection('users')
               .doc(firebase.auth().currentUser.uid)
               .set({ pushTokenWeb: currentToken }, { merge: true })
               .then(() => {
                 sendMessage('Notifications activated!')
               })
-              .catch(err => console.log(err))
+              .catch((err) => console.log(err))
           })
-          .catch(err => {
+          .catch((err) => {
             console.log('An error occurred while retrieving token.', err)
           })
       }
     })
   }
 
-  const onClickSubmit = e => {
+  const onClickSubmit = (e) => {
     e.preventDefault()
     if (firstName && lastName) {
       db.collection('users')
@@ -117,7 +118,7 @@ const Dashboard = () => {
         <Form>
           <div>
             <Input
-              onChange={e => setFirstName(e.target.value)}
+              onChange={(e) => setFirstName(e.target.value)}
               name='firstName'
               placeholder='First name'
               autoComplete='given-name'
@@ -125,13 +126,13 @@ const Dashboard = () => {
           </div>
           <div>
             <Input
-              onChange={e => setLastName(e.target.value)}
+              onChange={(e) => setLastName(e.target.value)}
               name='lastName'
               placeholder='Last name'
               autoComplete='family-name'
             />
           </div>
-          <Button onClick={e => onClickSubmit(e)}>Submit</Button>
+          <Button onClick={(e) => onClickSubmit(e)}>Submit</Button>
         </Form>
       </BodyWrapper>
     )
@@ -167,7 +168,7 @@ const Dashboard = () => {
           to play games, watch videos, and chat with your Cliq.
         </P>
         <Button
-          onClick={e => {
+          onClick={(e) => {
             handleJoinRoom()
           }}
         >
@@ -177,7 +178,9 @@ const Dashboard = () => {
           <Suspense fallback={<div>Loading...</div>}>
             <ul>
               {openRooms.map((room, i) => (
-                <li key={i}>Room ID: {room.id}</li>
+                <li key={i}>
+                  <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
+                </li>
               ))}
             </ul>
           </Suspense>

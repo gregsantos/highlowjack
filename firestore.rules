@@ -6,6 +6,9 @@ service cloud.firestore {
     match /roomDetail/{id} {
       allow read, write: if true;
     }
+    match /games/{id} {
+      allow read, write: if true;
+    }
     match /queue/{id} {
       allow read, write: if true;
     }

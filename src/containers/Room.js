@@ -11,27 +11,117 @@ import '../css/cards.css'
 
 const RoomPage = (props) => {
   const user = useSession()
+  const [roomData, setRoomData] = useState(null)
   const id = props.match.params.id
   const db = firebase.firestore()
   const roomRef = db.collection('roomDetail').doc(id)
-  const gameRef = db.collection('games').doc('z4uzAmEhhm2xVO04RvnH')
+  const gamesRef = db.collection('games')
+  const gameRef = db.collection('games').doc(id)
+
+  const joinRoom = () => {
+    db.runTransaction((transaction) => {
+      return transaction.get(roomRef).then((roomDoc) => {
+        if (!roomDoc.exists) {
+          throw 'Document does not exist!'
+        }
+
+        // get members
+        const members = roomDoc.data().members
+
+        if (members.length <= 3) {
+          const getUpdate = () => {
+            const newState = members.length === 3 ? 2 : 1
+            return {
+              members: firebase.firestore.FieldValue.arrayUnion(user.uid),
+              state: newState,
+            }
+          }
+          transaction.update(roomRef, getUpdate())
+          return members
+        } else {
+          return Promise.reject('Sorry! Room is already full.')
+        }
+      })
+    })
+      .then((members) => {
+        console.log('User Joined Room ', members)
+      })
+      .catch(function(err) {
+        // This will be a "room is already full" error.
+        console.error(err)
+      })
+  }
+
+  const startGame = () => {
+    const gameData = {
+      gameType: 'pitch',
+      dateStarted: firebase.firestore.Timestamp.fromDate(new Date()),
+    }
+
+    const gameRef = gamesRef.doc('888')
+    const batch = db.batch()
+    batch.set(gameRef, gameData)
+    batch.update(roomRef, {
+      gameId: id,
+    })
+    batch
+      .commit()
+      .then(() => {
+        console.log('Created new game')
+      })
+      .catch(() => {
+        console.log('Error Creating new game')
+      })
+  }
 
   const fetchGame = async () => {
+    let unsubscribe
     try {
-      const game = await gameRef.get()
-      if (!game.exists) {
-        console.log('No such Game!')
-      } else {
-        console.log('Game data:', game.data())
-      }
+      // const game = await gameRef.get()
+      unsubscribe = await gameRef.onSnapshot((snap) => {
+        if (!snap.exists) {
+          console.log('No such Game!')
+        } else {
+          const data = snap.data()
+          // setGameData(data)
+          console.log('Game data:', data)
+        }
+      })
     } catch (error) {
       console.log('Error getting Game', error)
+    }
+    return () => unsubscribe()
+  }
+
+  const fetchRoom = async () => {
+    if (user) {
+      let unsubscribe
+      try {
+        unsubscribe = await roomRef.onSnapshot((snap) => {
+          const data = snap.data()
+          setRoomData({ ...data, id: snap.id })
+          console.log('Room data:', data)
+        })
+      } catch (error) {
+        console.log(error)
+      }
+      // return cleanup function
+      return () => {
+        unsubscribe()
+        console.log(user.uid, 'Left room')
+      }
+    } else {
+      console.log('no logged in user')
     }
   }
 
   useEffect(() => {
     fetchGame()
   }, [])
+
+  useEffect(() => {
+    fetchRoom()
+  }, [user])
 
   return (
     <RoomWrapper>
@@ -92,12 +182,20 @@ const RoomPage = (props) => {
             </div>
             <div />
             <Container sx={{ backgroundColor: 'green' }}>
-              <div
-                className='card hA shadow no-border'
-                sx={{
-                  fontSize: [3, 5, 6],
-                }}
-              />
+              {roomData && roomData.members.includes(user.uid) ? (
+                roomData.gameId ? (
+                  <div
+                    className='card hA shadow no-border'
+                    sx={{
+                      fontSize: [3, 5, 6],
+                    }}
+                  />
+                ) : (
+                  <button onClick={startGame}>Start Game</button>
+                )
+              ) : (
+                <button onClick={joinRoom}>Join Room</button>
+              )}
             </Container>
             <div />
             <div sx={{ alignSelf: 'center' }}>

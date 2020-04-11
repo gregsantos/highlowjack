@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 // import { useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
 import { FaUserSecret } from 'react-icons/fa'
@@ -8,26 +8,25 @@ import { P, H1, Button, Input, Form, RoomWrapper } from '../components'
 import { useSession } from '../App'
 import firebase from '../firebase.js'
 import '../css/cards.css'
+import initGame from '../helpers/initGame'
 
 const RoomPage = (props) => {
   const user = useSession()
   const [roomData, setRoomData] = useState(null)
+  const [gameData, setGameData] = useState(null)
+  const [playerSeat, setPlayerSeat] = useState(-1)
   const id = props.match.params.id
   const db = firebase.firestore()
   const roomRef = db.collection('roomDetail').doc(id)
   const gamesRef = db.collection('games')
   const gameRef = db.collection('games').doc(id)
-
   const joinRoom = () => {
     db.runTransaction((transaction) => {
       return transaction.get(roomRef).then((roomDoc) => {
         if (!roomDoc.exists) {
-          throw 'Document does not exist!'
+          throw 'Room does not exist!'
         }
-
-        // get members
         const members = roomDoc.data().members
-
         if (members.length <= 3) {
           const getUpdate = () => {
             const newState = members.length === 3 ? 2 : 1
@@ -44,21 +43,18 @@ const RoomPage = (props) => {
       })
     })
       .then((members) => {
-        console.log('User Joined Room ', members)
+        setPlayerSeat(members.length)
+        console.log('User Joined Room ', members.length)
       })
       .catch(function(err) {
-        // This will be a "room is already full" error.
+        // "room is already full" error.
         console.error(err)
       })
   }
 
   const startGame = () => {
-    const gameData = {
-      gameType: 'pitch',
-      dateStarted: firebase.firestore.Timestamp.fromDate(new Date()),
-    }
-
-    const gameRef = gamesRef.doc('888')
+    const gameData = initGame(roomData.members)
+    const gameRef = gamesRef.doc(id)
     const batch = db.batch()
     batch.set(gameRef, gameData)
     batch.update(roomRef, {
@@ -83,7 +79,7 @@ const RoomPage = (props) => {
           console.log('No such Game!')
         } else {
           const data = snap.data()
-          // setGameData(data)
+          setGameData(data)
           console.log('Game data:', data)
         }
       })
@@ -99,8 +95,11 @@ const RoomPage = (props) => {
       try {
         unsubscribe = await roomRef.onSnapshot((snap) => {
           const data = snap.data()
+          // set player seat
+          let playerSeat = data.members.findIndex((m) => m === user.uid)
+          setPlayerSeat(playerSeat)
           setRoomData({ ...data, id: snap.id })
-          console.log('Room data:', data)
+          console.log('Room data:', data, 'User: ', user.uid)
         })
       } catch (error) {
         console.log(error)
@@ -112,6 +111,75 @@ const RoomPage = (props) => {
       }
     } else {
       console.log('no logged in user')
+    }
+  }
+
+  const renderTable = () => {
+    const roomMember = roomData.members.includes(user.uid)
+    if (roomMember) {
+      if (gameData) {
+        if (gameData.trick.length === 0)
+          return (
+            <div
+              className='card outline'
+              sx={{
+                fontSize: [3, 5, 6],
+              }}
+            />
+          )
+        if (gameData.trick.length === 0)
+          return (
+            <div
+              className='card hA shadow no-border'
+              sx={{
+                fontSize: [3, 5, 6],
+              }}
+            />
+          )
+      } else {
+        return <button onClick={startGame}>Start Game</button>
+      }
+    } else {
+      return <button onClick={joinRoom}>Join Room</button>
+    }
+  }
+
+  const renderCards = () => {
+    console.log(playerSeat)
+    if (gameData) {
+      console.log(gameData.players)
+      if (!playerSeat) {
+        const cards = []
+        for (let i = 0; i < 5; i++) {
+          cards.push(
+            <div
+              key={i}
+              sx={{
+                backgroundColor: 'green',
+                display: 'grid',
+                justifyContent: 'center',
+              }}
+            >
+              <div className={`card outline`} sx={{ fontSize: [1, 3, 4] }} />
+            </div>
+          )
+        }
+        return cards
+      } else {
+        return gameData.players[playerSeat].hand.map((card) => (
+          <div
+            sx={{
+              backgroundColor: 'green',
+              display: 'grid',
+              justifyContent: 'center',
+            }}
+          >
+            <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
+          </div>
+        ))
+      }
+    } else {
+      return <h1>Start A Game</h1>
     }
   }
 
@@ -181,22 +249,11 @@ const RoomPage = (props) => {
               </Container>
             </div>
             <div />
+
             <Container sx={{ backgroundColor: 'green' }}>
-              {roomData && roomData.members.includes(user.uid) ? (
-                roomData.gameId ? (
-                  <div
-                    className='card hA shadow no-border'
-                    sx={{
-                      fontSize: [3, 5, 6],
-                    }}
-                  />
-                ) : (
-                  <button onClick={startGame}>Start Game</button>
-                )
-              ) : (
-                <button onClick={joinRoom}>Join Room</button>
-              )}
+              {roomData && renderTable()}
             </Container>
+
             <div />
             <div sx={{ alignSelf: 'center' }}>
               <Container>
@@ -235,17 +292,7 @@ const RoomPage = (props) => {
               ],
             }}
           >
-            {['♠A', '♠K', '♦A', '♣J', '♣06', '♥09'].map((card) => (
-              <div
-                sx={{
-                  backgroundColor: 'green',
-                  display: 'grid',
-                  justifyContent: 'center',
-                }}
-              >
-                <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
-              </div>
-            ))}
+            {gameData && renderCards()}
           </div>
 
           <Box

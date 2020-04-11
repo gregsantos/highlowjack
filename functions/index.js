@@ -16,14 +16,16 @@ exports.sendPushNotification = functions.https.onCall((data, context) => {
   admin
     .messaging()
     .send(message)
-    .then(response => {
+    .then((response) => {
       console.log('Successfully sent message:', response)
       return
     })
-    .catch(error => {
+    .catch((error) => {
       console.log('Error sending message:', error)
       return
     })
 })
 
 exports.roomFuncs = require('./roomFuncs')
+
+exports.gameFuncs = require('./gameFuncs')

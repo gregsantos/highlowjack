@@ -2,19 +2,19 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
-const GAMEDATA = {
-  bid: { bid: 0, bidder: '' },
+const gameData = {
+  players: getPlayers(),
+  winner: null,
+  score: [0, 0],
   dealer: 0,
-  lastCard: '',
-  leader: '',
-  players: [],
-  scoreTeamOne: 0,
-  scoreTeamTwo: 0,
+  turn: 1,
+  boss: null,
+  roundCards: [],
+  bid: { bid: 0, bidder: 0, trumpSuit: '' },
+  trick: 0,
+  trickCards: [],
   state: 'NEW',
-  trick: [],
-  trumpSuit: '',
-  turn: 0,
-  winner: '',
+  timeStarted: firebase.firestore.Timestamp.fromDate(new Date()),
 }
 
 function dealHands(
@@ -99,26 +99,22 @@ exports.initGame = functions.firestore
     const gameType = newGame.gameType
     console.log(`New ${gameType} game started`)
     const playerHands = dealHands()
-    // Retrieve the current and previous value
-    // const data = snap.after.data()
-    // const previousData = snap.before.data()
     console.log(snap.ref)
-    // db.doc('some/otherdoc').set({ ... });
     // Return a promise of a set operation to update the game
     return snap.ref.set(
       {
-        bid: { bid: 0, bidder: '' },
+        players: playerHands,
+        winner: null,
+        score: [0, 0],
         dealer: 0,
-        lastCard: '',
-        leader: '',
-        playerHands: playerHands,
-        scoreTeamOne: 0,
-        scoreTeamTwo: 0,
+        turn: 1,
+        boss: null,
+        roundCards: [],
+        bid: { bid: 0, bidder: 0, trumpSuit: '' },
+        trick: 0,
+        trickCards: [],
         state: 'NEW',
-        trick: [],
-        trumpSuit: '',
-        turn: 0,
-        winner: '',
+        timeStarted: firebase.firestore.Timestamp.fromDate(new Date()),
       },
       { merge: true }
     )

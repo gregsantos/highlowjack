@@ -20,6 +20,7 @@ const RoomPage = (props) => {
   const roomRef = db.collection('roomDetail').doc(id)
   const gamesRef = db.collection('games')
   const gameRef = db.collection('games').doc(id)
+
   const joinRoom = () => {
     db.runTransaction((transaction) => {
       return transaction.get(roomRef).then((roomDoc) => {
@@ -46,7 +47,7 @@ const RoomPage = (props) => {
         setPlayerSeat(members.length)
         console.log('User Joined Room ', members.length)
       })
-      .catch(function(err) {
+      .catch(function (err) {
         // "room is already full" error.
         console.error(err)
       })
@@ -70,72 +71,38 @@ const RoomPage = (props) => {
       })
   }
 
-  const fetchGame = async () => {
-    let unsubscribe
-    try {
-      // const game = await gameRef.get()
-      unsubscribe = await gameRef.onSnapshot((snap) => {
-        if (!snap.exists) {
-          console.log('No such Game!')
-        } else {
-          const data = snap.data()
-          setGameData(data)
-          console.log('Game data:', data)
-        }
-      })
-    } catch (error) {
-      console.log('Error getting Game', error)
-    }
-    return () => unsubscribe()
-  }
-
-  const fetchRoom = async () => {
-    if (user) {
-      let unsubscribe
-      try {
-        unsubscribe = await roomRef.onSnapshot((snap) => {
-          const data = snap.data()
-          // set player seat
-          let playerSeat = data.members.findIndex((m) => m === user.uid)
-          setPlayerSeat(playerSeat)
-          setRoomData({ ...data, id: snap.id })
-          console.log('Room data:', data, 'User: ', user.uid)
-        })
-      } catch (error) {
-        console.log(error)
-      }
-      // return cleanup function
-      return () => {
-        unsubscribe()
-        console.log(user.uid, 'Left room')
-      }
-    } else {
-      console.log('no logged in user')
-    }
-  }
-
   const renderTable = () => {
     const roomMember = roomData.members.includes(user.uid)
     if (roomMember) {
       if (gameData) {
-        if (gameData.trick.length === 0)
+        const playerTurn = gameData.turn === playerSeat
+        if (gameData.trick === 0) {
           return (
-            <div
-              className='card outline'
-              sx={{
-                fontSize: [3, 5, 6],
-              }}
-            />
+            <div>
+              <h1>Player {gameData.turn + 1} Bid</h1>
+              <button disabled={!playerTurn}>2</button>
+              <button disabled={!playerTurn}>3</button>
+              <button disabled={!playerTurn}>4</button>
+              <button disabled={!playerTurn}>Pass</button>
+            </div>
           )
-        if (gameData.trick.length === 0)
-          return (
-            <div
-              className='card hA shadow no-border'
-              sx={{
-                fontSize: [3, 5, 6],
-              }}
-            />
-          )
+        } else {
+          let lastCard = gameData.trickCards.pop()
+          if (lastCard) {
+            return (
+              <div
+                className={`card ${lastCard} shadow no-border`}
+                sx={{
+                  fontSize: [3, 5, 6],
+                }}
+              />
+            )
+          } else {
+            return (
+              <div className={`card outline`} sx={{ fontSize: [3, 5, 6] }} />
+            )
+          }
+        }
       } else {
         return <button onClick={startGame}>Start Game</button>
       }
@@ -144,13 +111,56 @@ const RoomPage = (props) => {
     }
   }
 
+  const playCard = (i, card) => {
+    const nextPlayer = gameData.turn === 3 ? 0 : gameData.turn + 1
+    const lastPlayer = nextPlayer === gameData.leader
+    const getUpdate = () => {
+      if (!lastPlayer) {
+        return {
+          turn: nextPlayer,
+          trickCards: firebase.firestore.FieldValue.arrayUnion(card),
+        }
+      } else {
+        const tallyTrick = () => {
+          const tallyRound =
+            gameData.trick === 7 && nextPlayer === gameData.leader
+          if (tallyRound) {
+            // last trick in round
+            // check points toward bid, count for game and score round}
+            // high trump or boss leads
+            return {
+              // turn: calculateLeader(),
+              // leader: calculateLeader()
+              trick: gameData.trick + 1,
+              trickCards: [],
+              t1RoundCards: [],
+              t2RoundCards: [],
+            }
+          } else {
+            // last card in trick
+            // calculate new leader, add trick to winners
+            // roundCards
+            return {
+              // turn: calculateLeader(),
+              // leader: calculateLeader()
+              trick: gameData.trick + 1,
+              trickCards: [],
+              t1RoundCards: [],
+              t2RoundCards: [],
+            }
+          }
+        }
+        return tallyTrick()
+      }
+    }
+    gameRef.update(getUpdate())
+  }
+
   const renderCards = () => {
-    console.log(playerSeat)
     if (gameData) {
-      console.log(gameData.players)
       if (!playerSeat) {
         const cards = []
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
           cards.push(
             <div
               key={i}
@@ -166,8 +176,11 @@ const RoomPage = (props) => {
         }
         return cards
       } else {
-        return gameData.players[playerSeat].hand.map((card) => (
+        const playerHand = gameData.players[playerSeat].hand
+        console.log(playerHand)
+        return playerHand.map((card, i) => (
           <div
+            key={i}
             sx={{
               backgroundColor: 'green',
               display: 'grid',
@@ -175,6 +188,7 @@ const RoomPage = (props) => {
             }}
           >
             <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
+            <button onClick={() => playCard(i, card)}>X</button>
           </div>
         ))
       }
@@ -183,12 +197,53 @@ const RoomPage = (props) => {
     }
   }
 
-  useEffect(() => {
-    fetchGame()
-  }, [])
+  const fetchGame = () => {
+    let unsubscribe
+    unsubscribe = gameRef.onSnapshot((snap) => {
+      if (!snap.exists) {
+        console.log('No such Game!')
+      } else {
+        const data = snap.data()
+        setGameData(data)
+        console.log('Game Data: ', data)
+      }
+    })
+    const leaveGame = () => {
+      unsubscribe()
+      console.log('Unsubscribe from game')
+    }
+    return leaveGame
+  }
 
   useEffect(() => {
-    fetchRoom()
+    let unsubscribe
+    let unsubscribeGame
+    if (user) {
+      unsubscribe = roomRef.onSnapshot((snap) => {
+        const data = snap.data()
+        // fetchGame
+        unsubscribeGame = fetchGame()
+        // set player seat
+        let playerSeat = data.members.findIndex((m) => m === user.uid)
+        setPlayerSeat(playerSeat)
+        setRoomData({ ...data, id: snap.id })
+        console.log(
+          'Room data:',
+          data,
+          'User: ',
+          user.uid,
+          'Seat: ',
+          playerSeat
+        )
+      })
+      return () => {
+        unsubscribe()
+        unsubscribeGame()
+        console.log(user.uid, 'left room')
+      }
+    } else {
+      console.log('no logged in user')
+    }
   }, [user])
 
   return (
@@ -232,7 +287,7 @@ const RoomPage = (props) => {
                 '1fr 170px 1fr',
                 '1fr minmax(auto, 1.2fr) 1fr',
               ],
-              '& :nth-child(even)': {
+              '& :nth-of-type(even)': {
                 backgroundColor: 'white',
               },
             }}
@@ -292,12 +347,12 @@ const RoomPage = (props) => {
               ],
             }}
           >
-            {gameData && renderCards()}
+            {renderCards()}
           </div>
 
           <Box
             p={1}
-            bg='black'
+            bg='white'
             sx={{
               flex: '1 1 auto',
               border: 'solid',
@@ -308,7 +363,7 @@ const RoomPage = (props) => {
           ></Box>
           <Box
             p={2}
-            bg='black'
+            bg='white'
             sx={{
               flex: '1 1 auto',
               border: 'solid',

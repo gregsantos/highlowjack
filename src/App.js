@@ -49,9 +49,6 @@ const App = () => {
   // use custom Auth hook to get user
   const { initializing, user } = useAuth()
 
-  if (initializing) {
-    console.log('Initializing')
-  }
   // Use Context.Provider to pass userContext down the tree
   return (
     <ThemeProvider theme={theme}>

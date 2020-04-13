@@ -1,4 +1,4 @@
-var functions = require('firebase-functions')
+const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 
 const db = admin.firestore()
@@ -27,7 +27,7 @@ exports.addOrCreateRoom = functions.firestore
           console.log('New Room created: ', newRoomRef)
           return
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e)
         })
     }
@@ -36,7 +36,7 @@ exports.addOrCreateRoom = functions.firestore
       .where('state', '==', 1)
       .limit(1)
       .get()
-      .then(snapshot => {
+      .then((snapshot) => {
         if (!snapshot.empty) {
           console.log('Found an open room', snapshot.docs)
           return null
@@ -45,7 +45,7 @@ exports.addOrCreateRoom = functions.firestore
           return createNewRoom()
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Error getting documents', err)
       })
   })

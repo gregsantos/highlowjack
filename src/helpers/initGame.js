@@ -17,19 +17,20 @@ export default (members) => {
   }
 
   const gameData = {
-    bid: { bid: 0, bidder: '' },
-    dealer: 0,
-    lastCard: '',
-    leader: 1,
     players: getPlayers(),
-    scoreTeamOne: 0,
-    scoreTeamTwo: 0,
+    winner: null,
+    score: [0, 0],
+    dealer: 0,
+    turn: 1, // dealer + 1
+    bid: { bid: 0, bidder: 0, trumpSuit: '' },
+    leader: 1,
+    dealtCards: [], // set of all cards dealt for prescoring
+    trick: 0,
+    trickCards: [],
+    t1RoundCards: [],
+    t2RoundCards: [],
     state: 'NEW',
-    trick: [],
-    trumpSuit: '',
-    turn: 0,
-    winner: '',
-    dateStarted: firebase.firestore.Timestamp.fromDate(new Date()),
+    timeStarted: firebase.firestore.Timestamp.fromDate(new Date()),
   }
 
   return gameData

@@ -16,8 +16,14 @@ export default (members) => {
     return players
   }
 
+  const playersArr = getPlayers()
   const gameData = {
-    players: getPlayers(),
+    players: {
+      0: playersArr[0],
+      1: playersArr[1],
+      2: playersArr[2],
+      3: playersArr[3],
+    },
     winner: null,
     score: [0, 0],
     dealer: 0,

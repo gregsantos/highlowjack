@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui'
+import { jsx, Button } from 'theme-ui'
 import React, { useState, useEffect } from 'react'
 // import { useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
-import { FaUserSecret } from 'react-icons/fa'
-import { P, H1, Button, Input, Form, RoomWrapper } from '../components'
+import { FaUserSecret, FaDiscourse } from 'react-icons/fa'
+import { P, H1, Input, Form, RoomWrapper } from '../components'
 import { useSession } from '../App'
 import firebase from '../firebase.js'
 import '../css/cards.css'
@@ -107,7 +107,7 @@ const RoomPage = (props) => {
           }
         }
       } else {
-        return <button onClick={startGame}>Start Game</button>
+        return <div className={`card back-red`} sx={{ fontSize: [3, 5, 6] }} />
       }
     } else {
       return <button onClick={joinRoom}>Join Room</button>
@@ -146,27 +146,11 @@ const RoomPage = (props) => {
   }
 
   const renderCards = () => {
-    if (gameData) {
-      if (!playerSeat) {
-        const cards = []
-        for (let i = 0; i < 6; i++) {
-          cards.push(
-            <div
-              key={i}
-              sx={{
-                backgroundColor: 'green',
-                display: 'grid',
-                justifyContent: 'center',
-              }}
-            >
-              <div className={`card outline`} sx={{ fontSize: [1, 3, 4] }} />
-            </div>
-          )
-        }
-        return cards
-      } else {
-        const playerHand = gameData.players[playerSeat].hand
-        return playerHand.map((card, i) => (
+    //    if (gameData) {
+    const renderBlanks = () => {
+      const cards = []
+      for (let i = 0; i < 6; i++) {
+        cards.push(
           <div
             key={i}
             sx={{
@@ -175,14 +159,51 @@ const RoomPage = (props) => {
               justifyContent: 'center',
             }}
           >
-            <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
-            <button onClick={() => playCard(i, card)}>X</button>
+            <div className={`card outline`} sx={{ fontSize: [1, 3, 4] }} />
           </div>
-        ))
+        )
       }
-    } else {
-      return <h1>Start A Game</h1>
+      return cards
     }
+
+    const renderHand = () => {
+      const playerHand = gameData.players[playerSeat].hand
+      return playerHand.map((card, i) => (
+        <div
+          key={i}
+          sx={{
+            backgroundColor: 'green',
+            display: 'grid',
+            justifyContent: 'center',
+          }}
+        >
+          <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
+          <button onClick={() => playCard(i, card)}>X</button>
+        </div>
+      ))
+    }
+
+    return (
+      <div
+        sx={{
+          backgroundColor: 'green',
+          padding: '10px 0px',
+          display: 'grid',
+          justifyContent: 'center',
+          gridGap: '1',
+          gridTemplateColumns: [
+            'repeat(auto-fit, 55px)',
+            'repeat(6, minmax(80px, 1fr))',
+            'repeat(3, minmax(92px, 1fr))',
+          ],
+        }}
+      >
+        {!playerSeat ? renderHand() : renderBlanks()}
+      </div>
+    )
+    /*     } else {
+      return <button onClick={startGame}>Start Game</button>
+    } */
   }
 
   const fetchGame = () => {
@@ -190,6 +211,7 @@ const RoomPage = (props) => {
     unsubscribe = gameRef.onSnapshot((snap) => {
       if (!snap.exists) {
         console.log('No such Game!')
+        setGameData(null)
       } else {
         const data = snap.data()
         setGameData(data)
@@ -314,51 +336,68 @@ const RoomPage = (props) => {
 
         <aside
           sx={{
-            backgroundColor: '#5C6AC4',
+            backgroundColor: 'green',
             minWidth: '375px',
             gridArea: 'aside',
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-          <div
-            sx={{
-              backgroundColor: 'green',
-              padding: '10px 0px',
-              display: 'grid',
-              justifyContent: 'center',
-              gridGap: '1',
-              gridTemplateColumns: [
-                'repeat(auto-fit, 55px)',
-                'repeat(6, minmax(80px, 1fr))',
-                'repeat(3, minmax(92px, 1fr))',
-              ],
-            }}
-          >
-            {renderCards()}
-          </div>
+          {gameData ? (
+            renderCards()
+          ) : (
+            <Container sx={{ height: '20%' }}>
+              <Button variant='green' onClick={startGame}>
+                Start New Game
+              </Button>
+            </Container>
+          )}
 
           <Box
-            p={1}
-            bg='white'
-            sx={{
-              flex: '1 1 auto',
-              border: 'solid',
-              borderBottom: '0px',
-              borderWidth: 'medium',
-              borderColor: '#ff1744',
-            }}
-          ></Box>
-          <Box
             p={2}
-            bg='white'
+            bg='darkseagreen'
             sx={{
               flex: '1 1 auto',
               border: 'solid',
               borderWidth: 'medium',
-              borderColor: '#ff1744',
+              borderColor: 'indianred',
             }}
-          ></Box>
+          >
+            <Flex
+              sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <Box
+                p={1}
+                mb={2}
+                bg='darkseagreen'
+                sx={{
+                  flex: '75%',
+                  height: '75px',
+                  border: 'solid',
+                  borderWidth: 'medium',
+                  borderColor: 'indianred',
+                }}
+              ></Box>
+              <Box
+                p={1}
+                bg='darkseagreen'
+                sx={{
+                  height: '75px',
+                  border: 'solid',
+                  borderWidth: 'medium',
+                  borderColor: 'indianred',
+                }}
+              >
+                <Container>
+                  <FaDiscourse size={50} />
+                </Container>
+              </Box>
+            </Flex>
+          </Box>
         </aside>
       </div>
     </RoomWrapper>

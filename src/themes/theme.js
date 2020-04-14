@@ -77,6 +77,11 @@ export default {
       color: 'text',
       bg: 'secondary',
     },
+    green: {
+      color: 'green',
+      bg: 'darkseagreen',
+      border: 'solid 3px indianred',
+    },
   },
   text: {
     caps: {

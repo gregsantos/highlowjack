@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Button } from 'theme-ui'
+import { jsx, Button, Select } from 'theme-ui'
 import React, { useState, useEffect } from 'react'
 // import { useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
@@ -71,21 +71,91 @@ const RoomPage = (props) => {
       })
   }
 
+  const bidHandler = (e) => {
+    console.log(e.target.id)
+    /*     gameRef.update({
+      bid: e.target.id,
+      bidder: playerSeat,
+      suit: e.target.suit,
+    }) */
+  }
+
   const renderTable = () => {
     const roomMember = roomData.members.includes(user.uid)
     if (roomMember) {
       if (gameData) {
         const playerTurn = gameData.turn === playerSeat
+        const currentBid = gameData.bid.bid
         if (gameData.trick === 0) {
-          return (
-            <div>
-              <h1>Player {gameData.turn + 1} Bid</h1>
-              <button disabled={!playerTurn}>2</button>
-              <button disabled={!playerTurn}>3</button>
-              <button disabled={!playerTurn}>4</button>
-              <button disabled={!playerTurn}>Pass</button>
-            </div>
-          )
+          if (playerTurn)
+            return (
+              <div>
+                <h1>Please Bid Player {gameData.turn + 1}</h1>
+                <Button
+                  id={2}
+                  disabled={currentBid >= 2}
+                  onClick={(e) => bidHandler(e)}
+                >
+                  2
+                </Button>
+                <Button
+                  id={3}
+                  disabled={currentBid >= 3}
+                  onClick={(e) => bidHandler(e)}
+                >
+                  3
+                </Button>
+                <Button
+                  id={4}
+                  disabled={currentBid >= 4}
+                  onClick={(e) => bidHandler(e)}
+                >
+                  4
+                </Button>
+                <Button
+                  id={0}
+                  disabled={playerSeat === gameData.dealer && currentBid === 0}
+                  onClick={(e) => bidHandler(e)}
+                >
+                  Pass
+                </Button>
+                <label for='suit'>Choose a Suit:</label>
+
+                <div>
+                  <Select id='suit'>
+                    <option value='s'>Spades</option>
+                    <option value='c'>Clubs</option>
+                    <option value='h'>Hearts</option>
+                    <option value='d'>Diamonds</option>
+                  </Select>
+                </div>
+              </div>
+            )
+          if (!playerTurn)
+            return (
+              <div
+                sx={{
+                  color: '#daa520',
+                }}
+              >
+                <h1
+                  sx={{
+                    textAlign: 'center',
+                    fontSize: ['1.5em', '2.5em', '3em'],
+                  }}
+                >
+                  Waiting on Bid from
+                </h1>
+                <h2
+                  sx={{
+                    textAlign: 'center',
+                    fontSize: ['1em', '1.5em', '2em'],
+                  }}
+                >
+                  Player {gameData.turn + 1}
+                </h2>
+              </div>
+            )
         } else {
           let lastCard = gameData.trickCards.pop()
           console.log('Played last card', gameData.trickCards)
@@ -373,7 +443,7 @@ const RoomPage = (props) => {
               <Box
                 p={1}
                 mb={2}
-                bg='darkseagreen'
+                bg='white'
                 sx={{
                   flex: '75%',
                   height: '75px',
@@ -384,7 +454,7 @@ const RoomPage = (props) => {
               ></Box>
               <Box
                 p={1}
-                bg='darkseagreen'
+                bg='white'
                 sx={{
                   height: '75px',
                   border: 'solid',
@@ -392,9 +462,7 @@ const RoomPage = (props) => {
                   borderColor: 'indianred',
                 }}
               >
-                <Container>
-                  <FaDiscourse size={50} />
-                </Container>
+                <Container></Container>
               </Box>
             </Flex>
           </Box>

@@ -54,9 +54,10 @@ export default {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      /* 
       mx: 'auto',
       padding: '1',
-      /*       borderColor: 'primary',
+      borderColor: 'primary',
       borderStyle: 'solid',
       borderWidth: 'thin', */
     },
@@ -86,8 +87,20 @@ export default {
     bidgroup: {
       color: 'green',
       bg: 'darkseagreen',
+      fontSize: ['0.90em', '1em'],
       border: 'solid 2px indianred',
-      margin: '0em 0.75em 0.75em 0em',
+      mx: ['4px', null, '8px'],
+      my: ['4px', null, '4px'],
+
+      // p: ['1em'],
+    },
+  },
+  forms: {
+    select: {
+      color: 'indianred',
+      border: 'solid 2px indianred',
+      width: '100px',
+      my: ['5px'],
     },
   },
   text: {

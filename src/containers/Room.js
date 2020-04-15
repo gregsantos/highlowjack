@@ -89,18 +89,28 @@ const RoomPage = (props) => {
         if (gameData.trick === 0) {
           if (playerTurn)
             return (
-              <Flex>
-                <Container>
-                  <Box sx={{ maxHeight: '160px' }}>
-                    <form>
+              <Container>
+                <Box
+                  sx={{
+                    px: ['0px', null, '15px'],
+                    pt: ['0px', '10px'],
+                    pb: ['0px', '10px'],
+                  }}
+                >
+                  <form>
+                    <Container>
                       <h1
                         sx={{
-                          fontSize: ['1.25em', null, null],
-                          my: [0, 0, null],
+                          color: 'indianred',
+                          fontSize: ['1em', '1.5em', null],
+                          mb: ['0px', '0px', '10px'],
+                          mt: ['2px', null, '5px'],
                         }}
                       >
                         Please Bid Player {gameData.turn + 1}
                       </h1>
+                    </Container>
+                    <Container>
                       <Button
                         id={2}
                         disabled={currentBid >= 2}
@@ -125,15 +135,18 @@ const RoomPage = (props) => {
                       >
                         4
                       </Button>
-                      <div>
-                        <Select id='suit'>
-                          <option value='s'>Spades</option>
-                          <option value='c'>Clubs</option>
-                          <option value='h'>Hearts</option>
-                          <option value='d'>Diamonds</option>
-                        </Select>
-                      </div>
-                      <Button type='submit' value='Submit' variant='green'>
+                    </Container>
+
+                    <Container>
+                      <Select id='suit' sx={{}}>
+                        <option value='s'>Spades</option>
+                        <option value='c'>Clubs</option>
+                        <option value='h'>Hearts</option>
+                        <option value='d'>Diamonds</option>
+                      </Select>
+                    </Container>
+                    <Container>
+                      <Button type='submit' value='Submit' variant='bidgroup'>
                         Bid
                       </Button>
                       <Button
@@ -142,14 +155,14 @@ const RoomPage = (props) => {
                           playerSeat === gameData.dealer && currentBid === 0
                         }
                         onClick={(e) => bidHandler(e)}
-                        variant='green'
+                        variant='bidgroup'
                       >
                         Pass
                       </Button>
-                    </form>
-                  </Box>
-                </Container>
-              </Flex>
+                    </Container>
+                  </form>
+                </Box>
+              </Container>
             )
           if (!playerTurn)
             return (
@@ -388,9 +401,9 @@ const RoomPage = (props) => {
                 '1fr 170px 1fr',
                 '1fr minmax(auto, 1.2fr) 1fr',
               ],
-              '& :nth-of-type(even)': {
+              /*               '& :nth-of-type(even)': {
                 backgroundColor: 'white',
-              },
+              }, */
             }}
           >
             <div sx={{ alignSelf: 'center' }}>
@@ -398,27 +411,25 @@ const RoomPage = (props) => {
                 <FaUserSecret size='8em' />
               </Container>
             </div>
-            <div />
+            <div sx={{ backgroundColor: 'white' }} />
             <div sx={{ alignSelf: 'center' }}>
               <Container>
                 <FaUserSecret size='8em' />
               </Container>
             </div>
-            <div />
+            <div sx={{ backgroundColor: 'white' }} />
 
-            <div
-              sx={{ backgroundColor: 'green', padding: '0 0.5em 0.5em 1em' }}
-            >
+            <Container sx={{ backgroundColor: 'green' }}>
               {roomData && renderTable()}
-            </div>
+            </Container>
 
-            <div />
+            <div sx={{ backgroundColor: 'white' }} />
             <div sx={{ alignSelf: 'center' }}>
               <Container>
                 <FaUserSecret size='8em' />
               </Container>
             </div>
-            <div />
+            <div sx={{ backgroundColor: 'white' }} />
             <div sx={{ alignSelf: 'center' }}>
               <Container>
                 <FaUserSecret size='8em' />

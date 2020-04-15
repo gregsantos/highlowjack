@@ -1,5 +1,5 @@
 import { tailwind } from '@theme-ui/presets'
-import colors from './colors'
+// import colors from './colors'
 
 export default {
   ...tailwind,
@@ -81,6 +81,13 @@ export default {
       color: 'green',
       bg: 'darkseagreen',
       border: 'solid 3px indianred',
+      margin: '0.75em 0.75em 0.75em 0em',
+    },
+    bidgroup: {
+      color: 'green',
+      bg: 'darkseagreen',
+      border: 'solid 2px indianred',
+      margin: '0em 0.75em 0.75em 0em',
     },
   },
   text: {

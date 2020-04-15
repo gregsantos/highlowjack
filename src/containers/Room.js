@@ -89,47 +89,67 @@ const RoomPage = (props) => {
         if (gameData.trick === 0) {
           if (playerTurn)
             return (
-              <div>
-                <h1>Please Bid Player {gameData.turn + 1}</h1>
-                <Button
-                  id={2}
-                  disabled={currentBid >= 2}
-                  onClick={(e) => bidHandler(e)}
-                >
-                  2
-                </Button>
-                <Button
-                  id={3}
-                  disabled={currentBid >= 3}
-                  onClick={(e) => bidHandler(e)}
-                >
-                  3
-                </Button>
-                <Button
-                  id={4}
-                  disabled={currentBid >= 4}
-                  onClick={(e) => bidHandler(e)}
-                >
-                  4
-                </Button>
-                <Button
-                  id={0}
-                  disabled={playerSeat === gameData.dealer && currentBid === 0}
-                  onClick={(e) => bidHandler(e)}
-                >
-                  Pass
-                </Button>
-                <label for='suit'>Choose a Suit:</label>
-
-                <div>
-                  <Select id='suit'>
-                    <option value='s'>Spades</option>
-                    <option value='c'>Clubs</option>
-                    <option value='h'>Hearts</option>
-                    <option value='d'>Diamonds</option>
-                  </Select>
-                </div>
-              </div>
+              <Flex>
+                <Container>
+                  <Box sx={{ maxHeight: '160px' }}>
+                    <form>
+                      <h1
+                        sx={{
+                          fontSize: ['1.25em', null, null],
+                          my: [0, 0, null],
+                        }}
+                      >
+                        Please Bid Player {gameData.turn + 1}
+                      </h1>
+                      <Button
+                        id={2}
+                        disabled={currentBid >= 2}
+                        onClick={(e) => bidHandler(e)}
+                        variant='bidgroup'
+                      >
+                        2
+                      </Button>
+                      <Button
+                        id={3}
+                        disabled={currentBid >= 3}
+                        onClick={(e) => bidHandler(e)}
+                        variant='bidgroup'
+                      >
+                        3
+                      </Button>
+                      <Button
+                        id={4}
+                        disabled={currentBid >= 4}
+                        onClick={(e) => bidHandler(e)}
+                        variant='bidgroup'
+                      >
+                        4
+                      </Button>
+                      <div>
+                        <Select id='suit'>
+                          <option value='s'>Spades</option>
+                          <option value='c'>Clubs</option>
+                          <option value='h'>Hearts</option>
+                          <option value='d'>Diamonds</option>
+                        </Select>
+                      </div>
+                      <Button type='submit' value='Submit' variant='green'>
+                        Bid
+                      </Button>
+                      <Button
+                        id={0}
+                        disabled={
+                          playerSeat === gameData.dealer && currentBid === 0
+                        }
+                        onClick={(e) => bidHandler(e)}
+                        variant='green'
+                      >
+                        Pass
+                      </Button>
+                    </form>
+                  </Box>
+                </Container>
+              </Flex>
             )
           if (!playerTurn)
             return (
@@ -206,6 +226,7 @@ const RoomPage = (props) => {
           [`players.${playerSeat}.hand`]: cardsLeft,
         }
       } else {
+        // tallyTrick() import from helpers/gameHelpers
         return {
           turn: nextPlayer,
           trickCards: firebase.firestore.FieldValue.arrayUnion(cardData),
@@ -385,9 +406,11 @@ const RoomPage = (props) => {
             </div>
             <div />
 
-            <Container sx={{ backgroundColor: 'green' }}>
+            <div
+              sx={{ backgroundColor: 'green', padding: '0 0.5em 0.5em 1em' }}
+            >
               {roomData && renderTable()}
-            </Container>
+            </div>
 
             <div />
             <div sx={{ alignSelf: 'center' }}>
@@ -407,6 +430,7 @@ const RoomPage = (props) => {
         <aside
           sx={{
             backgroundColor: 'green',
+            height: '100%',
             minWidth: '375px',
             gridArea: 'aside',
             display: 'flex',

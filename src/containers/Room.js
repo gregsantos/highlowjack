@@ -348,9 +348,6 @@ const RoomPage = (props) => {
         {playerSeat ? renderHand() : renderBlanks()}
       </div>
     )
-    /*     } else {
-      return <button onClick={startGame}>Start Game</button>
-    } */
   }
 
   const fetchGame = () => {

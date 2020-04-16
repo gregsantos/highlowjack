@@ -15,6 +15,8 @@ const RoomPage = (props) => {
   const [roomData, setRoomData] = useState(null)
   const [gameData, setGameData] = useState(null)
   const [playerSeat, setPlayerSeat] = useState(-1)
+  const [bidPoints, setBidPoints] = useState(0)
+  const [bidSuit, setBidSuit] = useState('s')
   const id = props.match.params.id
   const db = firebase.firestore()
   const roomRef = db.collection('roomDetail').doc(id)
@@ -71,13 +73,48 @@ const RoomPage = (props) => {
       })
   }
 
-  const bidHandler = (e) => {
-    console.log(e.target.id)
-    /*     gameRef.update({
-      bid: e.target.id,
+  const handleSelectBid = (e) => {
+    setBidPoints(e.target.id)
+  }
+
+  const handleSelectSuit = (e) => {
+    setBidSuit(e.target.value)
+  }
+
+  const handleSubmitBid = (e) => {
+    e.preventDefault()
+    const nextPlayer = gameData.turn === 3 ? 0 : gameData.turn + 1
+    const newBid = {
       bidder: playerSeat,
-      suit: e.target.suit,
-    }) */
+      bid: bidPoints,
+      suit: bidSuit,
+    }
+    console.log(newBid)
+    if (playerSeat === gameData.dealer) {
+      if (bidPoints >= gameData.bid.bid) {
+        gameRef.update({
+          bid: newBid,
+          turn: playerSeat,
+          trick: 1,
+        })
+      } else {
+        gameRef.update({
+          turn: gameData.bid.bidder,
+          trick: 1,
+        })
+      }
+    } else {
+      if (bidPoints > gameData.bid.bid) {
+        gameRef.update({
+          bid: newBid,
+          turn: nextPlayer,
+        })
+      } else {
+        gameRef.update({
+          turn: nextPlayer,
+        })
+      }
+    }
   }
 
   const renderTable = () => {
@@ -97,48 +134,53 @@ const RoomPage = (props) => {
                     pb: ['0px', '10px'],
                   }}
                 >
-                  <form>
-                    <Container>
-                      <h1
-                        sx={{
-                          color: 'indianred',
-                          fontSize: ['1em', '1.5em', null],
-                          mb: ['0px', '0px', '10px'],
-                          mt: ['2px', null, '5px'],
-                        }}
-                      >
-                        Please Bid Player {gameData.turn + 1}
-                      </h1>
-                    </Container>
-                    <Container>
-                      <Button
-                        id={2}
-                        disabled={currentBid >= 2}
-                        onClick={(e) => bidHandler(e)}
-                        variant='bidgroup'
-                      >
-                        2
-                      </Button>
-                      <Button
-                        id={3}
-                        disabled={currentBid >= 3}
-                        onClick={(e) => bidHandler(e)}
-                        variant='bidgroup'
-                      >
-                        3
-                      </Button>
-                      <Button
-                        id={4}
-                        disabled={currentBid >= 4}
-                        onClick={(e) => bidHandler(e)}
-                        variant='bidgroup'
-                      >
-                        4
-                      </Button>
-                    </Container>
+                  <Container>
+                    <h1
+                      sx={{
+                        color: 'indianred',
+                        fontSize: ['1em', '1.5em', null],
+                        mb: ['0px', '0px', '10px'],
+                        mt: ['2px', null, '5px'],
+                      }}
+                    >
+                      Please Bid Player {gameData.turn + 1}
+                    </h1>
+                  </Container>
+                  <Container>
+                    <Button
+                      id={2}
+                      disabled={currentBid >= 2 || bidPoints === 2}
+                      onClick={(e) => handleSelectBid(e)}
+                      variant='bidgroup'
+                    >
+                      2
+                    </Button>
+                    <Button
+                      id={3}
+                      disabled={currentBid >= 3 || bidPoints === 3}
+                      onClick={(e) => handleSelectBid(e)}
+                      variant='bidgroup'
+                    >
+                      3
+                    </Button>
+                    <Button
+                      id={4}
+                      disabled={currentBid >= 4 || bidPoints === 4}
+                      onClick={(e) => handleSelectBid(e)}
+                      variant='bidgroup'
+                    >
+                      4
+                    </Button>
+                  </Container>
 
+                  <form onSubmit={handleSubmitBid}>
                     <Container>
-                      <Select id='suit' sx={{}}>
+                      <Select
+                        id='suit'
+                        value={bidSuit}
+                        onChange={handleSelectSuit}
+                        defaultValue='s'
+                      >
                         <option value='s'>Spades</option>
                         <option value='c'>Clubs</option>
                         <option value='h'>Hearts</option>
@@ -146,7 +188,7 @@ const RoomPage = (props) => {
                       </Select>
                     </Container>
                     <Container>
-                      <Button type='submit' value='Submit' variant='bidgroup'>
+                      <Button type='submit' variant='bidgroup'>
                         Bid
                       </Button>
                       <Button
@@ -154,7 +196,7 @@ const RoomPage = (props) => {
                         disabled={
                           playerSeat === gameData.dealer && currentBid === 0
                         }
-                        onClick={(e) => bidHandler(e)}
+                        type='submit'
                         variant='bidgroup'
                       >
                         Pass
@@ -185,7 +227,7 @@ const RoomPage = (props) => {
                     fontSize: ['1em', '1.5em', '2em'],
                   }}
                 >
-                  Player {gameData.turn + 1}
+                  Player {gameData.turn}
                 </h2>
               </div>
             )
@@ -272,6 +314,7 @@ const RoomPage = (props) => {
 
     const renderHand = () => {
       const playerHand = gameData.players[playerSeat].hand
+      console.log(playerHand)
       return playerHand.map((card, i) => (
         <div
           key={i}
@@ -302,7 +345,7 @@ const RoomPage = (props) => {
           ],
         }}
       >
-        {!playerSeat ? renderHand() : renderBlanks()}
+        {playerSeat ? renderHand() : renderBlanks()}
       </div>
     )
     /*     } else {

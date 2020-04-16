@@ -91,8 +91,6 @@ export default {
       border: 'solid 2px indianred',
       mx: ['4px', null, '8px'],
       my: ['4px', null, '4px'],
-
-      // p: ['1em'],
     },
   },
   forms: {

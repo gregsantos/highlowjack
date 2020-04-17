@@ -9,6 +9,7 @@ import { useSession } from '../App'
 import firebase from '../firebase.js'
 import '../css/cards.css'
 import initGame from '../helpers/initGame'
+import { tallyTrick } from '../helpers/gameHelpers'
 
 const RoomPage = (props) => {
   const user = useSession()
@@ -89,7 +90,6 @@ const RoomPage = (props) => {
       bid: bidPoints,
       suit: bidSuit,
     }
-    console.log(newBid)
     if (playerSeat === gameData.dealer) {
       if (bidPoints >= gameData.bid.bid) {
         gameRef.update({
@@ -123,7 +123,11 @@ const RoomPage = (props) => {
       if (gameData) {
         const playerTurn = gameData.turn === playerSeat
         const currentBid = gameData.bid.bid
+        const newTrick = gameData.newTrick
+        const lastCard = gameData.lastCard
+
         if (gameData.trick === 0) {
+          // Bid Round
           if (playerTurn)
             return (
               <Container>
@@ -232,9 +236,13 @@ const RoomPage = (props) => {
               </div>
             )
         } else {
-          let lastCard = gameData.trickCards.pop()
-          console.log('Played last card', gameData.trickCards)
-          if (lastCard) {
+          console.log(newTrick)
+          if (newTrick) {
+            return (
+              <div className={`card outline`} sx={{ fontSize: [3, 5, 6] }} />
+            )
+          }
+          if (!newTrick) {
             return (
               <div
                 className={`card ${
@@ -244,10 +252,6 @@ const RoomPage = (props) => {
                   fontSize: [3, 5, 6],
                 }}
               />
-            )
-          } else {
-            return (
-              <div className={`card outline`} sx={{ fontSize: [3, 5, 6] }} />
             )
           }
         }
@@ -272,27 +276,36 @@ const RoomPage = (props) => {
       suit: suit,
       spot: spot,
     }
-
-    const getUpdate = () => {
-      if (!lastPlayer) {
-        return {
-          turn: nextPlayer,
-          trickCards: firebase.firestore.FieldValue.arrayUnion(cardData),
-          [`players.${playerSeat}.hand`]: cardsLeft,
-        }
-      } else {
-        // tallyTrick() import from helpers/gameHelpers
-        return {
-          turn: nextPlayer,
-          trickCards: firebase.firestore.FieldValue.arrayUnion(cardData),
-        }
+    const newTrickCards = [...gameData.trickCards, cardData]
+    if (!lastPlayer) {
+      // remove played card from hand, add to trick & advance turn
+      const update = {
+        turn: nextPlayer,
+        lastCard: cardData,
+        newTrick: false,
+        trickCards: newTrickCards,
+        [`players.${playerSeat}.hand`]: cardsLeft,
       }
+      gameRef.update(update)
+    } else {
+      // remove played card from hand, add to trick & tally trick
+      gameRef
+        .update({
+          lastCard: cardData,
+          trickCards: newTrickCards,
+          [`players.${playerSeat}.hand`]: cardsLeft,
+        })
+        .then(() => {
+          console.log('Last Trick Played and updated!')
+          tallyTrick(gameRef)
+        })
+        .catch((error) => {
+          console.error('Error updating Trick: ', error)
+        })
     }
-    gameRef.update(getUpdate())
   }
 
   const renderCards = () => {
-    //    if (gameData) {
     const renderBlanks = () => {
       const cards = []
       for (let i = 0; i < 6; i++) {
@@ -314,7 +327,6 @@ const RoomPage = (props) => {
 
     const renderHand = () => {
       const playerHand = gameData.players[playerSeat].hand
-      console.log(playerHand)
       return playerHand.map((card, i) => (
         <div
           key={i}
@@ -345,7 +357,7 @@ const RoomPage = (props) => {
           ],
         }}
       >
-        {playerSeat ? renderHand() : renderBlanks()}
+        {renderHand()}
       </div>
     )
   }
@@ -359,13 +371,15 @@ const RoomPage = (props) => {
       } else {
         const data = snap.data()
         setGameData(data)
-        console.log('Game Data: ', data)
+        console.log('Game Data Updated: ', data)
       }
     })
+
     const leaveGame = () => {
       unsubscribe()
       console.log('Unsubscribe from game')
     }
+
     return leaveGame
   }
 
@@ -374,21 +388,27 @@ const RoomPage = (props) => {
     let unsubscribeGame
     if (user) {
       unsubscribe = roomRef.onSnapshot((snap) => {
-        const data = snap.data()
-        // fetchGame
-        unsubscribeGame = fetchGame()
-        // set player seat
-        let playerSeat = data.members.findIndex((m) => m === user.uid)
-        setPlayerSeat(playerSeat)
-        setRoomData({ ...data, id: snap.id })
-        console.log(
-          'Room data:',
-          data,
-          'User: ',
-          user.uid,
-          'Seat: ',
-          playerSeat
-        )
+        if (!snap.exists) {
+          console.log('No such Room!')
+        } else {
+          const data = snap.data()
+          // fetchGame
+          unsubscribeGame = fetchGame()
+          // set player seat
+          let playerSeat = data.members
+            ? data.members.findIndex((m) => m === user.uid)
+            : null
+          setPlayerSeat(playerSeat)
+          setRoomData({ ...data, id: snap.id })
+          console.log(
+            'Room data:',
+            data,
+            'User: ',
+            user.uid,
+            'Seat: ',
+            playerSeat
+          )
+        }
       })
       return () => {
         unsubscribe()
@@ -398,7 +418,7 @@ const RoomPage = (props) => {
     } else {
       console.log('no logged in user')
     }
-  }, [user])
+  }, [])
 
   return (
     <RoomWrapper>

@@ -1,4 +1,6 @@
-export const tallyTrick = (gameRef) => {
+import { getDeal } from '../helpers/initGame'
+
+export const tallyTrick = (members, gameRef) => {
   gameRef
     .get()
     .then((snapshot) => {
@@ -73,19 +75,22 @@ export const tallyTrick = (gameRef) => {
           console.log('T1 Game Points:', t1GamePoints)
           console.log('T2 Game Points:', t2GamePoints)
 
-          const gameWinner = t1GamePoints > t2GamePoints ? 1 : 2
+          const gameWinner = t1GamePoints > t2GamePoints ? 0 : 1
 
           // Check for Bid Points
           // Team 1
           const t1TrumpCards = t1RoundCards.filter(
-            (c) => c.suit === 's' // gameData.bid.trumpSuit
+            (c) => c.suit === gameData.bid.trumpSuit
           )
+
+          console.log(t1RoundCards, t1TrumpCards)
 
           t1TrumpCards.map((c, i) => {
             if (c.spot === 'A') return (t1TrumpCards[i].spot = '14')
             if (c.spot === 'K') return (t1TrumpCards[i].spot = '13')
             if (c.spot === 'Q') return (t1TrumpCards[i].spot = '12')
             if (c.spot === 'J') return (t1TrumpCards[i].spot = '11')
+            return null
           })
 
           const t1SortedHigh = [...t1TrumpCards].sort((a, b) => b.spot - a.spot)
@@ -93,7 +98,7 @@ export const tallyTrick = (gameRef) => {
 
           // Team 2
           const t2TrumpCards = t2RoundCards.filter(
-            (c) => c.suit === 's' // gameData.bid.trumpSuit
+            (c) => c.suit === gameData.bid.trumpSuit
           )
 
           t2TrumpCards.map((c, i) => {
@@ -134,19 +139,19 @@ export const tallyTrick = (gameRef) => {
 
           const highWinner =
             parseInt(t1SortedHigh[0].spot) > parseInt(t2SortedHigh[0].spot)
-              ? 1
-              : 2
+              ? 0
+              : 1
           const lowWinner =
             parseInt(t1SortedLow[0].spot) < parseInt(t2SortedLow[0].spot)
-              ? 1
-              : 2
+              ? 0
+              : 1
 
           const scoreRound = () => {
             let t1Score = 0
             let t2Score = 0
-            highWinner === 1 ? t1Score++ : t2Score++
-            lowWinner === 1 ? t1Score++ : t2Score++
-            gameWinner === 1 ? t1Score++ : t2Score++
+            highWinner === 0 ? t1Score++ : t2Score++
+            lowWinner === 0 ? t1Score++ : t2Score++
+            gameWinner === 0 ? t1Score++ : t2Score++
             let jackWinner = getJackWinner()
             if (jackWinner === 1) {
               t1Score++
@@ -154,19 +159,62 @@ export const tallyTrick = (gameRef) => {
             if (jackWinner === 2) {
               t2Score++
             }
-            return { t1Score, t2Score }
+            return [t1Score, t2Score]
           }
 
-          console.log('Round Score', scoreRound())
-          /* const update = {
-            turn: handWinner,
-            leader: handWinner,
-            newTrick: true,
-            trick: gameData.trick + 1,
-            trickCards: [],
-            [`roundCards.${trickWinner}`]: getRoundCards(),
+          // Final Score
+          const roundScore = scoreRound()
+          console.log(roundScore)
+
+          const t1FinalScore = () => {
+            if (gameData.bid.bidder === 0 || 2) {
+              return roundScore[0] < gameData.bid.bid
+                ? -Math.abs(gameData.bid.bid)
+                : roundScore[0]
+            } else {
+              return roundScore[0]
+            }
           }
-          gameRef.update(update) */
+          const t2FinalScore = () => {
+            if (gameData.bid.bidder === 1 || 3) {
+              return roundScore[1] < gameData.bid.bid
+                ? -Math.abs(gameData.bid.bid)
+                : roundScore[1]
+            } else {
+              return roundScore[1]
+            }
+          }
+
+          const nextDealer = gameData.dealer === 3 ? 0 : gameData.dealer + 1
+          const nextTurn = nextDealer === 3 ? 0 : nextDealer + 1
+          const nextTrick = gameData.trick === 6 ? 0 : gameData.trick + 1
+          const deal = getDeal(members)
+          console.log(deal)
+
+          const update = {
+            bid: {},
+            players: {
+              0: deal.players[0],
+              1: deal.players[1],
+              2: deal.players[2],
+              3: deal.players[3],
+            },
+            dealtCards: deal.allHands,
+            dealer: nextDealer,
+            turn: nextTurn,
+            leader: nextTurn,
+            newTrick: true,
+            trick: nextTrick,
+            trickCards: [],
+            lastCard: {},
+            roundCards: { t1: [], t2: [] },
+            score: [
+              gameData.score[0] + t1FinalScore(),
+              gameData.score[1] + t2FinalScore(),
+            ],
+            state: 'PLAYING',
+          }
+          gameRef.update(update)
         }
         return null
       } else {

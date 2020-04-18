@@ -297,7 +297,7 @@ const RoomPage = (props) => {
         })
         .then(() => {
           console.log('Last Trick Played and updated!')
-          tallyTrick(gameRef)
+          tallyTrick(roomData.members, gameRef)
         })
         .catch((error) => {
           console.error('Error updating Trick: ', error)

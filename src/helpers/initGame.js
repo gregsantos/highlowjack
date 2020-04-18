@@ -1,5 +1,21 @@
 import firebase from '../firebase.js'
 
+export const getDeal = (members) => {
+  let players = []
+  let allHands = []
+  members.forEach((m, i) => {
+    players.push({ seat: i, pid: m, hand: [] })
+  })
+  players.forEach((player) => {
+    while (player.hand.length !== 6) {
+      const card = DECK.splice(Math.floor(Math.random() * DECK.length), 1)[0]
+      player.hand.push(card)
+      allHands.push(card)
+    }
+  })
+  return { players, allHands }
+}
+
 export default (members) => {
   const getDeal = () => {
     let players = []
@@ -29,17 +45,27 @@ export default (members) => {
     winner: null,
     score: [0, 0],
     dealer: 0,
-    turn: 1, // dealer + 1
+    turn: 3, // dealer + 1
     bid: { bid: 3, bidder: 0, trumpSuit: 's' },
     leader: 1,
     dealtCards: deal.allHands, // set of all cards dealt for prescoring
-    trick: 1,
+    trick: 6,
     newTrick: true,
     lastCard: {},
     trickCards: [],
     roundCards: {
-      t1: [],
-      t2: [],
+      t1: [
+        { p: 0, suit: 's', spot: '10' },
+        { p: 1, suit: 'c', spot: '10' },
+        { p: 3, suit: 's', spot: 'K' },
+        { p: 0, suit: 'd', spot: 'Q' },
+      ],
+      t2: [
+        { p: 0, suit: 's', spot: '2' },
+        { p: 2, suit: 's', spot: 'J' },
+        { p: 2, suit: 's', spot: 'A' },
+        { p: 3, suit: 's', spot: '2' },
+      ],
     },
     state: 'NEW',
     timeStarted: firebase.firestore.Timestamp.fromDate(new Date()),

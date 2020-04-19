@@ -180,32 +180,35 @@ const Dashboard = (props) => {
         <H1>Dashboard</H1>
         <P>
           Join an open room or create a private one <br />
-          to play games, watch videos, and chat with your Cliq.
+          to play games, watch videos, and chat with your Friends.
         </P>
-        <div sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-          <Button
-            onClick={(e) => {
-              handleJoinRoom()
-            }}
-          >
-            Join Room
-          </Button>
-          <Button
-            onClick={(e) => {
-              handleCreateNewRoom()
-            }}
-          >
-            Create Room
-          </Button>
-        </div>
+        {false && (
+          <div sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
+            <Button
+              onClick={(e) => {
+                handleJoinRoom()
+              }}
+            >
+              Join Room
+            </Button>
+            <Button
+              onClick={(e) => {
+                handleCreateNewRoom()
+              }}
+            >
+              Create Room
+            </Button>
+          </div>
+        )}
         <ErrorBoundary>
           <Suspense fallback={<div>Loading...</div>}>
             <ul>
-              {openRooms.map((room, i) => (
-                <li key={i}>
-                  <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
-                </li>
-              ))}
+              {false &&
+                openRooms.map((room, i) => (
+                  <li key={i}>
+                    <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
+                  </li>
+                ))}
             </ul>
           </Suspense>
         </ErrorBoundary>

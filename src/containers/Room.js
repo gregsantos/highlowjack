@@ -118,7 +118,10 @@ const RoomPage = (props) => {
   }
 
   const renderTable = () => {
-    const roomMember = roomData.members.includes(user.uid)
+    const roomMember = roomData
+      ? roomData.members.includes(user.uid) || false
+      : false
+
     if (roomMember) {
       if (gameData) {
         const playerTurn = gameData.turn === playerSeat

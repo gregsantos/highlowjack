@@ -7,16 +7,16 @@ import styled from 'styled-components'
 import { metrics } from '../themes'
 
 const Header = styled.div`
-  transform: translateY(${props => '-' + props.scrollTop}px);
+  transform: translateY(${(props) => '-' + props.scrollTop}px);
   z-index: 8;
   position: absolute;
-  background-color: ${props => props.theme.background};
+  background-color: ${(props) => props.theme.background};
   width: 100%;
   height: ${metrics.headerHeight - 1}px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.inactive};
+  border-bottom: 1px solid ${(props) => props.theme.inactive};
   @media (max-width: 480px) {
     display: none;
   }
@@ -34,9 +34,9 @@ const HeaderInner = styled.div`
 `
 
 const CompanyLogo = styled.button`
-  color: ${props => props.theme.mainText};
+  color: ${(props) => props.theme.mainText};
   background-color: transparent;
-  pointer-events: ${props => (props.samePath ? 'none' : 'initial')};
+  pointer-events: ${(props) => (props.samePath ? 'none' : 'initial')};
   border: 0;
   outline: none;
   padding: 0;
@@ -45,11 +45,11 @@ const CompanyLogo = styled.button`
   font-size: ${metrics.smallText}px;
 `
 
-const HeaderWithRouter = props => {
+const HeaderWithRouter = (props) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const { userState } = useContext(UserContext)
   const userId = userState.userId
-  const pushTo = path => {
+  const pushTo = (path) => {
     props.location.pathname !== path && props.history.push(path)
   }
 
@@ -77,7 +77,7 @@ const HeaderWithRouter = props => {
           <CompanyLogo
             onClick={() => (userId ? pushTo('/dashboard') : pushTo('/'))}
           >
-            Cliqsee
+            HIGHLOWJACK.LIFE
           </CompanyLogo>
           {userId && menuButtonState()}
         </HeaderInner>

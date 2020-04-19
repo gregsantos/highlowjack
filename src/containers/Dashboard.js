@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { useState, useContext, useEffect, Suspense } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { jsx } from 'theme-ui'
 import { P, H1, Button, Input, Form, BodyWrapper } from '../components'
@@ -8,20 +8,17 @@ import { UserContext } from '../contexts/userContext'
 import { ToastContext } from '../contexts/toastContext'
 import firebase from '../firebase.js'
 import ErrorBoundary from '../components/ErrorBoundary'
+import Profile from './Profile'
 
-const ROOM_STATE = {
-  OPEN: 1,
-  FULL: 2,
-  PRIVATE: 3,
-}
-
-const Dashboard = () => {
+const Dashboard = (props) => {
   const { userState, userDispatch } = useContext(UserContext)
   const { sendMessage } = useContext(ToastContext)
   const [firstName, setFirstName] = useState(null)
   const [lastName, setLastName] = useState(null)
+  const [username, setUsername] = useState(null)
   const [moreInfoComplete, setMoreInfoComplete] = useState(false)
   const [openRooms, setOpenRooms] = useState([])
+  const history = useHistory()
 
   const db = firebase.firestore()
   const roomsRef = db.collection('roomDetail')
@@ -78,11 +75,12 @@ const Dashboard = () => {
 
   const onClickSubmit = (e) => {
     e.preventDefault()
-    if (firstName && lastName) {
+    if (username && firstName && lastName) {
       db.collection('users')
         .doc(firebase.auth().currentUser.uid)
         .set(
           {
+            username: username,
             firstName: firstName,
             lastName: lastName,
           },
@@ -94,6 +92,7 @@ const Dashboard = () => {
             payload: {
               firstName: firstName,
               lastName: lastName,
+              username: username,
             },
           })
           setMoreInfoComplete(true)
@@ -108,14 +107,17 @@ const Dashboard = () => {
   const moreInfo = () => {
     return (
       <BodyWrapper>
-        <H1>Onboarding</H1>
-        <P>
-          This is an introduction screen that shows up after the user
-          successfully logs in for the first time. It's a good opportunity to
-          collect additional information or provide them with important details
-          about how your application works.
-        </P>
+        <H1>Welcome Playa</H1>
+        <P>How do you want to be identified?</P>
         <Form>
+          <div>
+            <Input
+              onChange={(e) => setUsername(e.target.value)}
+              name='username'
+              placeholder='Username'
+              autoComplete='username'
+            />
+          </div>
           <div>
             <Input
               onChange={(e) => setFirstName(e.target.value)}
@@ -145,19 +147,32 @@ const Dashboard = () => {
           userId: userState.userId,
         })
         console.log('Added user to queue')
-        // cloud function triggered by add to queue
       } catch (error) {
         console.error('Error adding document: ', error)
       }
-      /*       try {
-        const newRoomRef = await roomsRef.add({
+    }
+
+    const handleCreateNewRoom = () => {
+      const newRoomRef = roomsRef.doc()
+      newRoomRef
+        .set({
           creator: userState.userId,
-          state: ROOM_STATE.OPEN,
+          members: firebase.firestore.FieldValue.arrayUnion(userState.userId),
+          state: 'OPEN',
+          private: false,
+          lastMessage: {
+            from: '',
+            text: '',
+            timestamp: '',
+          },
         })
-        console.log('Room created with ID: ', newRoomRef.id)
-      } catch (error) {
-        console.error('Error adding document: ', error)
-      } */
+        .then(() => {
+          console.log('New Room created: ', newRoomRef.id)
+          return history.push(`/room/${newRoomRef.id}`)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
     }
 
     return (
@@ -167,13 +182,22 @@ const Dashboard = () => {
           Join an open room or create a private one <br />
           to play games, watch videos, and chat with your Cliq.
         </P>
-        <Button
-          onClick={(e) => {
-            handleJoinRoom()
-          }}
-        >
-          Join Room
-        </Button>
+        <div sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
+          <Button
+            onClick={(e) => {
+              handleJoinRoom()
+            }}
+          >
+            Join Room
+          </Button>
+          <Button
+            onClick={(e) => {
+              handleCreateNewRoom()
+            }}
+          >
+            Create Room
+          </Button>
+        </div>
         <ErrorBoundary>
           <Suspense fallback={<div>Loading...</div>}>
             <ul>

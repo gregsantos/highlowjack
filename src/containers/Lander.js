@@ -1,16 +1,17 @@
 import React from 'react'
 import { H1, H2, P, Button, BodyWrapper } from '../components'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useHistory } from 'react-router-dom'
 
-const Lander = props => {
+const Lander = () => {
+  const history = useHistory()
   const signIn = () => {
-    props.history.push('/signin')
+    history.push('/signin')
   }
 
   return (
     <BodyWrapper>
-      <H1>Cliqsee</H1>
-      <H2>Hang out with your friends</H2>
+      <H1>Connect and Play</H1>
+      <H2>Video, Chat, Games</H2>
       <P>
         <li>Share Photos!</li>
         <li>Watch Videos!</li>

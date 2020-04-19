@@ -5,6 +5,7 @@ const initialState = {
   userId: null,
   userData: {
     email: null,
+    username: null,
     firstName: null,
     lastName: null,
     pushTokenWeb: null,
@@ -37,7 +38,7 @@ const reducer = (state, action) => {
   }
 }
 
-export const UserProvider = props => {
+export const UserProvider = (props) => {
   const [userState, userDispatch] = useReducer(reducer, initialState)
   return (
     <UserContext.Provider value={{ userState, userDispatch }}>

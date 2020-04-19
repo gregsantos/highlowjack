@@ -8,19 +8,20 @@ import 'firebase/firestore'
 
 const Profile = () => {
   const { userState, userDispatch } = useContext(UserContext)
-  const [colorMode, setColorMode] = useColorMode()
   const [firstName, setFirstName] = useState(userState.userData.firstName)
   const [lastName, setLastName] = useState(userState.userData.lastName)
+  const [username, setUsername] = useState(userState.userData.username)
   const [loadState, setloadState] = useState(false)
   const { sendMessage } = useContext(ToastContext)
   const db = firebase.firestore()
 
-  const onClickSubmit = e => {
+  const onClickSubmit = (e) => {
     e.preventDefault()
-    if (firstName && lastName) {
+    if (firstName && lastName && username) {
       if (
         firstName !== userState.userData.firstName ||
-        lastName !== userState.userData.lastName
+        lastName !== userState.userData.lastName ||
+        username !== userState.userData.username
       ) {
         setloadState(true)
         db.collection('users')
@@ -28,6 +29,7 @@ const Profile = () => {
           .update({
             firstName: firstName,
             lastName: lastName,
+            username: username,
           })
           .then(() => {
             setloadState(false)
@@ -36,11 +38,12 @@ const Profile = () => {
               payload: {
                 firstName: firstName,
                 lastName: lastName,
+                username: username,
               },
             })
             sendMessage('Update successful!')
           })
-          .catch(err => {
+          .catch((err) => {
             setloadState(false)
             sendMessage(err.message)
           })
@@ -59,7 +62,16 @@ const Profile = () => {
       <Form>
         <div>
           <Input
-            onChange={e => setFirstName(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
+            name='username'
+            placeholder='Username'
+            autoComplete='username'
+            value={username}
+          />
+        </div>
+        <div>
+          <Input
+            onChange={(e) => setFirstName(e.target.value)}
             name='firstName'
             placeholder='First name'
             autoComplete='given-name'
@@ -68,7 +80,7 @@ const Profile = () => {
         </div>
         <div>
           <Input
-            onChange={e => setLastName(e.target.value)}
+            onChange={(e) => setLastName(e.target.value)}
             name='lastName'
             placeholder='Last name'
             autoComplete='family-name'
@@ -76,20 +88,11 @@ const Profile = () => {
           />
         </div>
         <div>
-          <Button loading={loadState} onClick={e => onClickSubmit(e)}>
+          <Button loading={loadState} onClick={(e) => onClickSubmit(e)}>
             Submit
           </Button>
         </div>
       </Form>
-      <div>
-        <Button
-          onClick={e => {
-            setColorMode(colorMode === 'main' ? 'dark' : 'main')
-          }}
-        >
-          Toggle {colorMode === 'main' ? 'Dark' : 'Light'}
-        </Button>
-      </div>
     </BodyWrapper>
   )
 }

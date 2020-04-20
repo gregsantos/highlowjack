@@ -100,6 +100,12 @@ export default {
       width: '100px',
       my: ['5px'],
     },
+    radio: {
+      color: 'indianred',
+      '&:checked': {
+        color: 'green',
+      },
+    },
   },
   text: {
     caps: {

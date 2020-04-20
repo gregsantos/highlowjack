@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Button, Select } from 'theme-ui'
+import { jsx, Button, Select, Radio, Label } from 'theme-ui'
 import React, { useState, useEffect } from 'react'
 // import { useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
@@ -16,7 +16,7 @@ const RoomPage = (props) => {
   const [roomData, setRoomData] = useState(null)
   const [gameData, setGameData] = useState(null)
   const [playerSeat, setPlayerSeat] = useState(-1)
-  const [bidPoints, setBidPoints] = useState(0)
+  const [bidPoint, setBidPoint] = useState(2)
   const [bidSuit, setBidSuit] = useState('s')
   const id = props.match.params.id
   const db = firebase.firestore()
@@ -75,7 +75,7 @@ const RoomPage = (props) => {
   }
 
   const handleSelectBid = (e) => {
-    setBidPoints(e.target.id)
+    setBidPoint(e.target.value)
   }
 
   const handleSelectSuit = (e) => {
@@ -87,11 +87,11 @@ const RoomPage = (props) => {
     const nextPlayer = gameData.turn === 3 ? 0 : gameData.turn + 1
     const newBid = {
       bidder: playerSeat,
-      bid: bidPoints,
+      bid: bidPoint,
       suit: bidSuit,
     }
     if (playerSeat === gameData.dealer) {
-      if (bidPoints >= gameData.bid.bid) {
+      if (bidPoint >= gameData.bid.bid) {
         gameRef.update({
           bid: newBid,
           turn: playerSeat,
@@ -104,7 +104,7 @@ const RoomPage = (props) => {
         })
       }
     } else {
-      if (bidPoints > gameData.bid.bid) {
+      if (bidPoint > gameData.bid.bid) {
         gameRef.update({
           bid: newBid,
           turn: nextPlayer,
@@ -154,30 +154,36 @@ const RoomPage = (props) => {
                     </h1>
                   </Container>
                   <Container>
-                    <Button
-                      id={2}
-                      disabled={currentBid >= 2 || bidPoints === 2}
-                      onClick={(e) => handleSelectBid(e)}
-                      variant='bidgroup'
-                    >
+                    <Label>
+                      <Radio
+                        type='radio'
+                        value={2}
+                        checked={bidPoint === 2}
+                        onChange={handleSelectBid}
+                        defaultChecked={currentBid === 0}
+                      />
                       2
-                    </Button>
-                    <Button
-                      id={3}
-                      disabled={currentBid >= 3 || bidPoints === 3}
-                      onClick={(e) => handleSelectBid(e)}
-                      variant='bidgroup'
-                    >
+                    </Label>
+                    <Label>
+                      <Radio
+                        type='radio'
+                        value={3}
+                        checked={bidPoint === 3}
+                        onChange={handleSelectBid}
+                        defaultChecked={currentBid === 2}
+                      />
                       3
-                    </Button>
-                    <Button
-                      id={4}
-                      disabled={currentBid >= 4 || bidPoints === 4}
-                      onClick={(e) => handleSelectBid(e)}
-                      variant='bidgroup'
-                    >
+                    </Label>
+                    <Label>
+                      <Radio
+                        type='radio'
+                        value={4}
+                        checked={bidPoint === 4}
+                        onChange={handleSelectBid}
+                        defaultChecked={currentBid === 3}
+                      />
                       4
-                    </Button>
+                    </Label>
                   </Container>
 
                   <form onSubmit={handleSubmitBid}>
@@ -239,7 +245,6 @@ const RoomPage = (props) => {
               </div>
             )
         } else {
-          console.log(newTrick)
           if (newTrick) {
             return (
               <div className={`card outline`} sx={{ fontSize: [3, 5, 6] }} />
@@ -330,7 +335,10 @@ const RoomPage = (props) => {
 
     const renderHand = () => {
       const playerHand = gameData.players[playerSeat].hand
-      return playerHand.map((card, i) => (
+      return [
+        ...playerHand,
+        ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),
+      ].map((card, i) => (
         <div
           key={i}
           sx={{
@@ -340,7 +348,9 @@ const RoomPage = (props) => {
           }}
         >
           <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
-          <button onClick={() => playCard(i, card)}>X</button>
+          {gameData.turn === playerSeat && (
+            <button onClick={() => playCard(i, card)}>X</button>
+          )}
         </div>
       ))
     }
@@ -400,7 +410,7 @@ const RoomPage = (props) => {
           // set player seat
           let playerSeat = data.members
             ? data.members.findIndex((m) => m === user.uid)
-            : null
+            : -1
           setPlayerSeat(playerSeat)
           setRoomData({ ...data, id: snap.id })
           console.log(
@@ -515,9 +525,11 @@ const RoomPage = (props) => {
             renderCards()
           ) : (
             <Container sx={{ height: '20%' }}>
-              <Button variant='green' onClick={startGame}>
-                Start New Game
-              </Button>
+              {roomData && roomData.members.length === 4 && (
+                <Button variant='green' onClick={startGame}>
+                  Start New Game
+                </Button>
+              )}
             </Container>
           )}
 

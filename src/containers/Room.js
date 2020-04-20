@@ -16,7 +16,7 @@ const RoomPage = (props) => {
   const [roomData, setRoomData] = useState(null)
   const [gameData, setGameData] = useState(null)
   const [playerSeat, setPlayerSeat] = useState(-1)
-  const [bidPoint, setBidPoint] = useState(2)
+  const [bidPoint, setBidPoint] = useState(0)
   const [bidSuit, setBidSuit] = useState('s')
   const id = props.match.params.id
   const db = firebase.firestore()
@@ -33,7 +33,7 @@ const RoomPage = (props) => {
         const members = roomDoc.data().members
         if (members.length <= 3) {
           const getUpdate = () => {
-            const newState = members.length === 3 ? 2 : 1
+            const newState = members.length === 3 ? 'FULL' : 'OPEN'
             return {
               members: firebase.firestore.FieldValue.arrayUnion(user.uid),
               state: newState,
@@ -85,26 +85,32 @@ const RoomPage = (props) => {
   const handleSubmitBid = (e) => {
     e.preventDefault()
     const nextPlayer = gameData.turn === 3 ? 0 : gameData.turn + 1
+    const dealer = gameData.dealer
+    const playerTurn = gameData.turn
+    const currentBid = gameData.bid.bid
+    const currentBidder = gameData.bid.bidder
     const newBid = {
-      bidder: playerSeat,
+      bidder: playerTurn,
       bid: bidPoint,
       suit: bidSuit,
     }
-    if (playerSeat === gameData.dealer) {
-      if (bidPoint >= gameData.bid.bid) {
+    if (playerTurn === dealer) {
+      if (bidPoint >= currentBid) {
         gameRef.update({
           bid: newBid,
-          turn: playerSeat,
+          leader: dealer,
+          turn: dealer,
           trick: 1,
         })
       } else {
         gameRef.update({
-          turn: gameData.bid.bidder,
+          leader: currentBidder,
+          turn: currentBidder,
           trick: 1,
         })
       }
     } else {
-      if (bidPoint > gameData.bid.bid) {
+      if (bidPoint > currentBid) {
         gameRef.update({
           bid: newBid,
           turn: nextPlayer,
@@ -240,7 +246,7 @@ const RoomPage = (props) => {
                     fontSize: ['1em', '1.5em', '2em'],
                   }}
                 >
-                  Player {gameData.turn}
+                  Player {gameData.turn + 1}
                 </h2>
               </div>
             )
@@ -267,7 +273,11 @@ const RoomPage = (props) => {
         return <div className={`card back-red`} sx={{ fontSize: [3, 5, 6] }} />
       }
     } else {
-      return <button onClick={joinRoom}>Join Room</button>
+      return (
+        roomData.state !== 'FULL' && (
+          <button onClick={joinRoom}>Join Room</button>
+        )
+      )
     }
   }
 
@@ -348,7 +358,7 @@ const RoomPage = (props) => {
           }}
         >
           <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
-          {gameData.turn === playerSeat && (
+          {gameData.trick !== 0 && gameData.turn === playerSeat && (
             <button onClick={() => playCard(i, card)}>X</button>
           )}
         </div>

@@ -1,5 +1,5 @@
 const GAMEDATA = {
-  bid: { bid: 0, bidder: '' },
+  bid: { bid: 0, bidder: 0 },
   dealer: 0,
   lastCard: '',
   leader: '',

@@ -192,7 +192,7 @@ export const tallyTrick = (members, gameRef) => {
           console.log(deal)
 
           const update = {
-            bid: { bid: '0', bidder: '0', trumpSuit: '' },
+            bid: { bid: 0, bidder: 0, trumpSuit: '' },
             players: {
               0: deal.players[0],
               1: deal.players[1],

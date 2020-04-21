@@ -47,6 +47,7 @@ const RoomPage = (props) => {
       })
     })
       .then((members) => {
+        // ! .toString()
         setPlayerSeat(members.length)
         console.log('User Joined Room ', members.length)
       })
@@ -217,7 +218,7 @@ const RoomPage = (props) => {
                       <Button
                         id={0}
                         disabled={
-                          playerSeat === gameData.dealer && currentBid === 0
+                          playerSeat === gameData.dealer && currentBid === null
                         }
                         type='submit'
                         variant='bidgroup'
@@ -348,10 +349,10 @@ const RoomPage = (props) => {
     }
 
     const renderHand = () => {
-      const seat = playerSeat === -1 ? 0 : playerSeat
-      /*       const roomMember = roomData
-        ? roomData.members.includes(user.uid) || false
-        : false */
+      // const seat = playerSeat === -1 ? 0 : playerSeat
+      const seat = roomData
+        ? roomData.members.includes(user.uid) || 0
+        : playerSeat
       const playerHand = gameData.players[seat].hand
       return playerSeat !== -1 ? (
         [
@@ -373,7 +374,12 @@ const RoomPage = (props) => {
           </div>
         ))
       ) : (
-        <div sx={{ display: 'flex', justifyContent: 'center' }}>
+        <div
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
           Sorry, this room is full
         </div>
       )
@@ -435,7 +441,7 @@ const RoomPage = (props) => {
           let playerSeat = data.members
             ? data.members.findIndex((m) => m === user.uid)
             : -1
-          setPlayerSeat(playerSeat)
+          setPlayerSeat(playerSeat.toString())
           setRoomData({ ...data, id: snap.id })
           console.log(
             'Room data:',
@@ -443,7 +449,7 @@ const RoomPage = (props) => {
             'User: ',
             user.uid,
             'Seat: ',
-            playerSeat
+            playerSeat.toString()
           )
         }
       })

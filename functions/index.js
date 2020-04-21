@@ -27,5 +27,3 @@ exports.sendPushNotification = functions.https.onCall((data, context) => {
 })
 
 exports.roomFuncs = require('./roomFuncs')
-
-// exports.gameFuncs = require('./gameFuncs')

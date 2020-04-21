@@ -344,25 +344,32 @@ const RoomPage = (props) => {
     }
 
     const renderHand = () => {
-      const playerHand = gameData.players[playerSeat].hand
-      return [
-        ...playerHand,
-        ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),
-      ].map((card, i) => (
-        <div
-          key={i}
-          sx={{
-            backgroundColor: 'green',
-            display: 'grid',
-            justifyContent: 'center',
-          }}
-        >
-          <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
-          {gameData.trick !== 0 && gameData.turn === playerSeat && (
-            <button onClick={() => playCard(i, card)}>X</button>
-          )}
+      const seat = playerSeat === -1 ? 0 : playerSeat
+      const playerHand = gameData.players[seat].hand
+      return seat ? (
+        [
+          ...playerHand,
+          ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),
+        ].map((card, i) => (
+          <div
+            key={i}
+            sx={{
+              backgroundColor: 'green',
+              display: 'grid',
+              justifyContent: 'center',
+            }}
+          >
+            <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
+            {gameData.trick !== 0 && gameData.turn === playerSeat && (
+              <button onClick={() => playCard(i, card)}>X</button>
+            )}
+          </div>
+        ))
+      ) : (
+        <div sx={{ display: 'flex', justifyContent: 'center' }}>
+          Sorry, this room is full
         </div>
-      ))
+      )
     }
 
     return (

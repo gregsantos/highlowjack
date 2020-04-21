@@ -1,6 +1,6 @@
 import firebase from '../firebase.js'
 
-export const getDeal = (members) => {
+export const initDeal = (members) => {
   let players = []
   let allHands = []
   members.forEach((m, i) => {
@@ -17,7 +17,8 @@ export const getDeal = (members) => {
 }
 
 export default (members) => {
-  const getDeal = () => {
+  console.log('Members', members)
+  /*   const getDeal = () => {
     let players = []
     let allHands = []
     members.forEach((m, i) => {
@@ -31,9 +32,9 @@ export default (members) => {
       }
     })
     return { players, allHands }
-  }
+  } */
 
-  const deal = getDeal()
+  const deal = initDeal(members)
 
   const gameData = {
     players: {
@@ -46,7 +47,7 @@ export default (members) => {
     score: [0, 0],
     dealer: 0,
     turn: 1,
-    bid: { bid: null, bidder: null, trumpSuit: '' },
+    bid: { bid: 0, bidder: null, suit: '' },
     leader: 1,
     dealtCards: deal.allHands, // set of all cards dealt for prescoring
     trick: 0,
@@ -62,26 +63,6 @@ export default (members) => {
   }
 
   return gameData
-}
-
-export const dealHands = (
-  deck = DECK,
-  players = [
-    { p: 1, hand: [] },
-    { p: 2, hand: [] },
-    { p: 3, hand: [] },
-    { p: 4, hand: [] },
-  ],
-  numCards = 6
-) => {
-  players.forEach((player) => {
-    while (player.hand.length !== numCards) {
-      player.hand.push(
-        deck.splice(Math.floor(Math.random() * deck.length), 1)[0]
-      )
-    }
-    return players
-  })
 }
 
 export const DECK = [

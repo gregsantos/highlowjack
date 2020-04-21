@@ -16,7 +16,7 @@ const RoomPage = (props) => {
   const [roomData, setRoomData] = useState(null)
   const [gameData, setGameData] = useState(null)
   const [playerSeat, setPlayerSeat] = useState(-1)
-  const [bidPoint, setBidPoint] = useState(null)
+  const [bidPoint, setBidPoint] = useState(0)
   const [bidSuit, setBidSuit] = useState('s')
   const id = props.match.params.id
   const db = firebase.firestore()
@@ -47,8 +47,8 @@ const RoomPage = (props) => {
       })
     })
       .then((members) => {
-        // ! .toString()
-        setPlayerSeat(members.length)
+        const playerSeat = members.findIndex((m) => m === user.uid)
+        setPlayerSeat(playerSeat)
         console.log('User Joined Room ', members.length)
       })
       .catch(function (err) {
@@ -76,13 +76,30 @@ const RoomPage = (props) => {
   }
 
   const handleSelectBid = (e) => {
-    console.log('Select Bid Point', e.target.value)
-    setBidPoint(e.target.value)
+    console.log('Select Bid Point', parseInt(e.target.value))
+    setBidPoint(parseInt(e.target.value))
   }
 
   const handleSelectSuit = (e) => {
     console.log('Select Bid Suit', e.target.value)
     setBidSuit(e.target.value)
+  }
+
+  const handlePass = () => {
+    const isDealer = playerSeat === gameData.dealer
+    console.log('Is Dealer?', isDealer)
+    const nextPlayer = gameData.turn === 3 ? 0 : gameData.turn + 1
+    if (isDealer) {
+      gameRef.update({
+        leader: gameData.bid.bidder,
+        turn: gameData.bid.bidder,
+        trick: 1,
+      })
+    } else {
+      gameRef.update({
+        turn: nextPlayer,
+      })
+    }
   }
 
   const handleSubmitBid = (e) => {
@@ -91,14 +108,15 @@ const RoomPage = (props) => {
     const dealer = gameData.dealer
     const currentBid = gameData.bid.bid
     const currentBidder = gameData.bid.bidder
-    // const playerTurn = gameData.turn
 
     const newBid = {
       bidder: playerSeat,
       bid: bidPoint,
       suit: bidSuit,
     }
-    console.log('Current Bid: ', currentBid, 'New Bid :', newBid)
+
+    console.log('New Bid', newBid)
+
     if (playerSeat === dealer) {
       if (bidPoint >= currentBid) {
         gameRef.update({
@@ -129,11 +147,7 @@ const RoomPage = (props) => {
   }
 
   const renderTable = () => {
-    const roomMember = roomData
-      ? roomData.members.includes(user.uid) || false
-      : false
-
-    if (roomMember) {
+    if (playerSeat !== -1) {
       if (gameData) {
         const playerTurn = gameData.turn === playerSeat
         const currentBid = gameData.bid.bid
@@ -168,30 +182,33 @@ const RoomPage = (props) => {
                     <Label>
                       <Radio
                         type='radio'
-                        value='2'
-                        checked={bidPoint === '2'}
+                        value={2}
+                        checked={bidPoint === 2}
                         onChange={handleSelectBid}
-                        defaultChecked={currentBid === null}
+                        defaultChecked={currentBid === 0}
+                        disabled={
+                          currentBid >= 2 || playerSeat === gameData.dealer
+                        }
                       />
                       2
                     </Label>
                     <Label>
                       <Radio
                         type='radio'
-                        value='3'
-                        checked={bidPoint === '3'}
+                        value={3}
+                        checked={bidPoint === 3}
                         onChange={handleSelectBid}
-                        defaultChecked={currentBid === '2'}
+                        defaultChecked={currentBid === 2}
                       />
                       3
                     </Label>
                     <Label>
                       <Radio
                         type='radio'
-                        value='4'
-                        checked={bidPoint === '4'}
+                        value={4}
+                        checked={bidPoint === 4}
                         onChange={handleSelectBid}
-                        defaultChecked={currentBid === '3'}
+                        defaultChecked={currentBid === 3}
                       />
                       4
                     </Label>
@@ -215,18 +232,19 @@ const RoomPage = (props) => {
                       <Button type='submit' variant='bidgroup'>
                         Bid
                       </Button>
-                      <Button
-                        id={0}
-                        disabled={
-                          playerSeat === gameData.dealer && currentBid === null
-                        }
-                        type='submit'
-                        variant='bidgroup'
-                      >
-                        Pass
-                      </Button>
                     </Container>
                   </form>
+                  <Container>
+                    <Button
+                      disabled={
+                        playerSeat === gameData.dealer && currentBid === 0
+                      }
+                      onClick={handlePass}
+                      variant='bidgroup'
+                    >
+                      Pass
+                    </Button>
+                  </Container>
                 </Box>
               </Container>
             )
@@ -319,7 +337,7 @@ const RoomPage = (props) => {
           [`players.${playerSeat}.hand`]: cardsLeft,
         })
         .then(() => {
-          console.log('Last Trick Played and updated!')
+          console.log('Last trick card played and updated!', newTrickCards)
           tallyTrick(roomData.members, gameRef)
         })
         .catch((error) => {
@@ -349,10 +367,8 @@ const RoomPage = (props) => {
     }
 
     const renderHand = () => {
-      // const seat = playerSeat === -1 ? 0 : playerSeat
-      const seat = roomData
-        ? roomData.members.includes(user.uid) || 0
-        : playerSeat
+      // ! const seat = playerSeat === -1 ? 0 : playerSeat
+      const seat = roomData.members.includes(user.uid) ? playerSeat : 0
       const playerHand = gameData.players[seat].hand
       return playerSeat !== -1 ? (
         [
@@ -438,10 +454,8 @@ const RoomPage = (props) => {
           // fetchGame
           unsubscribeGame = fetchGame()
           // set player seat
-          let playerSeat = data.members
-            ? data.members.findIndex((m) => m === user.uid)
-            : -1
-          setPlayerSeat(playerSeat.toString())
+          const playerSeat = data.members.findIndex((m) => m === user.uid)
+          setPlayerSeat(playerSeat)
           setRoomData({ ...data, id: snap.id })
           console.log(
             'Room data:',
@@ -449,7 +463,7 @@ const RoomPage = (props) => {
             'User: ',
             user.uid,
             'Seat: ',
-            playerSeat.toString()
+            playerSeat
           )
         }
       })
@@ -555,7 +569,7 @@ const RoomPage = (props) => {
             renderCards()
           ) : (
             <Container sx={{ height: '20%' }}>
-              {roomData && roomData.members.length === 4 && (
+              {playerSeat !== -1 && (
                 <Button variant='green' onClick={startGame}>
                   Start New Game
                 </Button>

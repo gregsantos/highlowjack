@@ -16,7 +16,7 @@ const RoomPage = (props) => {
   const [roomData, setRoomData] = useState(null)
   const [gameData, setGameData] = useState(null)
   const [playerSeat, setPlayerSeat] = useState(-1)
-  const [bidPoint, setBidPoint] = useState(0)
+  const [bidPoint, setBidPoint] = useState(null)
   const [bidSuit, setBidSuit] = useState('s')
   const id = props.match.params.id
   const db = firebase.firestore()
@@ -75,10 +75,12 @@ const RoomPage = (props) => {
   }
 
   const handleSelectBid = (e) => {
+    console.log('Select Bid Point', e.target.value)
     setBidPoint(e.target.value)
   }
 
   const handleSelectSuit = (e) => {
+    console.log('Select Bid Suit', e.target.value)
     setBidSuit(e.target.value)
   }
 
@@ -86,15 +88,17 @@ const RoomPage = (props) => {
     e.preventDefault()
     const nextPlayer = gameData.turn === 3 ? 0 : gameData.turn + 1
     const dealer = gameData.dealer
-    const playerTurn = gameData.turn
     const currentBid = gameData.bid.bid
     const currentBidder = gameData.bid.bidder
+    // const playerTurn = gameData.turn
+
     const newBid = {
-      bidder: playerTurn,
+      bidder: playerSeat,
       bid: bidPoint,
       suit: bidSuit,
     }
-    if (playerTurn === dealer) {
+    console.log('Current Bid: ', currentBid, 'New Bid :', newBid)
+    if (playerSeat === dealer) {
       if (bidPoint >= currentBid) {
         gameRef.update({
           bid: newBid,
@@ -163,30 +167,30 @@ const RoomPage = (props) => {
                     <Label>
                       <Radio
                         type='radio'
-                        value={2}
-                        checked={bidPoint === 2}
+                        value='2'
+                        checked={bidPoint === '2'}
                         onChange={handleSelectBid}
-                        defaultChecked={currentBid === 0}
+                        defaultChecked={currentBid === null}
                       />
                       2
                     </Label>
                     <Label>
                       <Radio
                         type='radio'
-                        value={3}
-                        checked={bidPoint === 3}
+                        value='3'
+                        checked={bidPoint === '3'}
                         onChange={handleSelectBid}
-                        defaultChecked={currentBid === 2}
+                        defaultChecked={currentBid === '2'}
                       />
                       3
                     </Label>
                     <Label>
                       <Radio
                         type='radio'
-                        value={4}
-                        checked={bidPoint === 4}
+                        value='4'
+                        checked={bidPoint === '4'}
                         onChange={handleSelectBid}
-                        defaultChecked={currentBid === 3}
+                        defaultChecked={currentBid === '3'}
                       />
                       4
                     </Label>
@@ -345,8 +349,11 @@ const RoomPage = (props) => {
 
     const renderHand = () => {
       const seat = playerSeat === -1 ? 0 : playerSeat
+      /*       const roomMember = roomData
+        ? roomData.members.includes(user.uid) || false
+        : false */
       const playerHand = gameData.players[seat].hand
-      return seat ? (
+      return playerSeat !== -1 ? (
         [
           ...playerHand,
           ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),

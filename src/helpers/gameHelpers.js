@@ -38,8 +38,6 @@ export const tallyTrick = (members, gameRef) => {
           gameRef.update(update)
         } else {
           // tally trick and tally round
-          console.log('Tally Trick & Round')
-
           const t1RoundCards =
             trickWinner === 't1'
               ? [...gameData.roundCards.t1, ...gameData.trickCards]
@@ -57,6 +55,10 @@ export const tallyTrick = (members, gameRef) => {
 
           const mappedPointCards = t1RoundCards.reduce(mapPointCards, {})
           const mappedPointCards2 = t2RoundCards.reduce(mapPointCards, {})
+
+          console.log('Tally Trick & Round')
+          console.log('mapped round cards 1', mappedPointCards)
+          console.log('mapped round cards 2', mappedPointCards2)
 
           const t1GamePoints =
             (mappedPointCards['10'] * 10 || 0) +
@@ -83,7 +85,7 @@ export const tallyTrick = (members, gameRef) => {
             (c) => c.suit === gameData.bid.trumpSuit
           )
 
-          console.log(t1RoundCards, t1TrumpCards)
+          console.log('T1 round and trump cards', t1RoundCards, t1TrumpCards)
 
           t1TrumpCards.map((c, i) => {
             if (c.spot === 'A') return (t1TrumpCards[i].spot = '14')
@@ -100,6 +102,8 @@ export const tallyTrick = (members, gameRef) => {
           const t2TrumpCards = t2RoundCards.filter(
             (c) => c.suit === gameData.bid.trumpSuit
           )
+
+          console.log('T2 round and trump cards', t2RoundCards, t2TrumpCards)
 
           t2TrumpCards.map((c, i) => {
             if (c.spot === 'A') return (t2TrumpCards[i].spot = '14')
@@ -124,7 +128,7 @@ export const tallyTrick = (members, gameRef) => {
 
           console.log('Jack Winner', getJackWinner())
 
-          console.log(
+          /*           console.log(
             'Team 1 High: ',
             t1SortedHigh[0].spot,
             'Team 1 Low: ',
@@ -135,16 +139,14 @@ export const tallyTrick = (members, gameRef) => {
             t2SortedHigh[0].spot,
             'Team 2 Low: ',
             t2SortedLow[0].spot
-          )
+          ) */
 
-          const highWinner =
-            parseInt(t1SortedHigh[0].spot) > parseInt(t2SortedHigh[0].spot)
-              ? 0
-              : 1
-          const lowWinner =
-            parseInt(t1SortedLow[0].spot) < parseInt(t2SortedLow[0].spot)
-              ? 0
-              : 1
+          const t1High = t1SortedHigh[0] ? t1SortedHigh[0].spot : 0
+          const t2High = t2SortedHigh[0] ? t2SortedHigh[0].spot : 0
+          const t1Low = t1SortedLow[0] ? t1SortedLow[0].spot : 0
+          const t2Low = t2SortedLow[0] ? t2SortedLow[0].spot : 0
+          const highWinner = t1High > t2High ? 1 : 2
+          const lowWinner = t1Low < t2Low ? 1 : 2
 
           const scoreRound = () => {
             let t1Score = 0
@@ -167,7 +169,7 @@ export const tallyTrick = (members, gameRef) => {
           console.log(roundScore)
 
           const t1FinalScore = () => {
-            if (gameData.bid.bidder === 0 || 2) {
+            if (gameData.bid.bidder === '0' || gameData.bid.bidder === '2') {
               return roundScore[0] < gameData.bid.bid
                 ? -Math.abs(gameData.bid.bid)
                 : roundScore[0]
@@ -176,7 +178,7 @@ export const tallyTrick = (members, gameRef) => {
             }
           }
           const t2FinalScore = () => {
-            if (gameData.bid.bidder === 1 || 3) {
+            if (gameData.bid.bidder === '1' || gameData.bid.bidder === '3') {
               return roundScore[1] < gameData.bid.bid
                 ? -Math.abs(gameData.bid.bid)
                 : roundScore[1]
@@ -192,7 +194,7 @@ export const tallyTrick = (members, gameRef) => {
           console.log(deal)
 
           const update = {
-            bid: { bid: 0, bidder: 0, trumpSuit: '' },
+            bid: { bid: null, bidder: null, trumpSuit: '' },
             players: {
               0: deal.players[0],
               1: deal.players[1],

@@ -46,7 +46,7 @@ export default (members) => {
     score: [0, 0],
     dealer: 0,
     turn: 1,
-    bid: { bid: 0, bidder: 0, trumpSuit: '' },
+    bid: { bid: null, bidder: null, trumpSuit: '' },
     leader: 1,
     dealtCards: deal.allHands, // set of all cards dealt for prescoring
     trick: 0,

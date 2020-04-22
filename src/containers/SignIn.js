@@ -29,7 +29,7 @@ const AuthSeparator = styled.div`
   height: ${metrics.baseUnit * 2}px;
   width: ${metrics.baseUnit * 20}px;
   margin-bottom: ${metrics.baseUnit}px;
-  color: ${props => props.theme.inactive};
+  color: ${(props) => props.theme.inactive};
   font-weight: 700;
   span {
     margin: 0px ${metrics.baseUnit}px;
@@ -47,7 +47,7 @@ const SignIn = () => {
   const { userState, userDispatch } = useContext(UserContext)
   const db = firebase.firestore()
 
-  const onClickSubmit = e => {
+  const onClickSubmit = (e) => {
     e.preventDefault()
     if (email && email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       window.localStorage.setItem('confirmationEmail', email)
@@ -66,7 +66,7 @@ const SignIn = () => {
             },
           })
         })
-        .catch(error => {
+        .catch((error) => {
           sendMessage(error.message)
         })
     } else {
@@ -80,16 +80,14 @@ const SignIn = () => {
     firebase
       .auth()
       .signInWithPopup(facebookProvider)
-      .then(result => {
+      .then((result) => {
         if (result.additionalUserInfo.isNewUser) {
-          db.collection('users')
-            .doc(result.user.uid)
-            .set({
-              email: result.additionalUserInfo.profile.email,
-            })
+          db.collection('users').doc(result.user.uid).set({
+            email: result.additionalUserInfo.profile.email,
+          })
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.code === 'auth/account-exists-with-different-credential') {
           sendMessage(
             'It looks like the email address associated with your Facebook account has already been used to sign in with another method. Please sign in using the original method you signed up with.'
@@ -107,16 +105,14 @@ const SignIn = () => {
     firebase
       .auth()
       .signInWithPopup(googleProvider)
-      .then(result => {
+      .then((result) => {
         if (result.additionalUserInfo.isNewUser) {
-          db.collection('users')
-            .doc(result.user.uid)
-            .set({
-              email: result.additionalUserInfo.profile.email,
-            })
+          db.collection('users').doc(result.user.uid).set({
+            email: result.additionalUserInfo.profile.email,
+          })
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.code === 'auth/account-exists-with-different-credential') {
           sendMessage(
             'It looks like the email address associated with your Facebook account has already been used to sign in with another method. Please sign in using the original method you signed up with.'
@@ -152,7 +148,7 @@ const SignIn = () => {
         <Form>
           <div>
             <Input
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               name='email'
               placeholder='Email address'
               autoComplete='email'

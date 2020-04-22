@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, Button, Select, Radio, Label } from 'theme-ui'
 import React, { useState, useEffect } from 'react'
-// import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
 import { FaUserSecret, FaDiscourse } from 'react-icons/fa'
 import { P, H1, Input, Form, RoomWrapper } from '../components'
@@ -13,9 +13,10 @@ import { tallyTrick } from '../helpers/gameHelpers'
 
 const RoomPage = (props) => {
   const user = useSession()
+  const history = useHistory()
   const [roomData, setRoomData] = useState(null)
   const [gameData, setGameData] = useState(null)
-  const [playerSeat, setPlayerSeat] = useState(-1)
+  const [playerSeat, setPlayerSeat] = useState(null)
   const [bidPoint, setBidPoint] = useState(0)
   const [bidSuit, setBidSuit] = useState('s')
   const id = props.match.params.id
@@ -23,6 +24,8 @@ const RoomPage = (props) => {
   const roomRef = db.collection('roomDetail').doc(id)
   const gamesRef = db.collection('games')
   const gameRef = db.collection('games').doc(id)
+  const isDealer = gameData && gameData.dealer === playerSeat
+  console.log('Dealer:', isDealer, 'Seat: ', playerSeat)
 
   const joinRoom = () => {
     db.runTransaction((transaction) => {
@@ -47,8 +50,8 @@ const RoomPage = (props) => {
       })
     })
       .then((members) => {
-        const playerSeat = members.findIndex((m) => m === user.uid)
-        setPlayerSeat(playerSeat)
+        // const playerSeat = members.findIndex((m) => m === user.uid)
+        // setPlayerSeat(playerSeat)
         console.log('User Joined Room ', members.length)
       })
       .catch(function (err) {
@@ -86,7 +89,7 @@ const RoomPage = (props) => {
   }
 
   const handlePass = () => {
-    const isDealer = playerSeat === gameData.dealer
+    //const isDealer = playerSeat === gameData.dealer
     console.log('Is Dealer?', isDealer)
     const nextPlayer = gameData.turn === 3 ? 0 : gameData.turn + 1
     if (isDealer) {
@@ -147,7 +150,7 @@ const RoomPage = (props) => {
   }
 
   const renderTable = () => {
-    if (playerSeat !== -1) {
+    if (playerSeat) {
       if (gameData) {
         const playerTurn = gameData.turn === playerSeat
         const currentBid = gameData.bid.bid
@@ -186,9 +189,7 @@ const RoomPage = (props) => {
                         checked={bidPoint === 2}
                         onChange={handleSelectBid}
                         defaultChecked={currentBid === 0}
-                        disabled={
-                          currentBid >= 2 || playerSeat === gameData.dealer
-                        }
+                        disabled={currentBid >= 2 && isDealer}
                       />
                       2
                     </Label>
@@ -367,58 +368,63 @@ const RoomPage = (props) => {
     }
 
     const renderHand = () => {
-      // ! const seat = playerSeat === -1 ? 0 : playerSeat
       const seat = roomData.members.includes(user.uid) ? playerSeat : 0
       const playerHand = gameData.players[seat].hand
-      return playerSeat !== -1 ? (
-        [
-          ...playerHand,
-          ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),
-        ].map((card, i) => (
-          <div
-            key={i}
-            sx={{
-              backgroundColor: 'green',
-              display: 'grid',
-              justifyContent: 'center',
-            }}
-          >
-            <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
-            {gameData.trick !== 0 && gameData.turn === playerSeat && (
-              <button onClick={() => playCard(i, card)}>X</button>
-            )}
-          </div>
-        ))
-      ) : (
+      return playerSeat
+        ? [
+            ...playerHand,
+            ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),
+          ].map((card, i) => (
+            <div
+              key={i}
+              sx={{
+                backgroundColor: 'green',
+                display: 'grid',
+                justifyContent: 'center',
+              }}
+            >
+              <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
+              {card !== 'outline' &&
+                gameData.trick !== 0 &&
+                gameData.turn === playerSeat && (
+                  <button onClick={() => playCard(i, card)}>X</button>
+                )}
+            </div>
+          ))
+        : null
+    }
+
+    if (playerSeat) {
+      return (
+        <div
+          sx={{
+            backgroundColor: 'green',
+            padding: '10px 0px',
+            display: 'grid',
+            justifyContent: 'center',
+            gridGap: '1',
+            gridTemplateColumns: [
+              'repeat(auto-fit, 55px)',
+              'repeat(6, minmax(80px, 1fr))',
+              'repeat(3, minmax(92px, 1fr))',
+            ],
+          }}
+        >
+          {renderHand()}
+        </div>
+      )
+    } else {
+      return (
         <div
           sx={{
             display: 'flex',
             justifyContent: 'center',
           }}
         >
-          Sorry, this room is full
+          <h2 sx={{ color: 'muted' }}>Sorry, there are no seats available</h2>
         </div>
       )
     }
-
-    return (
-      <div
-        sx={{
-          backgroundColor: 'green',
-          padding: '10px 0px',
-          display: 'grid',
-          justifyContent: 'center',
-          gridGap: '1',
-          gridTemplateColumns: [
-            'repeat(auto-fit, 55px)',
-            'repeat(6, minmax(80px, 1fr))',
-            'repeat(3, minmax(92px, 1fr))',
-          ],
-        }}
-      >
-        {renderHand()}
-      </div>
-    )
   }
 
   const fetchGame = () => {
@@ -455,16 +461,9 @@ const RoomPage = (props) => {
           unsubscribeGame = fetchGame()
           // set player seat
           const playerSeat = data.members.findIndex((m) => m === user.uid)
-          setPlayerSeat(playerSeat)
+          setPlayerSeat(playerSeat === -1 ? null : playerSeat)
           setRoomData({ ...data, id: snap.id })
-          console.log(
-            'Room data:',
-            data,
-            'User: ',
-            user.uid,
-            'Seat: ',
-            playerSeat
-          )
+          console.log('Room data:', data, 'User: ', user, 'Seat: ', playerSeat)
         }
       })
       return () => {
@@ -475,7 +474,7 @@ const RoomPage = (props) => {
     } else {
       console.log('no logged in user')
     }
-  }, [])
+  }, [user])
 
   return (
     <RoomWrapper>
@@ -537,7 +536,31 @@ const RoomPage = (props) => {
             <div sx={{ backgroundColor: 'white' }} />
 
             <Container sx={{ backgroundColor: 'green' }}>
-              {roomData && renderTable()}
+              {playerSeat && renderTable()}
+              {!playerSeat && roomData && roomData.state !== 'FULL' && (
+                <div>
+                  <Container sx={{ color: 'muted' }}>
+                    <h2>There's an Open Seat!</h2>
+                  </Container>
+
+                  <Container>
+                    <button onClick={joinRoom}>Join Room</button>
+                  </Container>
+                </div>
+              )}
+              {!playerSeat && roomData && roomData.state === 'FULL' && (
+                <div>
+                  <Container sx={{ color: 'muted' }}>
+                    <h2>This Room is Full</h2>
+                  </Container>
+
+                  <Container>
+                    <button onClick={() => history.push('/dashboard')}>
+                      Join Open Room
+                    </button>
+                  </Container>
+                </div>
+              )}
             </Container>
 
             <div sx={{ backgroundColor: 'white' }} />
@@ -569,7 +592,7 @@ const RoomPage = (props) => {
             renderCards()
           ) : (
             <Container sx={{ height: '20%' }}>
-              {playerSeat !== -1 && (
+              {playerSeat && (
                 <Button variant='green' onClick={startGame}>
                   Start New Game
                 </Button>

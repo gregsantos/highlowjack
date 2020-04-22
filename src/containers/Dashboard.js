@@ -8,7 +8,7 @@ import { UserContext } from '../contexts/userContext'
 import { ToastContext } from '../contexts/toastContext'
 import firebase from '../firebase.js'
 import ErrorBoundary from '../components/ErrorBoundary'
-import Profile from './Profile'
+//import Profile from './Profile'
 
 const Dashboard = (props) => {
   const { userState, userDispatch } = useContext(UserContext)
@@ -161,9 +161,9 @@ const Dashboard = (props) => {
           state: 'OPEN',
           private: false,
           lastMessage: {
-            from: '',
-            text: '',
-            timestamp: '',
+            from: 'Host',
+            text: 'Welcome!',
+            timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
           },
         })
         .then(() => {
@@ -182,24 +182,22 @@ const Dashboard = (props) => {
           Join an open room or create a private one <br />
           to play games, watch videos, and chat with your Friends.
         </P>
-        {false && (
-          <div sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button
-              onClick={(e) => {
-                handleJoinRoom()
-              }}
-            >
-              Join Room
-            </Button>
-            <Button
-              onClick={(e) => {
-                handleCreateNewRoom()
-              }}
-            >
-              Create Room
-            </Button>
-          </div>
-        )}
+        <div sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
+          <Button
+            onClick={(e) => {
+              handleJoinRoom()
+            }}
+          >
+            Join Open Room
+          </Button>
+          <Button
+            onClick={(e) => {
+              handleCreateNewRoom()
+            }}
+          >
+            Create Room
+          </Button>
+        </div>
         <ErrorBoundary>
           <Suspense fallback={<div>Loading...</div>}>
             <ul>

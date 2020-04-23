@@ -1,15 +1,10 @@
 /** @jsx jsx */
 import { jsx, Button, Select, Radio, Label } from 'theme-ui'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
-import {
-  FaUserSecret,
-  FaRegTimesCircle,
-  FaGenderless,
-  FaTimesCircle,
-} from 'react-icons/fa'
-import { P, H1, Input, Form, RoomWrapper } from '../components'
+import { FaUserSecret, FaRegTimesCircle } from 'react-icons/fa'
+import { RoomWrapper } from '../components'
 import { useSession } from '../App'
 import firebase from '../firebase.js'
 import '../css/cards.css'
@@ -59,8 +54,6 @@ const RoomPage = (props) => {
       })
     })
       .then((members) => {
-        // const playerSeat = members.findIndex((m) => m === user.uid)
-        // setPlayerSeat(playerSeat)
         console.log('User Joined Room with', members)
       })
       .catch(function (err) {
@@ -126,8 +119,6 @@ const RoomPage = (props) => {
       bid: bidPoint,
       suit: bidSuit,
     }
-
-    console.log('New Bid', newBid)
 
     if (playerSeat === dealer) {
       if (bidPoint >= currentBid) {
@@ -347,25 +338,6 @@ const RoomPage = (props) => {
   }
 
   const renderCards = () => {
-    const renderBlanks = () => {
-      const cards = []
-      for (let i = 0; i < 6; i++) {
-        cards.push(
-          <div
-            key={i}
-            sx={{
-              backgroundColor: 'green',
-              display: 'grid',
-              justifyContent: 'center',
-            }}
-          >
-            <div className={`card outline`} sx={{ fontSize: [1, 3, 4] }} />
-          </div>
-        )
-      }
-      return cards
-    }
-
     const renderHand = () => {
       const seat = roomData.members.includes(user.uid) ? playerSeat : 0
       const playerHand = gameData.players[seat].hand
@@ -578,7 +550,7 @@ const RoomPage = (props) => {
               <Container>
                 {playerSeat === null && <FaUserSecret size='6em' />}
                 {playerSeat !== null && user.photoURL && (
-                  <img src={user.photoURL} width='80px' />
+                  <img alt='userPhoto' src={user.photoURL} width='80px' />
                 )}
               </Container>
               <Container>

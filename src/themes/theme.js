@@ -78,6 +78,14 @@ export default {
       color: 'text',
       bg: 'secondary',
     },
+    flatgreen: {
+      color: 'white',
+      fontSize: ['0.90em', '1.1em'],
+      fontWeight: 'bold',
+      bg: 'darkseagreen',
+      margin: '0.75em 0.75em 0.75em 0em',
+      padding: '.5em 1em',
+    },
     green: {
       color: 'green',
       bg: 'darkseagreen',

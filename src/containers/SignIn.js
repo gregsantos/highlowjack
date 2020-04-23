@@ -1,8 +1,9 @@
+/** @jsx jsx */
+import { jsx, Button } from 'theme-ui'
 import React, { useState, useContext } from 'react'
 import {
   P,
   H1,
-  Button,
   FacebookAuth,
   GoogleAuth,
   Input,
@@ -128,7 +129,7 @@ const SignIn = () => {
     return (
       <Overlay>
         <CenteredDiv vertical horizontal>
-          <Message>
+          <Message color='darkseagreen'>
             Please open the email we sent you, so we can verify your account!
           </Message>
         </CenteredDiv>
@@ -137,14 +138,26 @@ const SignIn = () => {
   }
 
   return (
-    <>
+    <div>
       {userState.verifying && overlay()}
       <BodyWrapper>
         <H1>Sign Up/Sign In</H1>
-        <P>
-          Sign in with your email (safest!) <br />
-          else use Google or Facebook for authorization.
-        </P>
+        <P>Sign in using Google or Facebook or request an email link.</P>
+
+        <GoogleAuth
+          marginBottom
+          loading={googleLoadState}
+          onClick={authWithGoogle}
+        />
+        <FacebookAuth
+          marginBottom
+          loading={facebookLoadState}
+          onClick={authWithFacebook}
+        />
+
+        <AuthSeparator>
+          <span>OR</span>
+        </AuthSeparator>
         <Form>
           <div>
             <Input
@@ -155,22 +168,13 @@ const SignIn = () => {
             />
           </div>
           <div>
-            <Button marginBottom onClick={onClickSubmit}>
+            <Button variant='flatgreen' marginBottom onClick={onClickSubmit}>
               Sign in with Email
             </Button>
           </div>
         </Form>
-        <AuthSeparator>
-          <span>OR</span>
-        </AuthSeparator>
-        <FacebookAuth
-          marginBottom
-          loading={facebookLoadState}
-          onClick={authWithFacebook}
-        />
-        <GoogleAuth loading={googleLoadState} onClick={authWithGoogle} />
       </BodyWrapper>
-    </>
+    </div>
   )
 }
 

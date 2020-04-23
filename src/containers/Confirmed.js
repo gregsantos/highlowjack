@@ -1,52 +1,52 @@
-import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
-import { Button, CenteredDiv, Message, Overlay } from "../components";
-import firebase from "../firebase.js";
-import "firebase/firestore";
+import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
+import { Button, CenteredDiv, Message, Overlay } from '../components'
+import firebase from '../firebase.js'
+import 'firebase/firestore'
 
-const Confirmed = props => {
-  const [newDevice, setNewDevice] = useState(false);
-  const [complete, setComplete] = useState(false);
-  const db = firebase.firestore();
+const Confirmed = (props) => {
+  const [newDevice, setNewDevice] = useState(false)
+  const [complete, setComplete] = useState(false)
+  const db = firebase.firestore()
 
   useEffect(() => {
-    let email = window.localStorage.getItem("confirmationEmail");
+    let email = window.localStorage.getItem('confirmationEmail')
     if (!email) {
-      setNewDevice(true);
+      setNewDevice(true)
     } else {
-      finishConfirmation(email);
+      finishConfirmation(email)
     }
-  });
+  })
 
-  const finishConfirmation = confirmedEmail => {
+  const finishConfirmation = (confirmedEmail) => {
     if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
       firebase
         .auth()
         .signInWithEmailLink(confirmedEmail, window.location.href)
-        .then(result => {
+        .then((result) => {
           if (result.additionalUserInfo.isNewUser) {
-            db.collection("users")
+            db.collection('users')
               .doc(result.user.uid)
               .set({
-                email: confirmedEmail
+                email: confirmedEmail,
               })
-              .then(res => {
-                setComplete(true);
-              });
+              .then((res) => {
+                setComplete(true)
+              })
           }
-          window.localStorage.removeItem("confirmationEmail");
-          return;
+          window.localStorage.removeItem('confirmationEmail')
+          return
         })
         .then(() => {
           setTimeout(() => {
-            window.close();
-          }, 5000);
+            window.close()
+          }, 5000)
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch((error) => {
+          console.log(error)
+        })
     }
-  };
+  }
 
   const newDeviceCheck = () => {
     return (
@@ -59,21 +59,25 @@ const Confirmed = props => {
         <Button
           marginTop
           onClick={() => {
-            props.history.push("/signin");
-          }}>
+            props.history.push('/signin')
+          }}
+        >
           Return To Sign In Page
         </Button>
       </CenteredDiv>
-    );
-  };
+    )
+  }
 
   const confirmed = () => {
     return (
       <CenteredDiv vertical horizontal>
-        <Message>You are now confirmed! Navigate back to the app!</Message>
+        <Message color='darkseagreen'>
+          You are now confirmed! Navigate back to the app!
+        </Message>
+        <a href='/'>Click Here</a>
       </CenteredDiv>
-    );
-  };
+    )
+  }
 
   const confirmationCheck = () => {
     if (
@@ -81,13 +85,13 @@ const Confirmed = props => {
       complete !== true &&
       !firebase.auth().currentUser
     ) {
-      return newDeviceCheck();
+      return newDeviceCheck()
     } else {
-      return confirmed();
+      return confirmed()
     }
-  };
+  }
 
-  return <Overlay visible={true}>{confirmationCheck()}</Overlay>;
-};
+  return <Overlay visible={true}>{confirmationCheck()}</Overlay>
+}
 
-export default withRouter(Confirmed);
+export default withRouter(Confirmed)

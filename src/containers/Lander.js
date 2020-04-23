@@ -1,5 +1,6 @@
-import React from 'react'
-import { H1, H2, P, Button, BodyWrapper } from '../components'
+/** @jsx jsx */
+import { jsx, Button } from 'theme-ui'
+import { H1, P, BodyWrapper } from '../components'
 import { withRouter, useHistory } from 'react-router-dom'
 
 const Lander = () => {
@@ -11,13 +12,13 @@ const Lander = () => {
   return (
     <BodyWrapper>
       <H1>Connect and Play</H1>
-      <H2>Video, Chat, Games</H2>
       <P>
-        <li>Share Photos!</li>
-        <li>Watch Videos!</li>
-        <li>Play Games!</li>
+        Join your friends in <b>group video chatrooms</b> where you <br />
+        can <b>play games, watch videos, and scan social media</b> together.
       </P>
-      <Button onClick={signIn}>Sign In</Button>
+      <Button variant='flatgreen' onClick={signIn}>
+        Sign In
+      </Button>
     </BodyWrapper>
   )
 }

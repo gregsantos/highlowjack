@@ -150,158 +150,148 @@ const RoomPage = (props) => {
   }
 
   const renderTable = () => {
-    if (playerSeat) {
-      if (gameData) {
-        const playerTurn = gameData.turn === playerSeat
-        const currentBid = gameData.bid.bid
-        const newTrick = gameData.newTrick
-        const lastCard = gameData.lastCard
+    if (gameData) {
+      const playerTurn = gameData.turn === playerSeat
+      const currentBid = gameData.bid.bid
+      const newTrick = gameData.newTrick
+      const lastCard = gameData.lastCard
 
-        if (gameData.trick === 0) {
-          // Bid Round
-          if (playerTurn)
-            return (
-              <Container>
-                <Box
-                  sx={{
-                    px: ['0px', null, '15px'],
-                    pt: ['0px', '10px'],
-                    pb: ['0px', '10px'],
-                  }}
-                >
-                  <Container>
-                    <h1
-                      sx={{
-                        color: 'indianred',
-                        fontSize: ['1em', '1.5em', null],
-                        mb: ['0px', '0px', '10px'],
-                        mt: ['2px', null, '5px'],
-                      }}
-                    >
-                      Please Bid Player {gameData.turn + 1}
-                    </h1>
-                  </Container>
-                  <Container>
-                    <Label>
-                      <Radio
-                        type='radio'
-                        value={2}
-                        checked={bidPoint === 2}
-                        onChange={handleSelectBid}
-                        defaultChecked={currentBid === 0}
-                        disabled={currentBid >= 2 && isDealer}
-                      />
-                      2
-                    </Label>
-                    <Label>
-                      <Radio
-                        type='radio'
-                        value={3}
-                        checked={bidPoint === 3}
-                        onChange={handleSelectBid}
-                        defaultChecked={currentBid === 2}
-                      />
-                      3
-                    </Label>
-                    <Label>
-                      <Radio
-                        type='radio'
-                        value={4}
-                        checked={bidPoint === 4}
-                        onChange={handleSelectBid}
-                        defaultChecked={currentBid === 3}
-                      />
-                      4
-                    </Label>
-                  </Container>
-
-                  <form onSubmit={handleSubmitBid}>
-                    <Container>
-                      <Select
-                        id='suit'
-                        value={bidSuit}
-                        onChange={handleSelectSuit}
-                        defaultValue='s'
-                      >
-                        <option value='s'>Spades</option>
-                        <option value='c'>Clubs</option>
-                        <option value='h'>Hearts</option>
-                        <option value='d'>Diamonds</option>
-                      </Select>
-                    </Container>
-                    <Container>
-                      <Button type='submit' variant='bidgroup'>
-                        Bid
-                      </Button>
-                    </Container>
-                  </form>
-                  <Container>
-                    <Button
-                      disabled={
-                        playerSeat === gameData.dealer && currentBid === 0
-                      }
-                      onClick={handlePass}
-                      variant='bidgroup'
-                    >
-                      Pass
-                    </Button>
-                  </Container>
-                </Box>
-              </Container>
-            )
-          if (!playerTurn)
-            return (
-              <div
+      if (gameData.trick === 0) {
+        // Bid Round
+        if (playerTurn)
+          return (
+            <Container>
+              <Box
                 sx={{
-                  color: '#daa520',
+                  px: ['0px', null, '15px'],
+                  pt: ['0px', '10px'],
+                  pb: ['0px', '10px'],
                 }}
               >
-                <h1
-                  sx={{
-                    textAlign: 'center',
-                    fontSize: ['1.5em', '2.5em', '3em'],
-                  }}
-                >
-                  Waiting on Bid from
-                </h1>
-                <h2
-                  sx={{
-                    textAlign: 'center',
-                    fontSize: ['1em', '1.5em', '2em'],
-                  }}
-                >
-                  Player {gameData.turn + 1}
-                </h2>
-              </div>
-            )
-        } else {
-          if (newTrick) {
-            return (
-              <div className={`card outline`} sx={{ fontSize: [3, 5, 6] }} />
-            )
-          }
-          if (!newTrick) {
-            return (
-              <div
-                className={`card ${
-                  lastCard.suit + lastCard.spot
-                } shadow no-border`}
+                <Container>
+                  <h1
+                    sx={{
+                      color: 'indianred',
+                      fontSize: ['1em', '1.5em', null],
+                      mb: ['0px', '0px', '10px'],
+                      mt: ['2px', null, '5px'],
+                    }}
+                  >
+                    Please Bid Player {gameData.turn + 1}
+                  </h1>
+                </Container>
+                <Container>
+                  <Label>
+                    <Radio
+                      type='radio'
+                      value={2}
+                      checked={bidPoint === 2}
+                      onChange={handleSelectBid}
+                      defaultChecked={currentBid === 0}
+                      disabled={currentBid >= 2 && isDealer}
+                    />
+                    2
+                  </Label>
+                  <Label>
+                    <Radio
+                      type='radio'
+                      value={3}
+                      checked={bidPoint === 3}
+                      onChange={handleSelectBid}
+                      defaultChecked={currentBid === 2}
+                    />
+                    3
+                  </Label>
+                  <Label>
+                    <Radio
+                      type='radio'
+                      value={4}
+                      checked={bidPoint === 4}
+                      onChange={handleSelectBid}
+                      defaultChecked={currentBid === 3}
+                    />
+                    4
+                  </Label>
+                </Container>
+
+                <form onSubmit={handleSubmitBid}>
+                  <Container>
+                    <Select
+                      id='suit'
+                      value={bidSuit}
+                      onChange={handleSelectSuit}
+                      defaultValue='s'
+                    >
+                      <option value='s'>Spades</option>
+                      <option value='c'>Clubs</option>
+                      <option value='h'>Hearts</option>
+                      <option value='d'>Diamonds</option>
+                    </Select>
+                  </Container>
+                  <Container>
+                    <Button type='submit' variant='bidgroup'>
+                      Bid
+                    </Button>
+                  </Container>
+                </form>
+                <Container>
+                  <Button
+                    disabled={
+                      playerSeat === gameData.dealer && currentBid === 0
+                    }
+                    onClick={handlePass}
+                    variant='bidgroup'
+                  >
+                    Pass
+                  </Button>
+                </Container>
+              </Box>
+            </Container>
+          )
+        if (!playerTurn)
+          return (
+            <div
+              sx={{
+                color: '#daa520',
+              }}
+            >
+              <h1
                 sx={{
-                  fontSize: [3, 5, 6],
+                  textAlign: 'center',
+                  fontSize: ['1.5em', '2.5em', '3em'],
                 }}
-              />
-            )
-          }
-        }
+              >
+                Waiting on Bid from
+              </h1>
+              <h2
+                sx={{
+                  textAlign: 'center',
+                  fontSize: ['1em', '1.5em', '2em'],
+                }}
+              >
+                Player {gameData.turn + 1}
+              </h2>
+            </div>
+          )
       } else {
-        return <div className={`card back-red`} sx={{ fontSize: [3, 5, 6] }} />
+        if (newTrick) {
+          return <div className={`card outline`} sx={{ fontSize: [3, 5, 6] }} />
+        }
+        if (!newTrick) {
+          return (
+            <div
+              className={`card ${
+                lastCard.suit + lastCard.spot
+              } shadow no-border`}
+              sx={{
+                fontSize: [3, 5, 6],
+              }}
+            />
+          )
+        }
       }
     } else {
-      return (
-        roomData.state !== 'FULL' && (
-          <button onClick={joinRoom}>Join Room</button>
-        )
-      )
+      return <div className={`card back-red`} sx={{ fontSize: [3, 5, 6] }} />
     }
   }
 
@@ -517,27 +507,30 @@ const RoomPage = (props) => {
                 '1fr 170px 1fr',
                 '1fr minmax(auto, 1.2fr) 1fr',
               ],
-              /*               '& :nth-of-type(even)': {
-                backgroundColor: 'white',
-              }, */
             }}
           >
-            <div sx={{ alignSelf: 'center' }}>
+            <div sx={{ alignSelf: 'center', paddingTop: '15px' }}>
               <Container sx={{ height: 'auto' }}>
-                <FaUserSecret size='8em' />
+                <FaUserSecret size='6em' />
+              </Container>
+              <Container>
+                <h3>Player 2</h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />
-            <div sx={{ alignSelf: 'center' }}>
+            <div sx={{ alignSelf: 'center', paddingTop: '15px' }}>
               <Container>
-                <FaUserSecret size='8em' />
+                <FaUserSecret size='6em' />
+              </Container>
+              <Container>
+                <h3>Player 3</h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />
 
             <Container sx={{ backgroundColor: 'green' }}>
-              {playerSeat && renderTable()}
-              {!playerSeat && roomData && roomData.state !== 'FULL' && (
+              {roomData && playerSeat !== null && renderTable()}
+              {roomData && roomData.state !== 'FULL' && playerSeat === null && (
                 <div>
                   <Container sx={{ color: 'muted' }}>
                     <h2>There's an Open Seat!</h2>
@@ -548,7 +541,7 @@ const RoomPage = (props) => {
                   </Container>
                 </div>
               )}
-              {!playerSeat && roomData && roomData.state === 'FULL' && (
+              {roomData && roomData.state === 'FULL' && playerSeat === null && (
                 <div>
                   <Container sx={{ color: 'muted' }}>
                     <h2>This Room is Full</h2>
@@ -564,15 +557,21 @@ const RoomPage = (props) => {
             </Container>
 
             <div sx={{ backgroundColor: 'white' }} />
-            <div sx={{ alignSelf: 'center' }}>
+            <div sx={{ alignSelf: 'center', paddingTop: '15px' }}>
               <Container>
-                <FaUserSecret size='8em' />
+                <FaUserSecret size='6em' />
+              </Container>
+              <Container>
+                <h3>{user.displayName}</h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />
-            <div sx={{ alignSelf: 'center' }}>
+            <div sx={{ alignSelf: 'center', paddingTop: '15px' }}>
               <Container>
-                <FaUserSecret size='8em' />
+                <FaUserSecret size='6em' />
+              </Container>
+              <Container>
+                <h3>Player 4</h3>
               </Container>
             </div>
           </div>
@@ -592,11 +591,23 @@ const RoomPage = (props) => {
             renderCards()
           ) : (
             <Container sx={{ height: '20%' }}>
-              {playerSeat && (
-                <Button variant='green' onClick={startGame}>
-                  Start New Game
-                </Button>
-              )}
+              {roomData &&
+                roomData.members.length === 4 &&
+                playerSeat !== null && (
+                  <Button variant='green' onClick={startGame}>
+                    Start New Game
+                  </Button>
+                )}
+              {roomData &&
+                roomData.members.length !== 4 &&
+                playerSeat !== null && (
+                  <Button
+                    variant='green'
+                    onClick={() => console.log('Show Room Link')}
+                  >
+                    Invite friends to start a game
+                  </Button>
+                )}
             </Container>
           )}
 

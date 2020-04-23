@@ -42,7 +42,7 @@ const CompanyLogo = styled.button`
   padding: 0;
   cursor: pointer;
   outline: 0;
-  font-size: ${metrics.smallText}px;
+  font-size: ${metrics.regularText}px;
 `
 
 const HeaderWithRouter = (props) => {
@@ -77,7 +77,7 @@ const HeaderWithRouter = (props) => {
           <CompanyLogo
             onClick={() => (userId ? pushTo('/dashboard') : pushTo('/'))}
           >
-            HIGHLOWJACK.LIFE
+            HIGHLOWJACK dot life
           </CompanyLogo>
           {userId && menuButtonState()}
         </HeaderInner>

@@ -1,14 +1,13 @@
 /** @jsx jsx */
 import { useState, useContext, useEffect, Suspense } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import { jsx, Button, Flex } from 'theme-ui'
 import 'firebase/firestore'
-import { jsx } from 'theme-ui'
-import { P, H1, Button, Input, Form, BodyWrapper } from '../components'
+import { P, H1, Input, Form, BodyWrapper } from '../components'
 import { UserContext } from '../contexts/userContext'
 import { ToastContext } from '../contexts/toastContext'
 import firebase from '../firebase.js'
 import ErrorBoundary from '../components/ErrorBoundary'
-//import Profile from './Profile'
 
 const Dashboard = (props) => {
   const { userState, userDispatch } = useContext(UserContext)
@@ -18,9 +17,11 @@ const Dashboard = (props) => {
   const [username, setUsername] = useState(null)
   const [moreInfoComplete, setMoreInfoComplete] = useState(false)
   const [openRooms, setOpenRooms] = useState([])
+  const [myRooms, setMyRooms] = useState([])
   const history = useHistory()
 
   const db = firebase.firestore()
+  const myRoomsRef = db.collection('roomDetail') // where
   const roomsRef = db.collection('roomDetail')
   const queueRef = db.collection('queue')
 
@@ -34,7 +35,7 @@ const Dashboard = (props) => {
     }
   }, [])
 
-  const fetchRooms = async () => {
+  const fetchOpenRooms = async () => {
     try {
       const roomsArr = []
       const querySnapshot = await roomsRef.get()
@@ -48,7 +49,43 @@ const Dashboard = (props) => {
   }
 
   useEffect(() => {
-    fetchRooms()
+    fetchOpenRooms()
+  }, [])
+
+  const fetchMyRooms = async () => {
+    try {
+      const roomsArr = []
+      const querySnapshot = await roomsRef.get()
+      querySnapshot.forEach((doc) => {
+        roomsArr.push({ id: doc.id, ...doc.data() })
+      })
+      setOpenRooms(roomsArr)
+    } catch (error) {
+      console.log(error)
+    }
+    // return unsubscribe callback
+  }
+
+  useEffect(() => {
+    let unsubscribe
+    let unsubscribeMyRooms
+    // let unsubscribeOpenRooms
+
+    unsubscribeMyRooms = fetchMyRooms()
+    // unsubscribeOpenRooms = fetchOpenRooms()
+
+    unsubscribe = myRoomsRef.onSnapshot((snap) => {
+      if (!snap.exists) {
+        console.log('No such Room!')
+      } else {
+        console.log(snap.data())
+      }
+    })
+
+    return () => {
+      unsubscribe()
+      unsubscribeMyRooms()
+    }
   }, [])
 
   const requestNotifications = () => {
@@ -134,7 +171,9 @@ const Dashboard = (props) => {
               autoComplete='family-name'
             />
           </div>
-          <Button onClick={(e) => onClickSubmit(e)}>Submit</Button>
+          <Button variant='flatgreen' onClick={(e) => onClickSubmit(e)}>
+            Submit
+          </Button>
         </Form>
       </BodyWrapper>
     )
@@ -182,33 +221,66 @@ const Dashboard = (props) => {
           Join an open room or create a private one <br />
           to play games, watch videos, and chat with your Friends.
         </P>
-        <div sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-          <Button
-            onClick={(e) => {
-              handleJoinRoom()
-            }}
-          >
-            Join Open Room
-          </Button>
-          <Button
-            onClick={(e) => {
-              handleCreateNewRoom()
-            }}
-          >
-            Create Room
-          </Button>
+        <div
+          sx={{
+            maxWidth: '500px',
+            display: 'grid',
+            gridGap: 4,
+          }}
+        >
+          <div>
+            <Button
+              variant='flatgreen'
+              onClick={(e) => {
+                handleCreateNewRoom()
+              }}
+            >
+              Create Room
+            </Button>
+          </div>
+          <div>
+            <Flex>
+              <h2>My Rooms</h2>
+            </Flex>
+            <ErrorBoundary>
+              <Suspense fallback={<div>Loading...</div>}>
+                <ul>
+                  {openRooms.map((room, i) => (
+                    <li key={i}>
+                      <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </Suspense>
+            </ErrorBoundary>
+          </div>
+          <div>
+            <h2>Open Rooms</h2>
+            <ErrorBoundary>
+              <Suspense fallback={<div>Loading...</div>}>
+                <ul>
+                  {openRooms.map((room, i) => (
+                    <li key={i}>
+                      <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </Suspense>
+            </ErrorBoundary>
+          </div>
+          {false && (
+            <div sx={{ display: 'flex' }}>
+              <Button
+                variant='flatgreen'
+                onClick={(e) => {
+                  handleJoinRoom()
+                }}
+              >
+                Join Queue
+              </Button>
+            </div>
+          )}
         </div>
-        <ErrorBoundary>
-          <Suspense fallback={<div>Loading...</div>}>
-            <ul>
-              {openRooms.map((room, i) => (
-                <li key={i}>
-                  <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
-                </li>
-              ))}
-            </ul>
-          </Suspense>
-        </ErrorBoundary>
       </BodyWrapper>
     )
   }

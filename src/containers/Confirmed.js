@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Button, CenteredDiv, Message, Overlay } from '../components'
 import firebase from '../firebase.js'
 import 'firebase/firestore'
@@ -74,6 +74,8 @@ const Confirmed = (props) => {
         <Message color='darkseagreen'>
           You are now confirmed! Navigate back to the app!
         </Message>
+        <Link to='/'>Dashboard</Link>
+
         <a href='/'>Click Here</a>
       </CenteredDiv>
     )

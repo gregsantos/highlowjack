@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { metrics } from "../themes";
-import { H1, H2, P, BodyWrapper } from "../components";
+import React from 'react'
+import styled from 'styled-components'
+import { metrics } from '../themes'
+import { H1, H2, P, BodyWrapper } from '../components'
 
 const OL = styled.ol`
   font-size: ${metrics.smallText}px;
@@ -9,7 +9,7 @@ const OL = styled.ol`
   margin-left: ${metrics.baseUnit * 3}px;
   padding-left: 0;
   margin-bottom: ${metrics.baseUnit * 3}px;
-`;
+`
 
 const UL = styled.ul`
   font-size: ${metrics.smallText}px;
@@ -17,7 +17,7 @@ const UL = styled.ul`
   margin-left: ${metrics.baseUnit * 3}px;
   padding-left: 0;
   margin-bottom: ${metrics.baseUnit * 3}px;
-`;
+`
 
 const PrivacyPolicy = () => {
   return (
@@ -33,22 +33,22 @@ const PrivacyPolicy = () => {
         trade mark law.
       </P>
       <H2>2. Use License</H2>
-      <OL type="a">
+      <OL type='a'>
         <li>
           Permission is allowed to temporarily download one duplicate of the
-          materials (data or programming) on react-firebase-essentials.com's
-          site for individual and non-business use only. This is the just a
-          permit of license and not an exchange of title, and under this permit
-          you may not:
-          <OL type="i">
+          materials (data or programming) on highlowjack.life's site for
+          individual and non-business use only. This is the just a permit of
+          license and not an exchange of title, and under this permit you may
+          not:
+          <OL type='i'>
             <li>modify or copy the materials;</li>
             <li>
               use the materials for any commercial use , or for any public
-              presentation (business or non-business);{" "}
+              presentation (business or non-business);{' '}
             </li>
             <li>
               attempt to decompile or rebuild any product or material contained
-              on react-firebase-essentials.com's site;
+              on highlowjack.life's site;
             </li>
             <li>
               remove any copyright or other restrictive documentations from the
@@ -62,75 +62,69 @@ const PrivacyPolicy = () => {
         </li>
         <li>
           This permit might consequently be terminated if you disregard any of
-          these confinements and may be ended by react-firebase-essentials.com
-          whenever deemed. After permit termination or when your viewing permit
-          is terminated, you must destroy any downloaded materials in your
+          these confinements and may be ended by highlowjack.life whenever
+          deemed. After permit termination or when your viewing permit is
+          terminated, you must destroy any downloaded materials in your
           ownership whether in electronic or printed form.
         </li>
       </OL>
       <H2>3. Disclaimer</H2>
-      <OL type="a">
+      <OL type='a'>
         <li>
-          The materials on react-firebase-essentials.com's site are given "as
-          is". react-firebase-essentials.com makes no guarantees, communicated
-          or suggested, and thus renounces and nullifies every single other
-          warranties, including without impediment, inferred guarantees or
-          states of merchantability, fitness for a specific reason, or
-          non-encroachment of licensed property or other infringement of rights.
-          Further, react-firebase-essentials.com does not warrant or make any
-          representations concerning the precision, likely results, or
-          unwavering quality of the utilization of the materials on its Internet
-          site or generally identifying with such materials or on any
-          destinations connected to this website.
+          The materials on highlowjack.life's site are given "as is".
+          highlowjack.life makes no guarantees, communicated or suggested, and
+          thus renounces and nullifies every single other warranties, including
+          without impediment, inferred guarantees or states of merchantability,
+          fitness for a specific reason, or non-encroachment of licensed
+          property or other infringement of rights. Further, highlowjack.life
+          does not warrant or make any representations concerning the precision,
+          likely results, or unwavering quality of the utilization of the
+          materials on its Internet site or generally identifying with such
+          materials or on any destinations connected to this website.
         </li>
       </OL>
       <H2>4. Constraints</H2>
       <P>
-        In no occasion should react-firebase-essentials.com or its suppliers
-        subject for any harms (counting, without constraint, harms for loss of
-        information or benefit, or because of business interference,) emerging
-        out of the utilization or powerlessness to utilize the materials on
-        react-firebase-essentials.com's Internet webpage, regardless of the
-        possibility that react-firebase-essentials.com or a
-        react-firebase-essentials.com approved agent has been told orally or in
-        written of the likelihood of such harm. Since a few purviews don't
-        permit constraints on inferred guarantees, or impediments of obligation
-        for weighty or coincidental harms, these confinements may not make a
-        difference to you.
+        In no occasion should highlowjack.life or its suppliers subject for any
+        harms (counting, without constraint, harms for loss of information or
+        benefit, or because of business interference,) emerging out of the
+        utilization or powerlessness to utilize the materials on
+        highlowjack.life's Internet webpage, regardless of the possibility that
+        highlowjack.life or a highlowjack.life approved agent has been told
+        orally or in written of the likelihood of such harm. Since a few
+        purviews don't permit constraints on inferred guarantees, or impediments
+        of obligation for weighty or coincidental harms, these confinements may
+        not make a difference to you.
       </P>
       <H2>5. Amendments and Errata</H2>
       <P>
-        The materials showing up on react-firebase-essentials.com's site could
-        incorporate typographical, or photographic mistakes.
-        react-firebase-essentials.com does not warrant that any of the materials
-        on its site are exact, finished, or current.
-        react-firebase-essentials.com may roll out improvements to the materials
-        contained on its site whenever without notification.
-        react-firebase-essentials.com does not, then again, make any dedication
-        to update the materials.
+        The materials showing up on highlowjack.life's site could incorporate
+        typographical, or photographic mistakes. highlowjack.life does not
+        warrant that any of the materials on its site are exact, finished, or
+        current. highlowjack.life may roll out improvements to the materials
+        contained on its site whenever without notification. highlowjack.life
+        does not, then again, make any dedication to update the materials.
       </P>
       <H2>6. Links</H2>
       <P>
-        react-firebase-essentials.com has not checked on the majority of the
-        websites or links connected to its website and is not in charge of the
-        substance of any such connected webpage. The incorporation of any
-        connection does not infer support by react-firebase-essentials.com of
-        the site. Utilization of any such connected site is at the user's own
-        risk.
+        highlowjack.life has not checked on the majority of the websites or
+        links connected to its website and is not in charge of the substance of
+        any such connected webpage. The incorporation of any connection does not
+        infer support by highlowjack.life of the site. Utilization of any such
+        connected site is at the user's own risk.
       </P>
       <H2>7. Site Terms of Use Modifications</H2>
       <P>
-        react-firebase-essentials.com may update these terms of utilization for
-        its website whenever without notification. By utilizing this site you
-        are consenting to be bound by the then current form of these Terms and
-        Conditions of Use.
+        highlowjack.life may update these terms of utilization for its website
+        whenever without notification. By utilizing this site you are consenting
+        to be bound by the then current form of these Terms and Conditions of
+        Use.
       </P>
       <H2>8. Governing Law</H2>
       <P>
-        Any case identifying with react-firebase-essentials.com's site should be
-        administered by the laws of the country of United States
-        react-firebase-essentials.com State without respect to its contention of
-        law provisions.
+        Any case identifying with highlowjack.life's site should be administered
+        by the laws of the country of United States highlowjack.life State
+        without respect to its contention of law provisions.
       </P>
       <P>General Terms and Conditions applicable to Use of a Web Site.</P>
       <H1>Privacy Policy</H1>
@@ -181,7 +175,7 @@ const PrivacyPolicy = () => {
         secure and maintained.
       </P>
     </BodyWrapper>
-  );
-};
+  )
+}
 
-export default PrivacyPolicy;
+export default PrivacyPolicy

@@ -5,9 +5,9 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
 import {
   FaUserSecret,
-  FaDiscourse,
+  FaRegTimesCircle,
   FaGenderless,
-  FaTimes,
+  FaTimesCircle,
 } from 'react-icons/fa'
 import { P, H1, Input, Form, RoomWrapper } from '../components'
 import { useSession } from '../App'
@@ -26,6 +26,7 @@ const RoomPage = (props) => {
   const [bidSuit, setBidSuit] = useState('s')
   const id = props.match.params.id
   const db = firebase.firestore()
+  const userRef = db.collection('users').doc(user.uid)
   const roomRef = db.collection('roomDetail').doc(id)
   const gamesRef = db.collection('games')
   const gameRef = db.collection('games').doc(id)
@@ -36,7 +37,7 @@ const RoomPage = (props) => {
     db.runTransaction((transaction) => {
       return transaction.get(roomRef).then((roomDoc) => {
         if (!roomDoc.exists) {
-          throw 'Room does not exist!'
+          throw new Error('Room does not exist!')
         }
         const members = roomDoc.data().members
         if (members.length <= 3) {
@@ -48,6 +49,9 @@ const RoomPage = (props) => {
             }
           }
           transaction.update(roomRef, getUpdate())
+          transaction.update(userRef, {
+            myRooms: firebase.firestore.FieldValue.arrayUnion(roomDoc.id),
+          })
           return members
         } else {
           return Promise.reject('Sorry! Room is already full.')
@@ -57,7 +61,7 @@ const RoomPage = (props) => {
       .then((members) => {
         // const playerSeat = members.findIndex((m) => m === user.uid)
         // setPlayerSeat(playerSeat)
-        console.log('User Joined Room ', members.length)
+        console.log('User Joined Room with', members)
       })
       .catch(function (err) {
         // "room is already full" error.
@@ -383,7 +387,7 @@ const RoomPage = (props) => {
                 gameData.trick !== 0 &&
                 gameData.turn === playerSeat && (
                   <Button variant='card' onClick={() => playCard(i, card)}>
-                    <FaTimes />
+                    <FaRegTimesCircle />
                   </Button>
                 )}
             </div>
@@ -539,8 +543,12 @@ const RoomPage = (props) => {
               {roomData && playerSeat !== null && renderTable()}
               {roomData && roomData.state !== 'FULL' && playerSeat === null && (
                 <div>
-                  <Container sx={{ color: 'muted' }}>
-                    <h2>There's an Open Seat!</h2>
+                  <Container>
+                    <div
+                      sx={{ fontSize: ['1em', '1.5em', null], color: 'muted' }}
+                    >
+                      There's an Open Seat!
+                    </div>
                   </Container>
 
                   <Container>
@@ -568,7 +576,10 @@ const RoomPage = (props) => {
             <div sx={{ backgroundColor: 'white' }} />
             <div sx={{ alignSelf: 'center', paddingTop: '15px' }}>
               <Container>
-                <FaUserSecret size='6em' />
+                {playerSeat === null && <FaUserSecret size='6em' />}
+                {playerSeat !== null && user.photoURL && (
+                  <img src={user.photoURL} width='80px' />
+                )}
               </Container>
               <Container>
                 <h3>{playerSeat === null ? 'Open Seat' : user.displayName}</h3>

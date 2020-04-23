@@ -3,7 +3,12 @@ import { jsx, Button, Select, Radio, Label } from 'theme-ui'
 import React, { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
-import { FaUserSecret, FaDiscourse } from 'react-icons/fa'
+import {
+  FaUserSecret,
+  FaDiscourse,
+  FaGenderless,
+  FaTimes,
+} from 'react-icons/fa'
 import { P, H1, Input, Form, RoomWrapper } from '../components'
 import { useSession } from '../App'
 import firebase from '../firebase.js'
@@ -377,7 +382,9 @@ const RoomPage = (props) => {
               {card !== 'outline' &&
                 gameData.trick !== 0 &&
                 gameData.turn === playerSeat && (
-                  <button onClick={() => playCard(i, card)}>X</button>
+                  <Button variant='card' onClick={() => playCard(i, card)}>
+                    <FaTimes />
+                  </Button>
                 )}
             </div>
           ))
@@ -537,7 +544,9 @@ const RoomPage = (props) => {
                   </Container>
 
                   <Container>
-                    <button onClick={joinRoom}>Join Room</button>
+                    <Button variant='flatgreen' onClick={joinRoom}>
+                      Join Room
+                    </Button>
                   </Container>
                 </div>
               )}
@@ -562,7 +571,7 @@ const RoomPage = (props) => {
                 <FaUserSecret size='6em' />
               </Container>
               <Container>
-                <h3>{user.displayName}</h3>
+                <h3>{playerSeat === null ? 'Open Seat' : user.displayName}</h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />

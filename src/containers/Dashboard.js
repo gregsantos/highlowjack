@@ -21,8 +21,9 @@ const Dashboard = (props) => {
   const history = useHistory()
 
   const db = firebase.firestore()
-  const myRoomsRef = db.collection('roomDetail') // where
+  //  const myRoomsRef = db.collection('roomDetail') // where
   const roomsRef = db.collection('roomDetail')
+  const userRef = db.collection('users').doc(userState.userId)
   const queueRef = db.collection('queue')
 
   useEffect(() => {
@@ -38,9 +39,12 @@ const Dashboard = (props) => {
   const fetchOpenRooms = async () => {
     try {
       const roomsArr = []
-      const querySnapshot = await roomsRef.get()
+      const querySnapshot = await roomsRef.where('state', '==', 'OPEN').get()
       querySnapshot.forEach((doc) => {
-        roomsArr.push({ id: doc.id, ...doc.data() })
+        roomsArr.push({
+          id: doc.id,
+          ...doc.data(),
+        })
       })
       setOpenRooms(roomsArr)
     } catch (error) {
@@ -50,42 +54,7 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     fetchOpenRooms()
-  }, [])
-
-  const fetchMyRooms = async () => {
-    try {
-      const roomsArr = []
-      const querySnapshot = await roomsRef.get()
-      querySnapshot.forEach((doc) => {
-        roomsArr.push({ id: doc.id, ...doc.data() })
-      })
-      setOpenRooms(roomsArr)
-    } catch (error) {
-      console.log(error)
-    }
-    // return unsubscribe callback
-  }
-
-  useEffect(() => {
-    let unsubscribe
-    let unsubscribeMyRooms
-    // let unsubscribeOpenRooms
-
-    unsubscribeMyRooms = fetchMyRooms()
-    // unsubscribeOpenRooms = fetchOpenRooms()
-
-    unsubscribe = myRoomsRef.onSnapshot((snap) => {
-      if (!snap.exists) {
-        console.log('No such Room!')
-      } else {
-        console.log(snap.data())
-      }
-    })
-
-    return () => {
-      unsubscribe()
-      unsubscribeMyRooms()
-    }
+    console.log(userState)
   }, [])
 
   const requestNotifications = () => {
@@ -193,24 +162,30 @@ const Dashboard = (props) => {
 
     const handleCreateNewRoom = () => {
       const newRoomRef = roomsRef.doc()
-      newRoomRef
-        .set({
-          creator: userState.userId,
-          members: firebase.firestore.FieldValue.arrayUnion(userState.userId),
-          state: 'OPEN',
-          private: false,
-          lastMessage: {
-            from: 'Host',
-            text: 'Welcome!',
-            timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
-          },
-        })
+      const newRoomData = {
+        creator: userState.userId,
+        members: firebase.firestore.FieldValue.arrayUnion(userState.userId),
+        state: 'OPEN',
+        private: false,
+        lastMessage: {
+          from: 'Host',
+          text: 'Welcome!',
+          timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+        },
+      }
+      const batch = db.batch()
+      batch.set(newRoomRef, newRoomData)
+      batch.update(userRef, {
+        myRooms: firebase.firestore.FieldValue.arrayUnion(newRoomRef.id),
+      })
+      batch
+        .commit()
         .then(() => {
           console.log('New Room created: ', newRoomRef.id)
           return history.push(`/room/${newRoomRef.id}`)
         })
-        .catch((e) => {
-          console.log(e)
+        .catch(() => {
+          console.log('Error Creating new game')
         })
     }
 
@@ -245,9 +220,9 @@ const Dashboard = (props) => {
             <ErrorBoundary>
               <Suspense fallback={<div>Loading...</div>}>
                 <ul>
-                  {openRooms.map((room, i) => (
+                  {userState.userData.myRooms.map((room, i) => (
                     <li key={i}>
-                      <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
+                      <Link to={`room/${room}`}>Room ID: {room}</Link>
                     </li>
                   ))}
                 </ul>

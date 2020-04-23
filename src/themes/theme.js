@@ -92,6 +92,14 @@ export default {
       border: 'solid 3px indianred',
       margin: '0.75em 0.75em 0.75em 0em',
     },
+    card: {
+      color: 'green',
+      bg: 'darkseagreen',
+      fontSize: '.75em',
+      border: 'solid 1px indianred',
+      margin: '.25em .25em',
+      padding: '2px 0px 0px 0px',
+    },
     bidgroup: {
       color: 'green',
       bg: 'darkseagreen',

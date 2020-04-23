@@ -24,10 +24,6 @@ const RoomPage = (props) => {
   const [bidPoint, setBidPoint] = useState(0)
   const [bidSuit, setBidSuit] = useState('s')
   const isDealer = gameData && gameData.dealer === playerSeat
-  // set positions
-  // const members = gameData && gameData.members
-  // const seatsAfter = members.splice(playerSeat)
-  // const positions = members.push(seatsAfter)
   // rout ish
   const { id } = useParams()
   const history = useHistory()
@@ -38,7 +34,7 @@ const RoomPage = (props) => {
   const gamesRef = db.collection('games')
   const gameRef = db.collection('games').doc(id)
 
-  console.log('uid', userId, 'Seat: ', playerSeat, 'Positions', positions)
+  console.log('uid', userData, 'Seat: ', playerSeat, 'Positions', positions)
 
   const joinRoom = () => {
     db.runTransaction((transaction) => {
@@ -52,12 +48,16 @@ const RoomPage = (props) => {
             const newState = members.length === 3 ? 'FULL' : 'OPEN'
             return {
               members: firebase.firestore.FieldValue.arrayUnion(user.uid),
+              memberProfiles: firebase.firestore.FieldValue.arrayUnion({
+                username: userData.username,
+                profilePic: userData.profilePic,
+              }),
               state: newState,
             }
           }
           transaction.update(roomRef, getUpdate())
           transaction.update(userRef, {
-            myRooms: firebase.firestore.FieldValue.arrayUnion(roomDoc.id),
+            userRooms: firebase.firestore.FieldValue.arrayUnion(roomDoc.id),
           })
           return members
         } else {

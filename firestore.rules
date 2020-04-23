@@ -13,7 +13,7 @@ service cloud.firestore {
       allow read, write: if true;
     }
     match /users/{uid} {
-      allow write: if request.resource.data.keys().hasOnly(['email']) || 
+      allow write: if request.resource.data.keys().hasOnly(['email', 'givenname', 'familyname', 'profilePic', 'userRooms']) || 
       request.resource.data.firstName is string
       && request.resource.data.lastName is string
       && request.auth.uid == uid ||

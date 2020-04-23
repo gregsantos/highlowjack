@@ -110,6 +110,10 @@ const SignIn = () => {
         if (result.additionalUserInfo.isNewUser) {
           db.collection('users').doc(result.user.uid).set({
             email: result.additionalUserInfo.profile.email,
+            /*               givenname: result.additionalUserInfo.profile.givenname,
+              familyname: result.additionalUserInfo.profile.familyname,
+              profilePic: result.additionalUserInfo.profile.picture,
+              userRooms: [''], */
           })
         }
       })

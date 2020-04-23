@@ -8,8 +8,10 @@ import { UserContext } from '../contexts/userContext'
 import { ToastContext } from '../contexts/toastContext'
 import firebase from '../firebase.js'
 import ErrorBoundary from '../components/ErrorBoundary'
+import { useSession } from '../App'
 
 const Dashboard = (props) => {
+  const user = useSession()
   const { userState, userDispatch } = useContext(UserContext)
   const { sendMessage } = useContext(ToastContext)
   const [firstName, setFirstName] = useState(null)
@@ -86,6 +88,8 @@ const Dashboard = (props) => {
             username: username,
             firstName: firstName,
             lastName: lastName,
+            profilePic: user.photoURL,
+            userRooms: [],
           },
           { merge: true }
         )
@@ -93,9 +97,11 @@ const Dashboard = (props) => {
           userDispatch({
             type: 'updateProfile',
             payload: {
+              username: username,
               firstName: firstName,
               lastName: lastName,
-              username: username,
+              profilePic: user.photoURL,
+              userRooms: [],
             },
           })
           setMoreInfoComplete(true)
@@ -146,6 +152,7 @@ const Dashboard = (props) => {
   }
 
   const dashboard = () => {
+    console.log(userState.userData, user.photoURL)
     const handleJoinRoom = async () => {
       try {
         await queueRef.doc(userState.userId).set({
@@ -173,7 +180,7 @@ const Dashboard = (props) => {
       const batch = db.batch()
       batch.set(newRoomRef, newRoomData)
       batch.update(userRef, {
-        myRooms: firebase.firestore.FieldValue.arrayUnion(newRoomRef.id),
+        userRooms: firebase.firestore.FieldValue.arrayUnion(newRoomRef.id),
       })
       batch
         .commit()
@@ -217,9 +224,9 @@ const Dashboard = (props) => {
             <ErrorBoundary>
               <Suspense fallback={<div>Loading...</div>}>
                 <ul>
-                  {userState.userData.myRooms.map((room, i) => (
+                  {userState.userData.userRooms.map((room, i) => (
                     <li key={i}>
-                      <Link to={`room/${room}`}>Room ID: {room}</Link>
+                      <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
                     </li>
                   ))}
                 </ul>

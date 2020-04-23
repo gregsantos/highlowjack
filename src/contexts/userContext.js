@@ -5,9 +5,11 @@ const initialState = {
   userId: null,
   userData: {
     email: null,
-    username: null,
     firstName: null,
     lastName: null,
+    username: null,
+    profilePic: '',
+    userRooms: [],
     pushTokenWeb: null,
   },
   styleMode: styleMode ? styleMode : 'main',

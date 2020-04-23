@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, Button, Select, Radio, Label } from 'theme-ui'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
 import { FaUserSecret, FaRegTimesCircle } from 'react-icons/fa'
@@ -10,23 +10,35 @@ import firebase from '../firebase.js'
 import '../css/cards.css'
 import initGame from '../helpers/initGame'
 import { tallyTrick } from '../helpers/gameHelpers'
+import { UserContext } from '../contexts/userContext'
 
 const RoomPage = (props) => {
+  // state session ish
   const user = useSession()
-  const history = useHistory()
+  const { userState, userDispatch } = useContext(UserContext)
+  const { userData, userId } = userState
   const [roomData, setRoomData] = useState(null)
   const [gameData, setGameData] = useState(null)
   const [playerSeat, setPlayerSeat] = useState(null)
+  const [positions, setPositions] = useState([])
   const [bidPoint, setBidPoint] = useState(0)
   const [bidSuit, setBidSuit] = useState('s')
-  const id = props.match.params.id
+  const isDealer = gameData && gameData.dealer === playerSeat
+  // set positions
+  // const members = gameData && gameData.members
+  // const seatsAfter = members.splice(playerSeat)
+  // const positions = members.push(seatsAfter)
+  // rout ish
+  const { id } = useParams()
+  const history = useHistory()
+  // fb ish
   const db = firebase.firestore()
   const userRef = db.collection('users').doc(user.uid)
   const roomRef = db.collection('roomDetail').doc(id)
   const gamesRef = db.collection('games')
   const gameRef = db.collection('games').doc(id)
-  const isDealer = gameData && gameData.dealer === playerSeat
-  console.log('Dealer:', isDealer, 'Seat: ', playerSeat)
+
+  console.log('uid', userId, 'Seat: ', playerSeat, 'Positions', positions)
 
   const joinRoom = () => {
     db.runTransaction((transaction) => {
@@ -278,6 +290,7 @@ const RoomPage = (props) => {
           return <div className={`card outline`} sx={{ fontSize: [3, 5, 6] }} />
         }
         if (!newTrick) {
+          var randomN = Math.floor(Math.random() * 8) - 8
           return (
             <div
               className={`card ${
@@ -285,6 +298,7 @@ const RoomPage = (props) => {
               } shadow no-border`}
               sx={{
                 fontSize: [3, 5, 6],
+                transform: `rotateZ(${randomN}deg)`,
               }}
             />
           )
@@ -421,6 +435,7 @@ const RoomPage = (props) => {
     return leaveGame
   }
 
+  // fetch room effect
   useEffect(() => {
     let unsubscribe
     let unsubscribeGame
@@ -432,11 +447,25 @@ const RoomPage = (props) => {
           const data = snap.data()
           // fetchGame
           unsubscribeGame = fetchGame()
+          // set room state
+          setRoomData({ ...data, id: snap.id })
           // set player seat
           const playerSeat = data.members.findIndex((m) => m === user.uid)
           setPlayerSeat(playerSeat === -1 ? null : playerSeat)
-          setRoomData({ ...data, id: snap.id })
-          console.log('Room data:', data, 'User: ', user, 'Seat: ', playerSeat)
+          const members = data.members
+          const getPositions = () => {
+            if (playerSeat === 3) {
+              return members
+            }
+            if (playerSeat === -1) {
+              return members.push(user.uid)
+            } else {
+              const seatsAfter = members.splice(playerSeat)
+              return [...seatsAfter, ...members]
+            }
+          }
+          const positions = getPositions()
+          setPositions(positions)
         }
       })
       return () => {
@@ -492,21 +521,31 @@ const RoomPage = (props) => {
               ],
             }}
           >
-            <div sx={{ alignSelf: 'center', paddingTop: '15px' }}>
+            <div
+              sx={{
+                alignSelf: 'center',
+                paddingTop: '15px',
+              }}
+            >
               <Container sx={{ height: 'auto' }}>
                 <FaUserSecret size='6em' />
               </Container>
               <Container>
-                <h3>Player 2</h3>
+                <h3>{positions[1]}</h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />
-            <div sx={{ alignSelf: 'center', paddingTop: '15px' }}>
+            <div
+              sx={{
+                alignSelf: 'center',
+                paddingTop: '15px',
+              }}
+            >
               <Container>
                 <FaUserSecret size='6em' />
               </Container>
               <Container>
-                <h3>Player 3</h3>
+                <h3>{positions[2]}</h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />
@@ -517,7 +556,10 @@ const RoomPage = (props) => {
                 <div>
                   <Container>
                     <div
-                      sx={{ fontSize: ['1em', '1.5em', null], color: 'muted' }}
+                      sx={{
+                        fontSize: ['1em', '1.5em', null],
+                        color: 'muted',
+                      }}
                     >
                       There's an Open Seat!
                     </div>
@@ -546,7 +588,12 @@ const RoomPage = (props) => {
             </Container>
 
             <div sx={{ backgroundColor: 'white' }} />
-            <div sx={{ alignSelf: 'center', paddingTop: '15px' }}>
+            <div
+              sx={{
+                alignSelf: 'center',
+                paddingTop: '15px',
+              }}
+            >
               <Container>
                 {playerSeat === null && <FaUserSecret size='6em' />}
                 {playerSeat !== null && user.photoURL && (
@@ -554,16 +601,21 @@ const RoomPage = (props) => {
                 )}
               </Container>
               <Container>
-                <h3>{playerSeat === null ? 'Open Seat' : user.displayName}</h3>
+                <h3>{playerSeat === null ? 'Open Seat' : userData.username}</h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />
-            <div sx={{ alignSelf: 'center', paddingTop: '15px' }}>
+            <div
+              sx={{
+                alignSelf: 'center',
+                paddingTop: '15px',
+              }}
+            >
               <Container>
                 <FaUserSecret size='6em' />
               </Container>
               <Container>
-                <h3>Player 4</h3>
+                <h3>{positions[3]}</h3>
               </Container>
             </div>
           </div>

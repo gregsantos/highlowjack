@@ -17,11 +17,9 @@ const Dashboard = (props) => {
   const [username, setUsername] = useState(null)
   const [moreInfoComplete, setMoreInfoComplete] = useState(false)
   const [openRooms, setOpenRooms] = useState([])
-  const [myRooms, setMyRooms] = useState([])
   const history = useHistory()
 
   const db = firebase.firestore()
-  //  const myRoomsRef = db.collection('roomDetail') // where
   const roomsRef = db.collection('roomDetail')
   const userRef = db.collection('users').doc(userState.userId)
   const queueRef = db.collection('queue')
@@ -54,7 +52,6 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     fetchOpenRooms()
-    console.log(userState)
   }, [])
 
   const requestNotifications = () => {

@@ -356,7 +356,7 @@ const RoomPage = (props) => {
     const renderHand = () => {
       const seat = roomData.members.includes(user.uid) ? playerSeat : 0
       const playerHand = gameData.players[seat].hand
-      return playerSeat
+      return playerSeat !== null
         ? [
             ...playerHand,
             ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),
@@ -382,7 +382,7 @@ const RoomPage = (props) => {
         : null
     }
 
-    if (playerSeat !== 0) {
+    if (playerSeat !== null) {
       return (
         <div
           sx={{
@@ -554,15 +554,14 @@ const RoomPage = (props) => {
                   <img
                     alt='userPhoto'
                     src={roomData.memberProfiles[positions[1].seat].profilePic}
-                    width='80px'
+                    sx={{ width: ['65px', '100px', '125px'] }}
                   />
                 ) : (
                   <FaUserSecret size='6em' />
                 )}
               </Container>
               <Container>
-                <h3>
-                  {' '}
+                <h3 sx={{ mt: ['2px', '10px'] }}>
                   {(positions &&
                     roomData.memberProfiles[positions[1].seat] &&
                     roomData.memberProfiles[positions[1].seat].username) ||
@@ -584,14 +583,14 @@ const RoomPage = (props) => {
                   <img
                     alt='userPhoto'
                     src={roomData.memberProfiles[positions[2].seat].profilePic}
-                    width='80px'
+                    sx={{ width: ['65px', '100px', '125px'] }}
                   />
                 ) : (
                   <FaUserSecret size='6em' />
                 )}
               </Container>
               <Container>
-                <h3>
+                <h3 sx={{ mt: ['2px', '10px'] }}>
                   {(positions &&
                     roomData.memberProfiles[positions[2].seat] &&
                     roomData.memberProfiles[positions[2].seat].username) ||
@@ -648,11 +647,17 @@ const RoomPage = (props) => {
               <Container>
                 {playerSeat === null && <FaUserSecret size='6em' />}
                 {playerSeat !== null && user.photoURL && (
-                  <img alt='userPhoto' src={user.photoURL} width='80px' />
+                  <img
+                    alt='userPhoto'
+                    src={user.photoURL}
+                    sx={{ width: ['65px', '100px', '125px'] }}
+                  />
                 )}
               </Container>
               <Container>
-                <h3>{playerSeat === null ? 'Open Seat' : userData.username}</h3>
+                <h3 sx={{ mt: ['2px', '10px'] }}>
+                  {playerSeat === null ? 'Open Seat' : userData.username}
+                </h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />
@@ -669,14 +674,14 @@ const RoomPage = (props) => {
                   <img
                     alt='userPhoto'
                     src={roomData.memberProfiles[positions[3].seat].profilePic}
-                    width='80px'
+                    sx={{ width: ['65px', '100px', '125px'] }}
                   />
                 ) : (
                   <FaUserSecret size='6em' />
                 )}
               </Container>
               <Container>
-                <h3>
+                <h3 sx={{ mt: ['2px', '10px'] }}>
                   {(positions &&
                     roomData.memberProfiles[positions[3].seat] &&
                     roomData.memberProfiles[positions[3].seat].username) ||
@@ -697,27 +702,49 @@ const RoomPage = (props) => {
             flexDirection: 'column',
           }}
         >
-          {gameData ? (
+          {gameData && playerSeat !== null ? (
             renderCards()
           ) : (
             <Container sx={{ height: '20%' }}>
-              {roomData &&
-                roomData.members.length === 4 &&
-                playerSeat !== null && (
-                  <Button variant='green' onClick={startGame}>
-                    Start New Game
-                  </Button>
-                )}
-              {roomData &&
-                roomData.members.length !== 4 &&
-                playerSeat !== null && (
-                  <Button
-                    variant='green'
-                    onClick={() => console.log('Show Room Link')}
-                  >
-                    Invite friends to start a game
-                  </Button>
-                )}
+              {roomData && roomData.state !== 'FULL' && playerSeat === null && (
+                <div>
+                  <Container>
+                    <div
+                      sx={{
+                        fontSize: ['1em', '1.5em', null],
+                        color: 'muted',
+                      }}
+                    >
+                      There's an Open Seat!
+                    </div>
+                  </Container>
+                </div>
+              )}
+              {roomData && roomData.state !== 'FULL' && playerSeat !== null && (
+                <Button
+                  variant='green'
+                  onClick={() => console.log('Show Room Link')}
+                >
+                  Invite friends to start a game
+                </Button>
+              )}
+              {roomData && roomData.state === 'FULL' && playerSeat === null && (
+                <div
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <h2 sx={{ color: 'muted' }}>
+                    Sorry, there are no seats available
+                  </h2>
+                </div>
+              )}
+              {roomData && roomData.state === 'FULL' && playerSeat !== null && (
+                <Button variant='green' onClick={startGame}>
+                  Start New Game
+                </Button>
+              )}
             </Container>
           )}
 

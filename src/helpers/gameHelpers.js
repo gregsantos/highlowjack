@@ -1,5 +1,20 @@
 import { initDeal } from '../helpers/initGame'
 
+export const getSuit = (suit) => {
+  switch (suit) {
+    case 's':
+      return '♠'
+    case 'c':
+      return '♣'
+    case 'h':
+      return '♥'
+    case 'd':
+      return '♦'
+    default:
+      break
+  }
+}
+
 export const tallyTrick = (members, gameRef) => {
   gameRef
     .get()

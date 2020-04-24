@@ -9,7 +9,7 @@ import { useSession } from '../App'
 import firebase from '../firebase.js'
 import '../css/cards.css'
 import initGame from '../helpers/initGame'
-import { tallyTrick } from '../helpers/gameHelpers'
+import { tallyTrick, getSuit } from '../helpers/gameHelpers'
 import { UserContext } from '../contexts/userContext'
 
 const RoomPage = (props) => {
@@ -26,6 +26,7 @@ const RoomPage = (props) => {
   const isDealer = gameData && gameData.dealer === playerSeat
   const turn = gameData && gameData.turn
   const score = gameData && gameData.score
+  const bid = gameData && gameData.bid
   // rout ish
   const { id } = useParams()
   const history = useHistory()
@@ -766,7 +767,9 @@ const RoomPage = (props) => {
               borderColor: 'indianred',
             }}
           >
-            <Flex sx={{ flex: ['0 1 25px', 'auto', 'auto'] }}>
+            <Flex
+              sx={{ flex: ['0 1 25px', 'auto', 'auto'], alignItems: 'stretch' }}
+            >
               <Box
                 p={2}
                 bg='darkseagreen'
@@ -778,24 +781,89 @@ const RoomPage = (props) => {
                   mr: '.5em',
                 }}
               >
-                <Container>
-                  <h1>{score && score[0]}</h1>
-                </Container>
+                <Flex sx={{ height: '100%', flexDirection: 'row' }}>
+                  <Box
+                    p={2}
+                    bg='darkseagreen'
+                    sx={{
+                      flex: 'auto',
+                      height: '100%',
+                      border: 'solid',
+                      borderWidth: 'medium',
+                      borderColor: 'indianred',
+                      mr: '.5em',
+                    }}
+                  >
+                    <Container>
+                      <h1>{score && score[0]}</h1>
+                    </Container>
+                  </Box>
+                  <Box
+                    p={2}
+                    bg='darkseagreen'
+                    sx={{
+                      flex: 'auto',
+                      border: 'solid',
+                      borderWidth: 'medium',
+                      borderColor: 'indianred',
+                    }}
+                  >
+                    <Container>
+                      <h1>{score && score[1]}</h1>
+                    </Container>
+                  </Box>
+                </Flex>
               </Box>
-              <Box
-                p={2}
-                bg='darkseagreen'
+              <Flex
                 sx={{
-                  flex: 'auto',
-                  border: 'solid',
-                  borderWidth: 'medium',
-                  borderColor: 'indianred',
+                  flexDirection: 'row',
+                  flex: ['auto', 'auto', 'auto'],
                 }}
               >
-                <Container>
-                  <h1>{score && score[1]}</h1>
-                </Container>
-              </Box>
+                <Box
+                  p={2}
+                  bg='darkseagreen'
+                  sx={{
+                    flex: 'auto',
+                    border: 'solid',
+                    borderWidth: 'medium',
+                    borderColor: 'indianred',
+                  }}
+                >
+                  <Flex sx={{ height: '100%', flexDirection: 'row' }}>
+                    <Box
+                      p={2}
+                      bg='darkseagreen'
+                      sx={{
+                        flex: 'auto',
+                        height: '100%',
+                        border: 'solid',
+                        borderWidth: 'medium',
+                        borderColor: 'indianred',
+                        mr: '.5em',
+                      }}
+                    >
+                      <Container>
+                        <h1>{bid && bid.bid}</h1>
+                      </Container>
+                    </Box>
+                    <Box
+                      p={2}
+                      bg='darkseagreen'
+                      sx={{
+                        flex: 'auto',
+                        border: 'solid',
+                        borderWidth: 'medium',
+                        borderColor: 'indianred',
+                      }}
+                    >
+                      <Container>
+                        <h1>{bid && getSuit(bid.suit)}</h1>
+                      </Container>
+                    </Box>
+                  </Flex>
+                </Box>
+              </Flex>
             </Flex>
 
             <Flex

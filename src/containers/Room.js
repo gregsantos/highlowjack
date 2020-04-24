@@ -36,8 +36,6 @@ const RoomPage = (props) => {
   const gamesRef = db.collection('games')
   const gameRef = db.collection('games').doc(id)
 
-  console.log('uid', userId, 'Seat: ', playerSeat, 'Turn', turn, 'Score', score)
-
   const joinRoom = () => {
     db.runTransaction((transaction) => {
       return transaction.get(roomRef).then((roomDoc) => {
@@ -96,18 +94,14 @@ const RoomPage = (props) => {
   }
 
   const handleSelectBid = (e) => {
-    console.log('Select Bid Point', parseInt(e.target.value))
     setBidPoint(parseInt(e.target.value))
   }
 
   const handleSelectSuit = (e) => {
-    console.log('Select Bid Suit', e.target.value)
     setBidSuit(e.target.value)
   }
 
   const handlePass = () => {
-    //const isDealer = playerSeat === gameData.dealer
-    console.log('Is Dealer?', isDealer)
     const nextPlayer = gameData.turn === 3 ? 0 : gameData.turn + 1
     if (isDealer) {
       gameRef.update({
@@ -345,7 +339,6 @@ const RoomPage = (props) => {
           [`players.${playerSeat}.hand`]: cardsLeft,
         })
         .then(() => {
-          console.log('Last trick card played and updated!', newTrickCards)
           tallyTrick(roomData.members, gameRef)
         })
         .catch((error) => {

@@ -165,7 +165,6 @@ const Dashboard = (props) => {
   }
 
   const dashboard = () => {
-    console.log(userState.userData, user.photoURL)
     const handleJoinRoom = async () => {
       try {
         await queueRef.doc(userState.userId).set({

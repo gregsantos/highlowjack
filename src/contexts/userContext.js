@@ -8,7 +8,7 @@ const initialState = {
     firstName: null,
     lastName: null,
     username: null,
-    profilePic: '',
+    profilePic: null,
     userRooms: [],
     pushTokenWeb: null,
   },

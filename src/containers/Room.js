@@ -20,7 +20,7 @@ const RoomPage = (props) => {
   const [roomData, setRoomData] = useState(null)
   const [gameData, setGameData] = useState(null)
   const [playerSeat, setPlayerSeat] = useState(null)
-  const [positions, setPositions] = useState([])
+  const [positions, setPositions] = useState(null)
   const [bidPoint, setBidPoint] = useState(0)
   const [bidSuit, setBidSuit] = useState('s')
   const isDealer = gameData && gameData.dealer === playerSeat
@@ -49,8 +49,9 @@ const RoomPage = (props) => {
             return {
               members: firebase.firestore.FieldValue.arrayUnion(user.uid),
               memberProfiles: firebase.firestore.FieldValue.arrayUnion({
+                id: user.uid,
                 username: userData.username,
-                profilePic: userData.profilePic,
+                profilePic: user.photoURL ?? null,
               }),
               state: newState,
             }
@@ -450,22 +451,41 @@ const RoomPage = (props) => {
           // set room state
           setRoomData({ ...data, id: snap.id })
           // set player seat
-          const playerSeat = data.members.findIndex((m) => m === user.uid)
-          setPlayerSeat(playerSeat === -1 ? null : playerSeat)
-          const members = data.members
+          const playerSeatIndex = data.members.findIndex((m) => m === user.uid)
+          const playerSeat = playerSeatIndex !== -1 ? playerSeatIndex : null
+          setPlayerSeat(playerSeat)
+          // set playerPositions
+          const membersBySeat = [
+            ...data.members,
+            ...Array.from({ length: 4 - data.members.length }, () => null),
+          ]
           const getPositions = () => {
             if (playerSeat === 3) {
-              return members
+              return membersBySeat
             }
-            if (playerSeat === -1) {
-              return members.push(user.uid)
+            if (playerSeat === null && data.members.length < 4) {
+              const membersBySeatIfJoin = [user.uid, ...data.members]
+              //membersBySeat.push(user.uid)
+              let positionsIfJoin = [
+                ...membersBySeatIfJoin,
+                ...Array.from(
+                  { length: 4 - membersBySeatIfJoin.length },
+                  () => null
+                ),
+              ]
+              return positionsIfJoin
             } else {
-              const seatsAfter = members.splice(playerSeat)
-              return [...seatsAfter, ...members]
+              const seatsAfter = membersBySeat.splice(playerSeat)
+              return [...seatsAfter, ...membersBySeat]
             }
           }
-          const positions = getPositions()
+
+          const positions = getPositions().map((p, i) => ({
+            seat: data.members.findIndex((m) => m === p),
+            uid: p,
+          }))
           setPositions(positions)
+          console.log('Position Map', positions, 'User', user) //mark
         }
       })
       return () => {
@@ -527,11 +547,27 @@ const RoomPage = (props) => {
                 paddingTop: '15px',
               }}
             >
-              <Container sx={{ height: 'auto' }}>
-                <FaUserSecret size='6em' />
+              <Container>
+                {positions &&
+                roomData.memberProfiles[positions[1].seat] &&
+                roomData.memberProfiles[positions[1].seat].profilePic ? (
+                  <img
+                    alt='userPhoto'
+                    src={roomData.memberProfiles[positions[1].seat].profilePic}
+                    width='80px'
+                  />
+                ) : (
+                  <FaUserSecret size='6em' />
+                )}
               </Container>
               <Container>
-                <h3>{positions[1]}</h3>
+                <h3>
+                  {' '}
+                  {(positions &&
+                    roomData.memberProfiles[positions[1].seat] &&
+                    roomData.memberProfiles[positions[1].seat].username) ||
+                    'Position 1'}
+                </h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />
@@ -542,10 +578,25 @@ const RoomPage = (props) => {
               }}
             >
               <Container>
-                <FaUserSecret size='6em' />
+                {positions &&
+                roomData.memberProfiles[positions[2].seat] &&
+                roomData.memberProfiles[positions[2].seat].profilePic ? (
+                  <img
+                    alt='userPhoto'
+                    src={roomData.memberProfiles[positions[2].seat].profilePic}
+                    width='80px'
+                  />
+                ) : (
+                  <FaUserSecret size='6em' />
+                )}
               </Container>
               <Container>
-                <h3>{positions[2]}</h3>
+                <h3>
+                  {(positions &&
+                    roomData.memberProfiles[positions[2].seat] &&
+                    roomData.memberProfiles[positions[2].seat].username) ||
+                    'Position 2'}
+                </h3>
               </Container>
             </div>
             <div sx={{ backgroundColor: 'white' }} />
@@ -612,10 +663,25 @@ const RoomPage = (props) => {
               }}
             >
               <Container>
-                <FaUserSecret size='6em' />
+                {positions &&
+                roomData.memberProfiles[positions[3].seat] &&
+                roomData.memberProfiles[positions[3].seat].profilePic ? (
+                  <img
+                    alt='userPhoto'
+                    src={roomData.memberProfiles[positions[3].seat].profilePic}
+                    width='80px'
+                  />
+                ) : (
+                  <FaUserSecret size='6em' />
+                )}
               </Container>
               <Container>
-                <h3>{positions[3]}</h3>
+                <h3>
+                  {(positions &&
+                    roomData.memberProfiles[positions[3].seat] &&
+                    roomData.memberProfiles[positions[3].seat].username) ||
+                    'Position 3'}
+                </h3>
               </Container>
             </div>
           </div>

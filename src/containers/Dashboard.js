@@ -19,6 +19,7 @@ const Dashboard = (props) => {
   const [username, setUsername] = useState(null)
   const [moreInfoComplete, setMoreInfoComplete] = useState(false)
   const [openRooms, setOpenRooms] = useState([])
+  const [userRooms, setUserRooms] = useState([])
   const history = useHistory()
 
   const db = firebase.firestore()
@@ -55,6 +56,18 @@ const Dashboard = (props) => {
   useEffect(() => {
     fetchOpenRooms()
   }, [])
+
+  useEffect(() => {
+    const fetchUserRooms = async () => {
+      try {
+        const userDoc = await userRef.get()
+        setUserRooms(userDoc.data().userRooms)
+      } catch (error) {
+        throw new Error('Problem Fetching User')
+      }
+    }
+    fetchUserRooms()
+  })
 
   const requestNotifications = () => {
     Notification.requestPermission().then((permission) => {
@@ -169,6 +182,11 @@ const Dashboard = (props) => {
       const newRoomData = {
         creator: userState.userId,
         members: firebase.firestore.FieldValue.arrayUnion(userState.userId),
+        memberProfiles: firebase.firestore.FieldValue.arrayUnion({
+          id: user.uid,
+          username: userState.userData.username,
+          profilePic: userState.userData.profilePic ?? null,
+        }),
         state: 'OPEN',
         private: false,
         lastMessage: {
@@ -224,9 +242,9 @@ const Dashboard = (props) => {
             <ErrorBoundary>
               <Suspense fallback={<div>Loading...</div>}>
                 <ul>
-                  {userState.userData.userRooms.map((room, i) => (
+                  {userRooms.map((room, i) => (
                     <li key={i}>
-                      <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
+                      <Link to={`room/${room}`}>Room ID: {room}</Link>
                     </li>
                   ))}
                 </ul>

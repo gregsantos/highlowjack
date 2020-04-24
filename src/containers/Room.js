@@ -24,6 +24,8 @@ const RoomPage = (props) => {
   const [bidPoint, setBidPoint] = useState(0)
   const [bidSuit, setBidSuit] = useState('s')
   const isDealer = gameData && gameData.dealer === playerSeat
+  const turn = gameData && gameData.turn
+  const score = gameData && gameData.score
   // rout ish
   const { id } = useParams()
   const history = useHistory()
@@ -34,7 +36,7 @@ const RoomPage = (props) => {
   const gamesRef = db.collection('games')
   const gameRef = db.collection('games').doc(id)
 
-  console.log('uid', userData, 'Seat: ', playerSeat, 'Positions', positions)
+  console.log('uid', userId, 'Seat: ', playerSeat, 'Turn', turn, 'Score', score)
 
   const joinRoom = () => {
     db.runTransaction((transaction) => {
@@ -544,7 +546,10 @@ const RoomPage = (props) => {
             <div
               sx={{
                 alignSelf: 'center',
-                paddingTop: '15px',
+                paddingTop: ['10px', '15px', null],
+                backgroundColor: `${
+                  turn === (positions && positions[1].seat) && '#daa520'
+                }`,
               }}
             >
               <Container>
@@ -573,7 +578,10 @@ const RoomPage = (props) => {
             <div
               sx={{
                 alignSelf: 'center',
-                paddingTop: '15px',
+                paddingTop: ['10px', '15px', null],
+                backgroundColor: `${
+                  turn === (positions && positions[2].seat) && '#daa520'
+                }`,
               }}
             >
               <Container>
@@ -630,7 +638,7 @@ const RoomPage = (props) => {
 
                   <Container>
                     <button onClick={() => history.push('/dashboard')}>
-                      Join Open Room
+                      Join an Open Room
                     </button>
                   </Container>
                 </div>
@@ -641,7 +649,10 @@ const RoomPage = (props) => {
             <div
               sx={{
                 alignSelf: 'center',
-                paddingTop: '15px',
+                paddingTop: ['10px', '15px', null],
+                backgroundColor: `${
+                  turn === (positions && positions[0].seat) && '#daa520'
+                }`,
               }}
             >
               <Container>
@@ -664,7 +675,10 @@ const RoomPage = (props) => {
             <div
               sx={{
                 alignSelf: 'center',
-                paddingTop: '15px',
+                paddingTop: ['10px', '15px', null],
+                backgroundColor: `${
+                  turn === (positions && positions[3].seat) && '#daa520'
+                }`,
               }}
             >
               <Container>

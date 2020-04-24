@@ -242,11 +242,12 @@ const Dashboard = (props) => {
             <ErrorBoundary>
               <Suspense fallback={<div>Loading...</div>}>
                 <ul>
-                  {userRooms.map((room, i) => (
-                    <li key={i}>
-                      <Link to={`room/${room}`}>Room ID: {room}</Link>
-                    </li>
-                  ))}
+                  {userRooms !== [] &&
+                    userRooms.map((room, i) => (
+                      <li key={i}>
+                        <Link to={`room/${room}`}>Room ID: {room}</Link>
+                      </li>
+                    ))}
                 </ul>
               </Suspense>
             </ErrorBoundary>

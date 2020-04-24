@@ -382,7 +382,7 @@ const RoomPage = (props) => {
         : null
     }
 
-    if (playerSeat) {
+    if (playerSeat !== 0) {
       return (
         <div
           sx={{

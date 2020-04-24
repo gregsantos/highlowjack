@@ -761,50 +761,81 @@ const RoomPage = (props) => {
               )}
             </Container>
           )}
-
-          <Box
+          <Flex
             p={2}
             bg='darkseagreen'
             sx={{
-              flex: '1 1 auto',
+              flexDirection: ['column', 'row', 'column'],
+              height: '100%',
+              p: [1, 1, 2],
               border: 'solid',
               borderWidth: 'medium',
               borderColor: 'indianred',
             }}
           >
+            <Flex sx={{ flex: ['0 1 25px', 'auto', 'auto'] }}>
+              <Box
+                p={2}
+                bg='darkseagreen'
+                sx={{
+                  flex: 'auto',
+                  border: 'solid',
+                  borderWidth: 'medium',
+                  borderColor: 'indianred',
+                  mr: '.5em',
+                }}
+              >
+                <Container>
+                  <h1>{score && score[0]}</h1>
+                </Container>
+              </Box>
+              <Box
+                p={2}
+                bg='darkseagreen'
+                sx={{
+                  flex: 'auto',
+                  border: 'solid',
+                  borderWidth: 'medium',
+                  borderColor: 'indianred',
+                }}
+              >
+                <Container>
+                  <h1>{score && score[1]}</h1>
+                </Container>
+              </Box>
+            </Flex>
+
             <Flex
+              ml={[0, '2px', 0]}
               sx={{
-                height: '100%',
-                display: 'flex',
+                flex: ['1 0 80%', 'auto', '1 0 80%'],
                 flexDirection: 'column',
               }}
             >
               <Box
-                p={1}
-                mb={2}
                 bg='white'
                 sx={{
-                  flex: '75%',
-                  height: '75px',
+                  flex: ['1 1 auto', '1 0 auto', '1 1 75%'],
+                  ml: [0, '1', 0],
+                  mb: [1],
+                  mt: [1, 0, 2],
                   border: 'solid',
                   borderWidth: 'medium',
                   borderColor: 'indianred',
                 }}
               ></Box>
               <Box
-                p={1}
                 bg='white'
                 sx={{
-                  height: '75px',
+                  flex: ['0 1 40px', '0 1 30px', '0 1 50px'],
+                  ml: [0, '1', 0],
                   border: 'solid',
                   borderWidth: 'medium',
                   borderColor: 'indianred',
                 }}
-              >
-                <Container></Container>
-              </Box>
+              ></Box>
             </Flex>
-          </Box>
+          </Flex>
         </aside>
       </div>
     </RoomWrapper>

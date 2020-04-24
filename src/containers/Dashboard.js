@@ -256,11 +256,12 @@ const Dashboard = (props) => {
             <ErrorBoundary>
               <Suspense fallback={<div>Loading...</div>}>
                 <ul>
-                  {openRooms.map((room, i) => (
-                    <li key={i}>
-                      <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
-                    </li>
-                  ))}
+                  {openRooms !== [] &&
+                    openRooms.map((room, i) => (
+                      <li key={i}>
+                        <Link to={`room/${room.id}`}>Room ID: {room.id}</Link>
+                      </li>
+                    ))}
                 </ul>
               </Suspense>
             </ErrorBoundary>

@@ -773,7 +773,6 @@ const RoomPage = (props) => {
               sx={{
                 flex: ['0 1 auto', 'auto', 'auto'],
                 maxHeight: ['60px', '120px', '500px'],
-                backgroundColor: 'red',
               }}
             >
               <Box
@@ -904,7 +903,7 @@ const RoomPage = (props) => {
                   sx={{
                     flex: '1',
                     display: 'flex',
-                    height: ['175px', '280px'],
+                    height: ['150px', '150px', '280px'],
                   }}
                 >
                   <div

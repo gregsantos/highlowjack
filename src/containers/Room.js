@@ -763,7 +763,6 @@ const RoomPage = (props) => {
             bg='darkseagreen'
             sx={{
               flexDirection: ['column', 'row', 'column'],
-              height: '100%',
               p: [1, 1, 2],
               border: 'solid',
               borderWidth: 'medium',
@@ -771,11 +770,14 @@ const RoomPage = (props) => {
             }}
           >
             <Flex
-              sx={{ flex: ['0 1 25px', 'auto', 'auto'], alignItems: 'stretch' }}
+              sx={{
+                flex: ['0 1 auto', 'auto', 'auto'],
+                maxHeight: ['60px', '120px', '500px'],
+                backgroundColor: 'red',
+              }}
             >
               <Box
                 p={2}
-                bg='darkseagreen'
                 sx={{
                   flex: 'auto',
                   border: 'solid',
@@ -798,7 +800,9 @@ const RoomPage = (props) => {
                     }}
                   >
                     <Container>
-                      <h1>{score && score[0]}</h1>
+                      <h1 sx={{ m: [0, '15px', '15px'] }}>
+                        {score && score[0]}
+                      </h1>
                     </Container>
                   </Box>
                   <Box
@@ -812,7 +816,9 @@ const RoomPage = (props) => {
                     }}
                   >
                     <Container>
-                      <h1>{score && score[1]}</h1>
+                      <h1 sx={{ m: [0, '15px', '15px'] }}>
+                        {score && score[1]}
+                      </h1>
                     </Container>
                   </Box>
                 </Flex>
@@ -847,7 +853,9 @@ const RoomPage = (props) => {
                       }}
                     >
                       <Container>
-                        <h1>{bid && bid.bid}</h1>
+                        <h1 sx={{ m: [0, '15px', '15px'] }}>
+                          {bid && bid.bid}
+                        </h1>
                       </Container>
                     </Box>
                     <Box
@@ -861,7 +869,11 @@ const RoomPage = (props) => {
                       }}
                     >
                       <Container>
-                        <h1>{bid && getSuit(bid.suit)}</h1>
+                        <h1 sx={{ m: [0, '15px', '15px'] }}>
+                          {gameData &&
+                            gameData.trick !== 0 &&
+                            getSuit(bid.suit)}
+                        </h1>
                       </Container>
                     </Box>
                   </Flex>
@@ -872,14 +884,14 @@ const RoomPage = (props) => {
             <Flex
               ml={[0, '2px', 0]}
               sx={{
-                flex: ['1 0 80%', 'auto', '1 0 80%'],
+                flex: ['1 1 70%', 'auto', '1 0 auto'],
                 flexDirection: 'column',
               }}
             >
               <Box
                 bg='white'
                 sx={{
-                  flex: ['1 1 auto', '1 0 auto', '1 1 75%'],
+                  flex: ['0', '1 0 auto', '1 1 75%'],
                   ml: [0, '1', 0],
                   mb: [1],
                   mt: [1, 0, 2],
@@ -888,12 +900,29 @@ const RoomPage = (props) => {
                   borderColor: 'indianred',
                 }}
               >
-                <Messages roomId={id} />
+                <div
+                  sx={{
+                    flex: '1',
+                    display: 'flex',
+                    height: ['175px', '280px'],
+                  }}
+                >
+                  <div
+                    sx={{
+                      flex: '1',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      maxHeight: '100%',
+                    }}
+                  >
+                    <Messages roomId={id} />
+                  </div>
+                </div>
               </Box>
               <Box
                 bg='white'
                 sx={{
-                  flex: ['0 1 40px', '0 1 30px', '0 1 50px'],
+                  flex: ['0 1 40px', '0 1 30px', '0 1 30px'],
                   ml: [0, '1', 0],
                   border: 'solid',
                   borderWidth: 'medium',

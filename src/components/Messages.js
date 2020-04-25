@@ -1,15 +1,11 @@
-import React, { useEffect, useRef } from 'react'
-import { useSession } from '../App'
+/** @jsx jsx */
+import { jsx } from 'theme-ui'
+import { useEffect, useRef } from 'react'
 import { useCollection } from '../helpers/useCollection'
-import firebase from '../firebase.js'
 
 import MessageWithAvatar from './MessageWithAvatar'
 
 const Messages = ({ roomId }) => {
-  const user = useSession()
-  const db = firebase.firestore()
-  const userRef = db.collection('users').doc(user.uid)
-  const roomRef = db.collection('roomDetail').doc(roomId)
   const scroller = useRef()
   const messages = useCollection(`roomDetail/${roomId}/messages`, 'createdAt')
 
@@ -19,19 +15,29 @@ const Messages = ({ roomId }) => {
   })
 
   return (
-    <div className='Messages' ref={scroller}>
-      <div className='EndOfMessages'>No Table Talk!</div>
+    <div
+      sx={{
+        flex: '1',
+        padding: '10px 20px 10px 20px',
+        lineHeight: '1.3',
+        overflow: 'auto',
+      }}
+      ref={scroller}
+    >
+      <div sx={{ textAlign: 'center', fontWeight: 'bold' }}>No Table Talk!</div>
 
       {messages.map((message, index) => {
-        const previous = messages[index - 1]
+        // const previous = messages[index - 1]
         // const showAvatar = shouldShawAvatar(previous, message)
 
-        return true ? (
+        return false ? (
           <MessageWithAvatar message={message} key={message.id} />
         ) : (
           <div key={message.id}>
             <div className='Message no-avatar'>
-              <div className='MessageContent'>{message.text}</div>
+              <div className='MessageContent'>
+                <b>{message.user}</b> : {message.text}
+              </div>
             </div>
           </div>
         )

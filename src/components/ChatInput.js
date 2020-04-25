@@ -1,11 +1,8 @@
 import React from 'react'
-import { useSession } from '../App'
 import firebase from '../firebase.js'
 
 const ChatInput = ({ roomId, userData }) => {
-  const user = useSession()
   const db = firebase.firestore()
-  const userRef = db.collection('users').doc(user.uid)
   const roomRef = db.collection('roomDetail').doc(roomId)
   console.log(userData)
   return (

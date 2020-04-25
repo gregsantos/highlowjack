@@ -16,6 +16,9 @@ import Close from './Close'
 import Switch from './Switch'
 import Overlay from './Overlay'
 import RoomWrapper from './RoomWrapper'
+import ChatInput from './ChatInput'
+import Messages from './Messages'
+import MessageWithAvatar from './MessageWithAvatar'
 import { GoogleAuth, FacebookAuth } from './SocialAuthButton'
 
 export {
@@ -39,4 +42,7 @@ export {
   BodyWrapper,
   RoomWrapper,
   MobileMenuBar,
+  ChatInput,
+  Messages,
+  MessageWithAvatar,
 }

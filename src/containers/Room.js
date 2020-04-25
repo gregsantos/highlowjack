@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { Container, Flex, Box } from 'theme-ui'
 import { FaUserSecret, FaRegTimesCircle } from 'react-icons/fa'
-import { RoomWrapper } from '../components'
+import { RoomWrapper, ChatInput, Messages } from '../components'
 import { useSession } from '../App'
 import firebase from '../firebase.js'
 import '../css/cards.css'
@@ -884,7 +884,9 @@ const RoomPage = (props) => {
                   borderWidth: 'medium',
                   borderColor: 'indianred',
                 }}
-              ></Box>
+              >
+                <Messages roomId={id} />
+              </Box>
               <Box
                 bg='white'
                 sx={{
@@ -894,7 +896,9 @@ const RoomPage = (props) => {
                   borderWidth: 'medium',
                   borderColor: 'indianred',
                 }}
-              ></Box>
+              >
+                <ChatInput roomId={id} userData={userData} />
+              </Box>
             </Flex>
           </Flex>
         </aside>

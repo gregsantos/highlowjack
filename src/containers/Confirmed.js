@@ -1,6 +1,8 @@
+/** @jsx jsx */
+import { jsx, Button } from 'theme-ui'
 import React, { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { Button, CenteredDiv, Message, Overlay } from '../components'
+import { CenteredDiv, Message, Overlay } from '../components'
 import firebase from '../firebase.js'
 import 'firebase/firestore'
 
@@ -57,7 +59,7 @@ const Confirmed = (props) => {
           verification process from the same device/browser you started from.
         </Message>
         <Button
-          marginTop
+          variant='flatgreen'
           onClick={() => {
             props.history.push('/signin')
           }}

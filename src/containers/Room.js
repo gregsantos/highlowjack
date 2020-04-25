@@ -631,9 +631,12 @@ const RoomPage = (props) => {
                   </Container>
 
                   <Container>
-                    <button onClick={() => history.push('/dashboard')}>
+                    <Button
+                      variant='flatgreen'
+                      onClick={() => history.push('/dashboard')}
+                    >
                       Join an Open Room
-                    </button>
+                    </Button>
                   </Container>
                 </div>
               )}

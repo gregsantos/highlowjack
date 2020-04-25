@@ -1,6 +1,7 @@
+/** @jsx jsx */
+import { jsx, Button, useColorMode } from 'theme-ui'
 import React, { useState, useContext } from 'react'
-import { useColorMode } from 'theme-ui'
-import { P, H1, Button, Input, Form, BodyWrapper } from '../components'
+import { P, H1, Input, Form, BodyWrapper } from '../components'
 import { ToastContext } from '../contexts/toastContext'
 import { UserContext } from '../contexts/userContext'
 import firebase from '../firebase.js'
@@ -88,7 +89,11 @@ const Profile = () => {
           />
         </div>
         <div>
-          <Button loading={loadState} onClick={(e) => onClickSubmit(e)}>
+          <Button
+            variant='flatgreen'
+            loading={loadState}
+            onClick={(e) => onClickSubmit(e)}
+          >
             Submit
           </Button>
         </div>

@@ -241,13 +241,15 @@ const Dashboard = (props) => {
             <ErrorBoundary>
               <Suspense fallback={<div>Loading...</div>}>
                 <ul>
-                  {userRooms !== [] &&
+                  {userRooms &&
+                    userRooms !== [] &&
                     userRooms.map((room, i) => (
                       <li key={i}>
                         <Link to={`room/${room}`}>Room ID: {room}</Link>
                       </li>
                     ))}
                 </ul>
+                {userRooms !== [] && <p>You are not a member of any rooms</p>}
               </Suspense>
             </ErrorBoundary>
           </div>
@@ -266,8 +268,9 @@ const Dashboard = (props) => {
               </Suspense>
             </ErrorBoundary>
           </div>
-          {false && (
-            <div sx={{ display: 'flex' }}>
+          {openRooms !== [] && (
+            <div>
+              <p>There are no open rooms</p>
               <Button
                 variant='flatgreen'
                 onClick={(e) => {

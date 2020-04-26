@@ -435,7 +435,7 @@ const RoomPage = (props) => {
   // fetch room effect
   useEffect(() => {
     let unsubscribe
-    let unsubscribeGame
+    let unsubscribeGame = () => {}
     if (user) {
       unsubscribe = roomRef.onSnapshot((snap) => {
         if (!snap.exists) {
@@ -481,7 +481,6 @@ const RoomPage = (props) => {
             uid: p,
           }))
           setPositions(positions)
-          console.log('Position Map', positions, 'User', user) //mark
         }
       })
       return () => {

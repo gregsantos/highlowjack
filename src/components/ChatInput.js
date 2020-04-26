@@ -4,7 +4,6 @@ import firebase from '../firebase.js'
 const ChatInput = ({ roomId, userData }) => {
   const db = firebase.firestore()
   const roomRef = db.collection('roomDetail').doc(roomId)
-  console.log(userData)
   return (
     <form
       onSubmit={(e) => {

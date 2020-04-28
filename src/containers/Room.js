@@ -1,16 +1,25 @@
 /** @jsx jsx */
-import { jsx, Button, Select, Radio, Label } from 'theme-ui'
+import {
+  jsx,
+  Container,
+  Flex,
+  Box,
+  Button,
+  Select,
+  Radio,
+  Label,
+} from 'theme-ui'
 import { useState, useEffect, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { Container, Flex, Box } from 'theme-ui'
-import { FaUserSecret, FaRegTimesCircle } from 'react-icons/fa'
-import { RoomWrapper, ChatInput, Messages } from '../components'
+import { RoomWrapper } from '../components'
 import { useSession } from '../App'
 import firebase from '../firebase.js'
-import '../css/cards.css'
 import initGame from '../helpers/initGame'
 import { tallyTrick, getSuit } from '../helpers/gameHelpers'
 import { UserContext } from '../contexts/userContext'
+import { Main } from '../components/Main'
+import { Secondary } from '../components/Secondary'
+import '../css/cards.css'
 
 const RoomPage = (props) => {
   // state session ish
@@ -25,8 +34,7 @@ const RoomPage = (props) => {
   const [bidSuit, setBidSuit] = useState('s')
   const isDealer = gameData && gameData.dealer === playerSeat
   const turn = gameData && gameData.turn
-  const score = gameData && gameData.score
-  const bid = gameData && gameData.bid
+
   // rout ish
   const { id } = useParams()
   const history = useHistory()
@@ -348,69 +356,6 @@ const RoomPage = (props) => {
     }
   }
 
-  const renderCards = () => {
-    const renderHand = () => {
-      const seat = roomData.members.includes(user.uid) ? playerSeat : 0
-      const playerHand = gameData.players[seat].hand
-      return playerSeat !== null
-        ? [
-            ...playerHand,
-            ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),
-          ].map((card, i) => (
-            <div
-              key={i}
-              sx={{
-                backgroundColor: 'green',
-                display: 'grid',
-                justifyContent: 'center',
-              }}
-            >
-              <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
-              {card !== 'outline' &&
-                gameData.trick !== 0 &&
-                gameData.turn === playerSeat && (
-                  <Button variant='card' onClick={() => playCard(i, card)}>
-                    <FaRegTimesCircle />
-                  </Button>
-                )}
-            </div>
-          ))
-        : null
-    }
-
-    if (playerSeat !== null) {
-      return (
-        <div
-          sx={{
-            backgroundColor: 'green',
-            padding: '10px 0px',
-            display: 'grid',
-            justifyContent: 'center',
-            gridGap: '1',
-            gridTemplateColumns: [
-              'repeat(auto-fit, 55px)',
-              'repeat(6, minmax(80px, 1fr))',
-              'repeat(3, minmax(92px, 1fr))',
-            ],
-          }}
-        >
-          {renderHand()}
-        </div>
-      )
-    } else {
-      return (
-        <div
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <h2 sx={{ color: 'muted' }}>Sorry, there are no seats available</h2>
-        </div>
-      )
-    }
-  }
-
   const fetchGame = () => {
     let unsubscribe
     unsubscribe = gameRef.onSnapshot((snap) => {
@@ -432,7 +377,7 @@ const RoomPage = (props) => {
     return leaveGame
   }
 
-  // fetch room effect
+  // fetch room
   useEffect(() => {
     let unsubscribe
     let unsubscribeGame = () => {}
@@ -495,444 +440,33 @@ const RoomPage = (props) => {
 
   return (
     <RoomWrapper>
-      <div
+      <Flex
         sx={{
           height: '100%',
-          display: 'grid',
-          gridGap: 0,
-          gridTemplate: [
-            `"main" 100vw
-           "aside" auto
-          / 100%`,
-            `"main" 65%
-           "aside" auto
-          / 100%`,
-            `"main aside" auto
-          / minmax(60%, 1fr) minmax(410px, 555px)`,
-          ],
+          flexDirection: ['column', 'column', 'row'],
         }}
       >
-        <main
-          sx={{
-            backgroundColor: '#63B3ED',
-            gridArea: 'main',
-          }}
-        >
-          <div
-            sx={{
-              backgroundColor: 'darkseagreen',
-              height: '100%',
-              display: 'grid',
-              gridGap: 0,
-              gridTemplateColumns: [
-                '1fr minmax(auto, 1.2fr) 1fr',
-                'minmax(1fr, 249px) auto minmax(1fr, 249px)',
-                'minmax(225px, 1fr) minmax(auto, 1.2fr) minmax(225px, 1fr)',
-              ],
-              gridTemplateRows: [
-                '1fr minmax(auto, 1.2fr) 1fr',
-                '1fr 170px 1fr',
-                '1fr minmax(auto, 1.2fr) 1fr',
-              ],
-            }}
-          >
-            <div
-              sx={{
-                alignSelf: 'center',
-                paddingTop: ['10px', '15px', null],
-                backgroundColor: `${
-                  turn === (positions && positions[1].seat) && '#daa520'
-                }`,
-              }}
-            >
-              <Container>
-                {positions &&
-                roomData.memberProfiles[positions[1].seat] &&
-                roomData.memberProfiles[positions[1].seat].profilePic ? (
-                  <img
-                    alt='userPhoto'
-                    src={roomData.memberProfiles[positions[1].seat].profilePic}
-                    sx={{ width: ['65px', '100px', '125px'] }}
-                  />
-                ) : (
-                  <FaUserSecret size='6em' />
-                )}
-              </Container>
-              <Container>
-                <h3 sx={{ mt: ['2px', '10px'] }}>
-                  {(positions &&
-                    roomData.memberProfiles[positions[1].seat] &&
-                    roomData.memberProfiles[positions[1].seat].username) ||
-                    'Position 1'}
-                </h3>
-              </Container>
-            </div>
-            <div sx={{ backgroundColor: 'white' }} />
-            <div
-              sx={{
-                alignSelf: 'center',
-                paddingTop: ['10px', '15px', null],
-                backgroundColor: `${
-                  turn === (positions && positions[2].seat) && '#daa520'
-                }`,
-              }}
-            >
-              <Container>
-                {positions &&
-                roomData.memberProfiles[positions[2].seat] &&
-                roomData.memberProfiles[positions[2].seat].profilePic ? (
-                  <img
-                    alt='userPhoto'
-                    src={roomData.memberProfiles[positions[2].seat].profilePic}
-                    sx={{ width: ['65px', '100px', '125px'] }}
-                  />
-                ) : (
-                  <FaUserSecret size='6em' />
-                )}
-              </Container>
-              <Container>
-                <h3 sx={{ mt: ['2px', '10px'] }}>
-                  {(positions &&
-                    roomData.memberProfiles[positions[2].seat] &&
-                    roomData.memberProfiles[positions[2].seat].username) ||
-                    'Position 2'}
-                </h3>
-              </Container>
-            </div>
-            <div sx={{ backgroundColor: 'white' }} />
-
-            <Container sx={{ backgroundColor: 'green' }}>
-              {roomData && playerSeat !== null && renderTable()}
-              {roomData && roomData.state !== 'FULL' && playerSeat === null && (
-                <div>
-                  <Container>
-                    <div
-                      sx={{
-                        fontSize: ['1em', '1.5em', null],
-                        color: 'muted',
-                      }}
-                    >
-                      There's an Open Seat!
-                    </div>
-                  </Container>
-
-                  <Container>
-                    <Button variant='flatgreen' onClick={joinRoom}>
-                      Join Room
-                    </Button>
-                  </Container>
-                </div>
-              )}
-              {roomData && roomData.state === 'FULL' && playerSeat === null && (
-                <div>
-                  <Container sx={{ color: 'muted' }}>
-                    <h2>This Room is Full</h2>
-                  </Container>
-
-                  <Container>
-                    <Button
-                      variant='flatgreen'
-                      onClick={() => history.push('/dashboard')}
-                    >
-                      Join an Open Room
-                    </Button>
-                  </Container>
-                </div>
-              )}
-            </Container>
-
-            <div sx={{ backgroundColor: 'white' }} />
-            <div
-              sx={{
-                alignSelf: 'center',
-                paddingTop: ['10px', '15px', null],
-                backgroundColor: `${
-                  turn === (positions && positions[0].seat) && '#daa520'
-                }`,
-              }}
-            >
-              <Container>
-                {playerSeat === null && <FaUserSecret size='6em' />}
-                {playerSeat !== null && user.photoURL && (
-                  <img
-                    alt='userPhoto'
-                    src={user.photoURL}
-                    sx={{ width: ['65px', '100px', '125px'] }}
-                  />
-                )}
-              </Container>
-              <Container>
-                <h3 sx={{ mt: ['2px', '10px'] }}>
-                  {playerSeat === null ? 'Open Seat' : userData.username}
-                </h3>
-              </Container>
-            </div>
-            <div sx={{ backgroundColor: 'white' }} />
-            <div
-              sx={{
-                alignSelf: 'center',
-                paddingTop: ['10px', '15px', null],
-                backgroundColor: `${
-                  turn === (positions && positions[3].seat) && '#daa520'
-                }`,
-              }}
-            >
-              <Container>
-                {positions &&
-                roomData.memberProfiles[positions[3].seat] &&
-                roomData.memberProfiles[positions[3].seat].profilePic ? (
-                  <img
-                    alt='userPhoto'
-                    src={roomData.memberProfiles[positions[3].seat].profilePic}
-                    sx={{ width: ['65px', '100px', '125px'] }}
-                  />
-                ) : (
-                  <FaUserSecret size='6em' />
-                )}
-              </Container>
-              <Container>
-                <h3 sx={{ mt: ['2px', '10px'] }}>
-                  {(positions &&
-                    roomData.memberProfiles[positions[3].seat] &&
-                    roomData.memberProfiles[positions[3].seat].username) ||
-                    'Position 3'}
-                </h3>
-              </Container>
-            </div>
-          </div>
-        </main>
-
-        <aside
-          sx={{
-            backgroundColor: 'green',
-            height: '100%',
-            minWidth: '375px',
-            gridArea: 'aside',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {gameData && playerSeat !== null ? (
-            renderCards()
-          ) : (
-            <Container sx={{ height: '20%' }}>
-              {roomData && roomData.state !== 'FULL' && playerSeat === null && (
-                <div>
-                  <Container>
-                    <div
-                      sx={{
-                        fontSize: ['1em', '1.5em', null],
-                        color: 'muted',
-                      }}
-                    >
-                      There's an Open Seat!
-                    </div>
-                  </Container>
-                </div>
-              )}
-              {roomData && roomData.state !== 'FULL' && playerSeat !== null && (
-                <Button
-                  variant='green'
-                  onClick={() => console.log('Show Room Link')}
-                >
-                  Invite friends to start a game
-                </Button>
-              )}
-              {roomData && roomData.state === 'FULL' && playerSeat === null && (
-                <div
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <h2 sx={{ color: 'muted' }}>
-                    Sorry, there are no seats available
-                  </h2>
-                </div>
-              )}
-              {roomData && roomData.state === 'FULL' && playerSeat !== null && (
-                <Button variant='green' onClick={startGame}>
-                  Start New Game
-                </Button>
-              )}
-            </Container>
-          )}
-          <Flex
-            p={2}
-            bg='darkseagreen'
-            sx={{
-              flexDirection: ['column', 'row', 'column'],
-              p: [1, 1, 2],
-              border: 'solid',
-              borderWidth: 'medium',
-              borderColor: 'indianred',
-            }}
-          >
-            <Flex
-              sx={{
-                flex: ['0 1 auto', 'auto', 'auto'],
-                maxHeight: ['60px', '120px', '500px'],
-              }}
-            >
-              <Box
-                p={2}
-                sx={{
-                  flex: 'auto',
-                  border: 'solid',
-                  borderWidth: 'medium',
-                  borderColor: 'indianred',
-                  mr: '.5em',
-                }}
-              >
-                <Flex sx={{ height: '100%', flexDirection: 'row' }}>
-                  <Box
-                    p={2}
-                    bg='darkseagreen'
-                    sx={{
-                      flex: 'auto',
-                      height: '100%',
-                      border: 'solid',
-                      borderWidth: 'medium',
-                      borderColor: 'indianred',
-                      mr: '.5em',
-                    }}
-                  >
-                    <Container>
-                      <h1 sx={{ m: [0, '15px', '15px'] }}>
-                        {score && score[0]}
-                      </h1>
-                    </Container>
-                  </Box>
-                  <Box
-                    p={2}
-                    bg='darkseagreen'
-                    sx={{
-                      flex: 'auto',
-                      border: 'solid',
-                      borderWidth: 'medium',
-                      borderColor: 'indianred',
-                    }}
-                  >
-                    <Container>
-                      <h1 sx={{ m: [0, '15px', '15px'] }}>
-                        {score && score[1]}
-                      </h1>
-                    </Container>
-                  </Box>
-                </Flex>
-              </Box>
-              <Flex
-                sx={{
-                  flexDirection: 'row',
-                  flex: ['auto', 'auto', 'auto'],
-                }}
-              >
-                <Box
-                  p={2}
-                  bg='darkseagreen'
-                  sx={{
-                    flex: 'auto',
-                    border: 'solid',
-                    borderWidth: 'medium',
-                    borderColor: 'indianred',
-                  }}
-                >
-                  <Flex sx={{ height: '100%', flexDirection: 'row' }}>
-                    <Box
-                      p={2}
-                      bg='darkseagreen'
-                      sx={{
-                        flex: 'auto',
-                        height: '100%',
-                        border: 'solid',
-                        borderWidth: 'medium',
-                        borderColor: 'indianred',
-                        mr: '.5em',
-                      }}
-                    >
-                      <Container>
-                        <h1 sx={{ m: [0, '15px', '15px'] }}>
-                          {bid && bid.bid}
-                        </h1>
-                      </Container>
-                    </Box>
-                    <Box
-                      p={2}
-                      bg='darkseagreen'
-                      sx={{
-                        flex: 'auto',
-                        border: 'solid',
-                        borderWidth: 'medium',
-                        borderColor: 'indianred',
-                      }}
-                    >
-                      <Container>
-                        <h1 sx={{ m: [0, '15px', '15px'] }}>
-                          {gameData &&
-                            gameData.trick !== 0 &&
-                            getSuit(bid.suit)}
-                        </h1>
-                      </Container>
-                    </Box>
-                  </Flex>
-                </Box>
-              </Flex>
-            </Flex>
-
-            <Flex
-              ml={[0, '2px', 0]}
-              sx={{
-                flex: ['1 1 70%', 'auto', '1 0 auto'],
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                bg='white'
-                sx={{
-                  flex: ['0', '1 0 auto', '1 1 75%'],
-                  ml: [0, '1', 0],
-                  mb: [1],
-                  mt: [1, 0, 2],
-                  border: 'solid',
-                  borderWidth: 'medium',
-                  borderColor: 'indianred',
-                }}
-              >
-                <div
-                  sx={{
-                    flex: '1',
-                    display: 'flex',
-                    height: ['150px', '150px', '280px'],
-                  }}
-                >
-                  <div
-                    sx={{
-                      flex: '1',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      maxHeight: '100%',
-                    }}
-                  >
-                    <Messages roomId={id} />
-                  </div>
-                </div>
-              </Box>
-              <Box
-                bg='white'
-                sx={{
-                  flex: ['0 1 40px', '0 1 30px', '0 1 30px'],
-                  ml: [0, '1', 0],
-                  border: 'solid',
-                  borderWidth: 'medium',
-                  borderColor: 'indianred',
-                }}
-              >
-                <ChatInput roomId={id} userData={userData} />
-              </Box>
-            </Flex>
-          </Flex>
-        </aside>
-      </div>
+        <Main
+          user={user}
+          userData={userData}
+          roomData={roomData}
+          turn={turn}
+          positions={positions}
+          playerSeat={playerSeat}
+          renderTable={renderTable}
+          joinRoom={joinRoom}
+          history={history}
+        />
+        <Secondary
+          user={user}
+          roomData={roomData}
+          gameData={gameData}
+          playerSeat={playerSeat}
+          startGame={startGame}
+          playCard={playCard}
+          getSuit={getSuit}
+        />
+      </Flex>
     </RoomWrapper>
   )
 }

@@ -42,7 +42,7 @@ export {
   BodyWrapper,
   RoomWrapper,
   MobileMenuBar,
-  ChatInput,
   Messages,
   MessageWithAvatar,
+  ChatInput,
 }

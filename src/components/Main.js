@@ -22,38 +22,7 @@ export const Main = ({
         gridTemplateColumns: 'repeat(3, 1fr)',
       }}
     >
-      <div
-        sx={{
-          alignSelf: 'center',
-          paddingTop: ['10px', '15px', null],
-          backgroundColor: `${
-            turn === (positions && positions[1].seat) && '#daa520'
-          }`,
-        }}
-      >
-        <Container>
-          {positions &&
-          roomData.memberProfiles[positions[1].seat] &&
-          roomData.memberProfiles[positions[1].seat].profilePic ? (
-            <img
-              alt='userPhoto'
-              src={roomData.memberProfiles[positions[1].seat].profilePic}
-              sx={{ width: ['65px', '100px', '125px'] }}
-            />
-          ) : (
-            <FaUserSecret size='6em' />
-          )}
-        </Container>
-        <Container>
-          <h3 sx={{ mt: ['2px', '10px'] }}>
-            {(positions &&
-              roomData.memberProfiles[positions[1].seat] &&
-              roomData.memberProfiles[positions[1].seat].username) ||
-              'Position 1'}
-          </h3>
-        </Container>
-      </div>
-      <div sx={{ backgroundColor: 'green' }} />
+      <div sx={{ backgroundColor: 'white' }} />
       <div
         sx={{
           alignSelf: 'center',
@@ -85,8 +54,38 @@ export const Main = ({
           </h3>
         </Container>
       </div>
-      <div sx={{ backgroundColor: 'green' }} />
-
+      <div sx={{ backgroundColor: 'white' }} />
+      <div
+        sx={{
+          alignSelf: 'center',
+          paddingTop: ['10px', '15px', null],
+          backgroundColor: `${
+            turn === (positions && positions[1].seat) && '#daa520'
+          }`,
+        }}
+      >
+        <Container>
+          {positions &&
+          roomData.memberProfiles[positions[1].seat] &&
+          roomData.memberProfiles[positions[1].seat].profilePic ? (
+            <img
+              alt='userPhoto'
+              src={roomData.memberProfiles[positions[1].seat].profilePic}
+              sx={{ width: ['65px', '100px', '125px'] }}
+            />
+          ) : (
+            <FaUserSecret size='6em' />
+          )}
+        </Container>
+        <Container>
+          <h3 sx={{ mt: ['2px', '10px'] }}>
+            {(positions &&
+              roomData.memberProfiles[positions[1].seat] &&
+              roomData.memberProfiles[positions[1].seat].username) ||
+              'Position 1'}
+          </h3>
+        </Container>
+      </div>
       <Container sx={{ backgroundColor: 'green' }}>
         {roomData && playerSeat !== null && renderTable()}
         {roomData && roomData.state !== 'FULL' && playerSeat === null && (
@@ -126,34 +125,6 @@ export const Main = ({
           </div>
         )}
       </Container>
-
-      <div sx={{ backgroundColor: 'green' }} />
-      <div
-        sx={{
-          alignSelf: 'center',
-          paddingTop: ['10px', '15px', null],
-          backgroundColor: `${
-            turn === (positions && positions[0].seat) && '#daa520'
-          }`,
-        }}
-      >
-        <Container>
-          {playerSeat === null && <FaUserSecret size='6em' />}
-          {playerSeat !== null && user.photoURL && (
-            <img
-              alt='userPhoto'
-              src={user.photoURL}
-              sx={{ width: ['65px', '100px', '125px'] }}
-            />
-          )}
-        </Container>
-        <Container>
-          <h3 sx={{ mt: ['2px', '10px'] }}>
-            {playerSeat === null ? 'Open Seat' : userData.username}
-          </h3>
-        </Container>
-      </div>
-      <div sx={{ backgroundColor: 'green' }} />
       <div
         sx={{
           alignSelf: 'center',
@@ -185,6 +156,33 @@ export const Main = ({
           </h3>
         </Container>
       </div>
+      <div sx={{ backgroundColor: 'white' }} />
+      <div
+        sx={{
+          alignSelf: 'center',
+          paddingTop: ['10px', '15px', null],
+          backgroundColor: `${
+            turn === (positions && positions[0].seat) && '#daa520'
+          }`,
+        }}
+      >
+        <Container>
+          {playerSeat === null && <FaUserSecret size='6em' />}
+          {playerSeat !== null && user.photoURL && (
+            <img
+              alt='userPhoto'
+              src={user.photoURL}
+              sx={{ width: ['65px', '100px', '125px'] }}
+            />
+          )}
+        </Container>
+        <Container>
+          <h3 sx={{ mt: ['2px', '10px'] }}>
+            {playerSeat === null ? 'Open Seat' : userData.username}
+          </h3>
+        </Container>
+      </div>
+      <div sx={{ backgroundColor: 'white' }} />
     </main>
   )
 }

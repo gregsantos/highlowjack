@@ -304,27 +304,26 @@ const RoomPage = (props) => {
                   transform: `rotateZ(${i * 90}deg) `,
                   gridColumn: '1 / span 8',
                   gridRow: 1, // must be on the same row as the other image
-                  paddingTop: '80%', // this pushes the image down, and keeps it proportional as it resizes
+                  paddingTop: '64px', // this pushes the image down, and keeps it proportional as it resizes
                   zIndex: 1, // make this image render on top of the bottom
                 }}
               >
                 <div
                   className={`card ${card.suit + card.spot} shadow no-border`}
                   sx={{
-                    fontSize: [3, 4, 6],
+                    fontSize: [3, 4, 5],
                   }}
                 />
               </div>
             )
           })
           return (
-            <Container>
+            <Container sx={{ pl: ['26%', null, '64px'] }}>
               <div
                 sx={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(12, 1fr)',
                   position: 'relative',
-                  pl: '20%',
                 }}
               >
                 {playedCards}

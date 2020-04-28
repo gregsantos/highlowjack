@@ -9,7 +9,7 @@ const ChatInput = ({ roomId }) => {
   const db = firebase.firestore()
   const roomRef = db.collection('roomDetail').doc(roomId)
   return (
-    <div>
+    <div sx={{ mt: 1, backgroundColor: 'antiquewhite' }}>
       <form
         onSubmit={(e) => {
           e.preventDefault()

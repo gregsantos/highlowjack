@@ -29,7 +29,6 @@ export const Secondary = ({
       />
       <Flex
         sx={{
-          backgroundColor: 'antiquewhite',
           flex: 1,
           flexDirection: ['row', 'row', 'column'],
           m: 1,

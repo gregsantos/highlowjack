@@ -53,7 +53,7 @@ export const Main = ({
           </h3>
         </Container>
       </div>
-      <div sx={{ backgroundColor: 'white' }} />
+      <div sx={{ backgroundColor: 'green' }} />
       <div
         sx={{
           alignSelf: 'center',
@@ -85,7 +85,7 @@ export const Main = ({
           </h3>
         </Container>
       </div>
-      <div sx={{ backgroundColor: 'white' }} />
+      <div sx={{ backgroundColor: 'green' }} />
 
       <Container sx={{ backgroundColor: 'green' }}>
         {roomData && playerSeat !== null && renderTable()}
@@ -127,7 +127,7 @@ export const Main = ({
         )}
       </Container>
 
-      <div sx={{ backgroundColor: 'white' }} />
+      <div sx={{ backgroundColor: 'green' }} />
       <div
         sx={{
           alignSelf: 'center',
@@ -153,7 +153,7 @@ export const Main = ({
           </h3>
         </Container>
       </div>
-      <div sx={{ backgroundColor: 'white' }} />
+      <div sx={{ backgroundColor: 'green' }} />
       <div
         sx={{
           alignSelf: 'center',

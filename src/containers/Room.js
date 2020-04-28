@@ -296,22 +296,45 @@ const RoomPage = (props) => {
           return <div className={`card outline`} sx={{ fontSize: [3, 5, 6] }} />
         }
         if (!newTrick) {
-          var randomN = Math.floor(Math.random() * 8) - 8
+          // let randomN = Math.floor(Math.random() * 8) - 8
+          const playedCards = gameData.trickCards.map((card, i) => {
+            return (
+              <div
+                sx={{
+                  transform: `rotateZ(${i * 90}deg) `,
+                  gridColumn: '1 / span 8',
+                  gridRow: 1, // must be on the same row as the other image
+                  paddingTop: '80%', // this pushes the image down, and keeps it proportional as it resizes
+                  zIndex: 1, // make this image render on top of the bottom
+                }}
+              >
+                <div
+                  className={`card ${card.suit + card.spot} shadow no-border`}
+                  sx={{
+                    fontSize: [3, 4, 6],
+                  }}
+                />
+              </div>
+            )
+          })
           return (
-            <div
-              className={`card ${
-                lastCard.suit + lastCard.spot
-              } shadow no-border`}
-              sx={{
-                fontSize: [3, 5, 6],
-                transform: `rotateZ(${randomN}deg)`,
-              }}
-            />
+            <Container>
+              <div
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(12, 1fr)',
+                  position: 'relative',
+                  pl: '20%',
+                }}
+              >
+                {playedCards}
+              </div>
+            </Container>
           )
         }
       }
     } else {
-      return <div className={`card back-red`} sx={{ fontSize: [3, 5, 6] }} />
+      return <div className={`card back-red`} sx={{ fontSize: [3, 3, 6] }} />
     }
   }
 

@@ -19,14 +19,7 @@ export const HandBox = ({
             ...playerHand,
             ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),
           ].map((card, i) => (
-            <div
-              key={i}
-              sx={{
-                backgroundColor: 'green',
-                display: 'grid',
-                justifyContent: 'center',
-              }}
-            >
+            <Container key={i}>
               <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
               {card !== 'outline' &&
                 gameData.trick !== 0 &&
@@ -35,7 +28,7 @@ export const HandBox = ({
                     <FaRegTimesCircle />
                   </Button>
                 )}
-            </div>
+            </Container>
           ))
         : null
     }
@@ -45,10 +38,9 @@ export const HandBox = ({
         <div
           sx={{
             backgroundColor: 'green',
-            padding: '10px 0px',
+            paddingY: '5px',
             display: 'grid',
             justifyContent: 'center',
-            gridGap: '1',
             gridTemplateColumns: [
               'repeat(auto-fit, 55px)',
               'repeat(6, minmax(80px, 1fr))',
@@ -73,7 +65,12 @@ export const HandBox = ({
     }
   }
   return (
-    <Box>
+    <Box
+      sx={{
+        border: 'thin solid indianred',
+        borderBottom: 'none',
+      }}
+    >
       {gameData && playerSeat !== null ? (
         renderCards()
       ) : (

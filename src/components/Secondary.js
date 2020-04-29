@@ -16,7 +16,7 @@ export const Secondary = ({
   return (
     <Flex
       sx={{
-        flex: ['0 0 200px', '0 0 200px', '0 1 400px'],
+        flex: ['0 0 200px', '0 0 200px', '0 0 400px'],
         flexDirection: 'column',
       }}
     >
@@ -29,9 +29,10 @@ export const Secondary = ({
       />
       <Flex
         sx={{
-          flex: 1,
+          flex: '1',
           flexDirection: ['row', 'row', 'column'],
-          m: 1,
+          p: 2,
+          border: 'thin solid indianred',
         }}
       >
         <Databox gameData={gameData} getSuit={getSuit} />

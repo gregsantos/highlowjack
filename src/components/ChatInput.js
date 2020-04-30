@@ -22,7 +22,10 @@ const ChatInput = ({ roomId }) => {
           e.target.reset()
         }}
       >
-        <Input placeholder={`No Table Talk!`} />
+        <Input
+          sx={{ border: 'thin solid indianred' }}
+          placeholder={`No Table Talk!`}
+        />
       </form>
     </div>
   )

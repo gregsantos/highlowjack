@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import { jsx, Flex, Container } from 'theme-ui'
+import { jsx, Flex, Box, Container } from 'theme-ui'
 
 export const BidBox = ({ gameData, getSuit }) => {
   console.log(gameData && gameData.bid.suit)
   return (
     <Flex sx={{ flex: 1 }}>
-      <Container
+      <Box
         bg='darkseagreen'
         sx={{
           flex: 1,
@@ -15,9 +15,20 @@ export const BidBox = ({ gameData, getSuit }) => {
           mr: '.25em',
         }}
       >
-        <h1 sx={{ m: [0, '15px', '15px'] }}>{gameData && gameData.bid.bid}</h1>
-      </Container>
-      <Container
+        <Container>
+          <h3 sx={{ color: 'antiquewhite', mt: 1 }}>
+            Bid{' '}
+            {gameData &&
+            (gameData.bid.bidder === 0 || gameData.bid.bidder === 2)
+              ? 'Team 1'
+              : 'Team 2'}
+          </h3>
+        </Container>
+        <Container>
+          <h1 sx={{ mt: 0 }}>{gameData && gameData.bid.bid}</h1>
+        </Container>
+      </Box>
+      <Box
         bg='darkseagreen'
         sx={{
           flex: 1,
@@ -26,10 +37,15 @@ export const BidBox = ({ gameData, getSuit }) => {
           borderColor: 'indianred',
         }}
       >
-        <h1 sx={{ m: [0, '15px', '15px'] }}>
-          {gameData && gameData.trick !== 0 && getSuit(gameData.bid.suit)}
-        </h1>
-      </Container>
+        <Container>
+          <h3 sx={{ color: 'antiquewhite', mt: 1 }}>Trump</h3>
+        </Container>
+        <Container>
+          <h1 sx={{ mt: 0 }}>
+            {gameData && gameData.trick !== 0 && getSuit(gameData.bid.suit)}
+          </h1>
+        </Container>
+      </Box>
     </Flex>
   )
 }

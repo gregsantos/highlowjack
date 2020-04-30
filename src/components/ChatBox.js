@@ -12,7 +12,8 @@ export const ChatBox = () => {
       sx={{
         flex: [1, null, '1 1 30px'],
         flexDirection: 'column',
-        pb: 1,
+        ml: [1, 1, 0],
+        mt: [0, 0, 2],
         maxHeight: ['225px', '100px', '300px'],
       }}
     >

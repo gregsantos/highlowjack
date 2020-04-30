@@ -38,7 +38,7 @@ export const HandBox = ({
         <div
           sx={{
             backgroundColor: 'green',
-            paddingY: '5px',
+            paddingY: ['2px', '3px', '5px'],
             display: 'grid',
             justifyContent: 'center',
             gridTemplateColumns: [

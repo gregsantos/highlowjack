@@ -19,8 +19,9 @@ const Messages = ({ roomId }) => {
         flex: [1],
         backgroundColor: 'white',
         overflowY: 'auto',
-        padding: 2,
         mb: 1,
+        ml: [1, 0, 0],
+        border: 'thin solid indianred',
       }}
       ref={scroller}
     >
@@ -28,7 +29,7 @@ const Messages = ({ roomId }) => {
         return (
           <div
             key={message.id}
-            sx={{ '&:nth-child(odd)': { background: 'antiquewhite' } }}
+            sx={{ pl: 1, '&:nth-child(odd)': { background: 'antiquewhite' } }}
           >
             <div className='Message no-avatar'>
               <div className='MessageContent'>

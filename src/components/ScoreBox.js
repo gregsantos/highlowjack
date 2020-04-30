@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import { jsx, Flex, Container } from 'theme-ui'
+import { jsx, Flex, Box, Container } from 'theme-ui'
 
 export const ScoreBox = ({ gameData }) => {
   return (
     <Flex sx={{ flex: 1, mr: ['0em', '.5em'], mb: [1, 0, 0] }}>
-      <Container
+      <Box
         bg='darkseagreen'
         sx={{
           flex: 1,
@@ -14,9 +14,14 @@ export const ScoreBox = ({ gameData }) => {
           mr: '.25em',
         }}
       >
-        <h1 sx={{ m: [0, '15px', '15px'] }}>{gameData && gameData.score[0]}</h1>
-      </Container>
-      <Container
+        <Container>
+          <h3 sx={{ color: 'antiquewhite', mt: 1 }}>Team 1</h3>
+        </Container>
+        <Container>
+          <h1 sx={{ margin: 0 }}>{gameData && gameData.score[0]}</h1>
+        </Container>
+      </Box>
+      <Box
         bg='darkseagreen'
         sx={{
           flex: 1,
@@ -25,8 +30,13 @@ export const ScoreBox = ({ gameData }) => {
           borderColor: 'indianred',
         }}
       >
-        <h1 sx={{ m: [0, '15px', '15px'] }}>{gameData && gameData.score[1]}</h1>
-      </Container>
+        <Container>
+          <h3 sx={{ color: 'antiquewhite', mt: 1 }}>Team 2</h3>
+        </Container>
+        <Container>
+          <h1 sx={{ mt: 0 }}>{gameData && gameData.score[1]}</h1>
+        </Container>
+      </Box>
     </Flex>
   )
 }

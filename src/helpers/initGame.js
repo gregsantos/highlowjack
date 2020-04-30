@@ -4,7 +4,13 @@ export const initDeal = (members) => {
   let players = []
   let allHands = []
   members.forEach((m, i) => {
-    players.push({ seat: i, pid: m, hand: [] })
+    players.push({
+      seat: i,
+      pid: m.id,
+      username: m.username,
+      profilePic: m.profilePic,
+      hand: [],
+    })
   })
   players.forEach((player) => {
     while (player.hand.length !== 6) {
@@ -18,21 +24,6 @@ export const initDeal = (members) => {
 
 export default (members) => {
   console.log('Members', members)
-  /*   const getDeal = () => {
-    let players = []
-    let allHands = []
-    members.forEach((m, i) => {
-      players.push({ seat: i, pid: m, hand: [] })
-    })
-    players.forEach((player) => {
-      while (player.hand.length !== 6) {
-        const card = DECK.splice(Math.floor(Math.random() * DECK.length), 1)[0]
-        player.hand.push(card)
-        allHands.push(card)
-      }
-    })
-    return { players, allHands }
-  } */
 
   const deal = initDeal(members)
 

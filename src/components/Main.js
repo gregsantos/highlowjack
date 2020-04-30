@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Button, Container } from 'theme-ui'
+import { jsx, Flex, Button, Container } from 'theme-ui'
 import { FaUserSecret } from 'react-icons/fa'
 
 export const Main = ({
@@ -24,13 +24,11 @@ export const Main = ({
       }}
     >
       <div sx={{ backgroundColor: 'darkseagreen' }} />
-      <div
+      <Flex
         sx={{
-          alignSelf: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
           paddingTop: ['10px', '15px', null],
-          backgroundColor: `${
-            turn === (positions && positions[2].seat) && '#daa520'
-          }`,
         }}
       >
         <Container>
@@ -40,7 +38,23 @@ export const Main = ({
             <img
               alt='userPhoto'
               src={roomData.memberProfiles[positions[2].seat].profilePic}
-              sx={{ width: ['65px', '100px', '125px'] }}
+              sx={{
+                width: ['65px', '100px', '125px'],
+                padding: ['0.25', '0.5em'],
+                border: [
+                  `${
+                    turn === (positions && positions[2].seat)
+                      ? '0.30em dotted indianred'
+                      : ''
+                  }`,
+                  `${
+                    turn === (positions && positions[2].seat)
+                      ? '0.5em dotted indianred'
+                      : ''
+                  }`,
+                  null,
+                ],
+              }}
             />
           ) : (
             <FaUserSecret size='6em' />
@@ -54,15 +68,14 @@ export const Main = ({
               'Position 2'}
           </h3>
         </Container>
-      </div>
+      </Flex>
       <div sx={{ backgroundColor: 'darkseagreen' }} />
-      <div
+      <Flex
         sx={{
-          alignSelf: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
           paddingTop: ['10px', '15px', null],
-          backgroundColor: `${
-            turn === (positions && positions[1].seat) && '#daa520'
-          }`,
+          backgroundColor: 'antiquewhite',
         }}
       >
         <Container>
@@ -72,7 +85,23 @@ export const Main = ({
             <img
               alt='userPhoto'
               src={roomData.memberProfiles[positions[1].seat].profilePic}
-              sx={{ width: ['65px', '100px', '125px'] }}
+              sx={{
+                width: ['65px', '100px', '125px'],
+                padding: ['0.25', '0.5em'],
+                border: [
+                  `${
+                    turn === (positions && positions[1].seat)
+                      ? '0.30em dotted indianred'
+                      : ''
+                  }`,
+                  `${
+                    turn === (positions && positions[1].seat)
+                      ? '0.5em dotted indianred'
+                      : ''
+                  }`,
+                  null,
+                ],
+              }}
             />
           ) : (
             <FaUserSecret size='6em' />
@@ -86,7 +115,7 @@ export const Main = ({
               'Position 1'}
           </h3>
         </Container>
-      </div>
+      </Flex>
       <Container sx={{ backgroundColor: 'green' }}>
         {roomData && playerSeat !== null && renderTable()}
         {roomData && roomData.state !== 'FULL' && playerSeat === null && (
@@ -126,13 +155,12 @@ export const Main = ({
           </div>
         )}
       </Container>
-      <div
+      <Flex
         sx={{
-          alignSelf: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
           paddingTop: ['10px', '15px', null],
-          backgroundColor: `${
-            turn === (positions && positions[3].seat) && '#daa520'
-          }`,
+          backgroundColor: 'antiquewhite',
         }}
       >
         <Container>
@@ -142,29 +170,43 @@ export const Main = ({
             <img
               alt='userPhoto'
               src={roomData.memberProfiles[positions[3].seat].profilePic}
-              sx={{ width: ['65px', '100px', '125px'] }}
+              sx={{
+                width: ['65px', '100px', '125px'],
+                padding: ['0.25', '0.5em'],
+                border: [
+                  `${
+                    turn === (positions && positions[3].seat)
+                      ? '0.30em dotted indianred'
+                      : ''
+                  }`,
+                  `${
+                    turn === (positions && positions[3].seat)
+                      ? '0.5em dotted indianred'
+                      : ''
+                  }`,
+                  null,
+                ],
+              }}
             />
           ) : (
             <FaUserSecret size='6em' />
           )}
         </Container>
         <Container>
-          <h3 sx={{ mt: ['2px', '10px'] }}>
+          <h3>
             {(positions &&
               roomData.memberProfiles[positions[3].seat] &&
               roomData.memberProfiles[positions[3].seat].username) ||
               'Position 3'}
           </h3>
         </Container>
-      </div>
+      </Flex>
       <div sx={{ backgroundColor: 'darkseagreen' }} />
-      <div
+      <Flex
         sx={{
-          alignSelf: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
           paddingTop: ['10px', '15px', null],
-          backgroundColor: `${
-            turn === (positions && positions[0].seat) && '#daa520'
-          }`,
         }}
       >
         <Container>
@@ -173,7 +215,23 @@ export const Main = ({
             <img
               alt='userPhoto'
               src={user.photoURL}
-              sx={{ width: ['65px', '100px', '125px'] }}
+              sx={{
+                width: ['65px', '100px', '125px'],
+                padding: ['0.25', '0.5em'],
+                border: [
+                  `${
+                    turn === (positions && positions[0].seat)
+                      ? '0.30em dotted indianred'
+                      : ''
+                  }`,
+                  `${
+                    turn === (positions && positions[0].seat)
+                      ? '0.5em dotted indianred'
+                      : ''
+                  }`,
+                  null,
+                ],
+              }}
             />
           )}
         </Container>
@@ -182,7 +240,7 @@ export const Main = ({
             {playerSeat === null ? 'Open Seat' : userData.username}
           </h3>
         </Container>
-      </div>
+      </Flex>
       <div sx={{ backgroundColor: 'darkseagreen' }} />
     </main>
   )

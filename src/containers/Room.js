@@ -85,7 +85,7 @@ const RoomPage = (props) => {
   }
 
   const startGame = () => {
-    const gameData = initGame(roomData.members)
+    const gameData = initGame(roomData.memberProfiles)
     const gameRef = gamesRef.doc(id)
     const batch = db.batch()
     batch.set(gameRef, gameData)
@@ -182,26 +182,23 @@ const RoomPage = (props) => {
         if (playerTurn)
           return (
             <Container>
-              <Box
-                sx={{
-                  px: ['0px', null, '15px'],
-                  pt: ['0px', '10px'],
-                  pb: ['0px', '10px'],
-                }}
-              >
+              <Box sx={{}}>
                 <Container>
                   <h1
                     sx={{
                       color: 'indianred',
-                      fontSize: ['1em', '1.5em', null],
+                      fontSize: ['1', '1.5em', null],
                       mb: ['0px', '0px', '10px'],
                       mt: ['2px', null, '5px'],
                     }}
                   >
-                    Please Bid Player {gameData.turn + 1}
+                    Please Bid{' '}
+                    {gameData &&
+                      (gameData.players[gameData.turn].username ??
+                        `${turn + 1}`)}
                   </h1>
                 </Container>
-                <Container>
+                <Container sx={{ pl: [0, '12px', '12px'] }}>
                   <Label>
                     <Radio
                       type='radio'
@@ -290,13 +287,15 @@ const RoomPage = (props) => {
                   fontSize: ['1em', '1.5em', '2em'],
                 }}
               >
-                Player {gameData.turn + 1}
+                {gameData &&
+                  (gameData.players[gameData.turn].username ??
+                    `Player ${turn + 1}`)}
               </h2>
             </div>
           )
       } else {
         if (newTrick) {
-          return <div className={`card outline`} sx={{ fontSize: [3, 5, 6] }} />
+          return <div className={`card outline`} sx={{ fontSize: [1, 4, 5] }} />
         }
         if (!newTrick) {
           // let randomN = Math.floor(Math.random() * 8) - 8

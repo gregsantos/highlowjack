@@ -11,7 +11,7 @@ export const getSuit = (suit) => {
     case 'd':
       return '♦'
     default:
-      break
+      return ''
   }
 }
 

@@ -12,8 +12,8 @@ export const Databox = ({ gameData, getSuit }) => {
         mr: [1, 1, 0],
       }}
     >
-      <ScoreBox gameData={gameData} />
-      <BidBox gameData={gameData} getSuit={getSuit} />
+      {gameData && <ScoreBox gameData={gameData} />}
+      {gameData && <BidBox gameData={gameData} getSuit={getSuit} />}
     </Flex>
   )
 }

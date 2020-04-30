@@ -74,7 +74,7 @@ export const HandBox = ({
       {gameData && playerSeat !== null ? (
         renderCards()
       ) : (
-        <Container sx={{ height: '20%' }}>
+        <Container>
           {roomData && roomData.state !== 'FULL' && playerSeat === null && (
             <div>
               <Container>

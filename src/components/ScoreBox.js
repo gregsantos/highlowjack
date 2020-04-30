@@ -15,10 +15,20 @@ export const ScoreBox = ({ gameData }) => {
         }}
       >
         <Container>
-          <h3 sx={{ color: 'antiquewhite', mt: 1 }}>Team 1</h3>
+          <h3 sx={{ color: 'antiquewhite', mb: [0, 0, 1] }}>Team 1</h3>
         </Container>
         <Container>
           <h1 sx={{ margin: 0 }}>{gameData && gameData.score[0]}</h1>
+        </Container>
+        <Container>
+          <div sx={{ color: 'antiquewhite' }}>
+            {gameData.players[0].username}
+          </div>
+        </Container>
+        <Container>
+          <div sx={{ color: 'antiquewhite' }}>
+            {gameData.players[1].username}
+          </div>
         </Container>
       </Box>
       <Box
@@ -31,10 +41,20 @@ export const ScoreBox = ({ gameData }) => {
         }}
       >
         <Container>
-          <h3 sx={{ color: 'antiquewhite', mt: 1 }}>Team 2</h3>
+          <h3 sx={{ color: 'antiquewhite', mb: [0, 0, 1] }}> Team 2</h3>
         </Container>
         <Container>
-          <h1 sx={{ mt: 0 }}>{gameData && gameData.score[1]}</h1>
+          <h1 sx={{ margin: 0 }}>{gameData && gameData.score[1]}</h1>
+        </Container>
+        <Container>
+          <div sx={{ color: 'antiquewhite' }}>
+            {gameData.players[1].username}
+          </div>
+        </Container>
+        <Container>
+          <div sx={{ color: 'antiquewhite' }}>
+            {gameData.players[3].username}
+          </div>
         </Container>
       </Box>
     </Flex>

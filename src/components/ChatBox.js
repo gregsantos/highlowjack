@@ -10,7 +10,7 @@ export const ChatBox = () => {
   return (
     <Flex
       sx={{
-        flex: [1, null, '1 1 30px'],
+        flex: [1, 1, '1 1 30px'],
         flexDirection: 'column',
         ml: [1, 1, 0],
         mt: [0, 0, 2],

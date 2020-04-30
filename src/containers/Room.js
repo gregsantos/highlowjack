@@ -172,7 +172,10 @@ const RoomPage = (props) => {
       const playerTurn = gameData.turn === playerSeat
       const currentBid = gameData.bid.bid
       const newTrick = gameData.newTrick
-      const lastCard = gameData.lastCard
+      const positionIndex = positions.findIndex(
+        (x) => x.seat === gameData.leader
+      )
+      console.log(positionIndex)
 
       if (gameData.trick === 0) {
         // Bid Round
@@ -301,10 +304,10 @@ const RoomPage = (props) => {
             return (
               <div
                 sx={{
-                  transform: `rotateZ(${i * 90}deg) `,
+                  transform: `rotateZ(${90 * (positionIndex + i)}deg) `,
                   gridColumn: '1 / span 8',
                   gridRow: 1, // must be on the same row as the other image
-                  paddingTop: '84px', // this pushes the image down, and keeps it proportional as it resizes
+                  paddingTop: ['44px', '62px', '95px'], // this pushes the image down, and keeps it proportional as it resizes
                   zIndex: 1, // make this image render on top of the bottom
                 }}
               >
@@ -318,7 +321,7 @@ const RoomPage = (props) => {
             )
           })
           return (
-            <Container sx={{ pl: ['24%', '54px', '62px'] }}>
+            <Container sx={{ pl: ['24%', '38px', '62px'] }}>
               <div
                 sx={{
                   display: 'grid',
@@ -448,6 +451,7 @@ const RoomPage = (props) => {
             uid: p,
           }))
           setPositions(positions)
+          console.log(positions)
         }
       })
       return () => {

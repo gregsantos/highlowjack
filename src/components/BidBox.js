@@ -2,6 +2,7 @@
 import { jsx, Flex, Container } from 'theme-ui'
 
 export const BidBox = ({ gameData, getSuit }) => {
+  console.log(gameData && gameData.bid.suit)
   return (
     <Flex sx={{ flex: 1 }}>
       <Container

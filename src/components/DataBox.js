@@ -13,7 +13,7 @@ export const Databox = ({ gameData, getSuit }) => {
       }}
     >
       <ScoreBox gameData={gameData} />
-      <BidBox getSuit={getSuit} />
+      <BidBox gameData={gameData} getSuit={getSuit} />
     </Flex>
   )
 }

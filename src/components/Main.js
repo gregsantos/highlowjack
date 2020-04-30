@@ -20,7 +20,7 @@ export const Main = ({
         backgroundColor: 'white',
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
-        gridTemplateRows: 'minmax(175px, 1fr) 1fr minmax(175px, 1fr)',
+        gridTemplateRows: '1fr 1fr 1fr',
       }}
     >
       <div sx={{ backgroundColor: 'darkseagreen' }} />

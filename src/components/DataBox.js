@@ -7,9 +7,9 @@ export const Databox = ({ gameData, getSuit }) => {
   return (
     <Flex
       sx={{
-        flex: [1, null, 2],
+        flex: [1, 1, 2],
         flexDirection: ['column', 'row', 'row'],
-        mr: [1, 1, 0],
+        mr: [2, 2, 0],
       }}
     >
       {gameData && <ScoreBox gameData={gameData} />}

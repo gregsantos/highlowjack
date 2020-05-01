@@ -40,16 +40,16 @@ export const Main = ({
               src={roomData.memberProfiles[positions[2].seat].profilePic}
               sx={{
                 width: ['65px', '100px', '125px'],
-                padding: ['0.25', '0.5em'],
+                padding: ['0.25em', '0.5em'],
                 border: [
                   `${
                     turn === (positions && positions[2].seat)
-                      ? '0.30em dotted indianred'
+                      ? '0.30em dashed indianred'
                       : ''
                   }`,
                   `${
                     turn === (positions && positions[2].seat)
-                      ? '0.5em dotted indianred'
+                      ? '0.5em dashed indianred'
                       : ''
                   }`,
                   null,
@@ -87,16 +87,16 @@ export const Main = ({
               src={roomData.memberProfiles[positions[1].seat].profilePic}
               sx={{
                 width: ['65px', '100px', '125px'],
-                padding: ['0.25', '0.5em'],
+                padding: ['0.25em', '0.5em'],
                 border: [
                   `${
                     turn === (positions && positions[1].seat)
-                      ? '0.30em dotted indianred'
+                      ? '0.30em dashed indianred'
                       : ''
                   }`,
                   `${
                     turn === (positions && positions[1].seat)
-                      ? '0.5em dotted indianred'
+                      ? '0.5em dashed indianred'
                       : ''
                   }`,
                   null,
@@ -116,7 +116,9 @@ export const Main = ({
           </h3>
         </Container>
       </Flex>
-      <Container sx={{ backgroundColor: 'green' }}>
+      <Flex
+        sx={{ flexDirection: 'column', backgroundColor: 'green', padding: 2 }}
+      >
         {roomData && playerSeat !== null && renderTable()}
         {roomData && roomData.state !== 'FULL' && playerSeat === null && (
           <div>
@@ -154,7 +156,7 @@ export const Main = ({
             </Container>
           </div>
         )}
-      </Container>
+      </Flex>
       <Flex
         sx={{
           flexDirection: 'column',
@@ -172,16 +174,16 @@ export const Main = ({
               src={roomData.memberProfiles[positions[3].seat].profilePic}
               sx={{
                 width: ['65px', '100px', '125px'],
-                padding: ['0.25', '0.5em'],
+                padding: ['0.25em', '0.5em'],
                 border: [
                   `${
                     turn === (positions && positions[3].seat)
-                      ? '0.30em dotted indianred'
+                      ? '0.30em dashed indianred'
                       : ''
                   }`,
                   `${
                     turn === (positions && positions[3].seat)
-                      ? '0.5em dotted indianred'
+                      ? '0.5em dashed indianred'
                       : ''
                   }`,
                   null,
@@ -217,16 +219,16 @@ export const Main = ({
               src={user.photoURL}
               sx={{
                 width: ['65px', '100px', '125px'],
-                padding: ['0.25', '0.5em'],
+                padding: ['0.25em', '0.5em'],
                 border: [
                   `${
                     turn === (positions && positions[0].seat)
-                      ? '0.30em dotted indianred'
+                      ? '0.30em dashed indianred'
                       : ''
                   }`,
                   `${
                     turn === (positions && positions[0].seat)
-                      ? '0.5em dotted indianred'
+                      ? '0.5em dashed indianred'
                       : ''
                   }`,
                   null,

@@ -172,35 +172,33 @@ const RoomPage = (props) => {
       const playerTurn = gameData.turn === playerSeat
       const currentBid = gameData.bid.bid
       const newTrick = gameData.newTrick
+      // get the leaders position
       const positionIndex = positions.findIndex(
         (x) => x.seat === gameData.leader
       )
-      console.log(positionIndex)
 
       if (gameData.trick === 0) {
         // Bid Round
         if (playerTurn)
           return (
-            <Container>
-              <Box sx={{}}>
-                <Container>
-                  <h1
-                    sx={{
-                      color: 'indianred',
-                      fontSize: ['1', '1.5em', null],
-                      mb: ['0px', '0px', '10px'],
-                      mt: ['2px', null, '5px'],
-                    }}
-                  >
-                    Please Bid{' '}
-                    {gameData &&
-                      (gameData.players[gameData.turn].username ??
-                        `${turn + 1}`)}
-                  </h1>
-                </Container>
-                <Container sx={{ pl: [0, '12px', '12px'] }}>
+            <Flex
+              sx={{
+                flexDirection: 'column',
+                backgroundColor: 'green',
+                color: 'antiquewhite',
+                padding: [1, 2, 4],
+              }}
+            >
+              <Flex
+                sx={{
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}
+              >
+                <div sx={{ mr: 0 }}>
                   <Label>
                     <Radio
+                      sx={{ mr: 1 }}
                       type='radio'
                       value={2}
                       checked={bidPoint === 2}
@@ -212,6 +210,7 @@ const RoomPage = (props) => {
                   </Label>
                   <Label>
                     <Radio
+                      sx={{ mr: 1 }}
                       type='radio'
                       value={3}
                       checked={bidPoint === 3}
@@ -222,6 +221,7 @@ const RoomPage = (props) => {
                   </Label>
                   <Label>
                     <Radio
+                      sx={{ mr: 1 }}
                       type='radio'
                       value={4}
                       checked={bidPoint === 4}
@@ -230,41 +230,62 @@ const RoomPage = (props) => {
                     />
                     4
                   </Label>
-                </Container>
-
-                <form onSubmit={handleSubmitBid}>
-                  <Container>
-                    <Select
-                      id='suit'
-                      value={bidSuit}
-                      onChange={handleSelectSuit}
-                      defaultValue='s'
-                    >
-                      <option value='s'>Spades</option>
-                      <option value='c'>Clubs</option>
-                      <option value='h'>Hearts</option>
-                      <option value='d'>Diamonds</option>
-                    </Select>
-                  </Container>
-                  <Container>
-                    <Button type='submit' variant='bidgroup'>
-                      Bid
-                    </Button>
-                  </Container>
-                </form>
-                <Container>
-                  <Button
-                    disabled={
-                      playerSeat === gameData.dealer && currentBid === 0
-                    }
-                    onClick={handlePass}
-                    variant='bidgroup'
+                </div>
+                <div>
+                  <Select
+                    sx={{
+                      color: 'antiquewhite',
+                      maxWidth: ['90px', '300px', null],
+                      ml: [2, 0, 0],
+                    }}
+                    id='suit'
+                    value={bidSuit}
+                    onChange={handleSelectSuit}
+                    defaultValue='s'
                   >
-                    Pass
+                    <option value='s'>Spades</option>
+                    <option value='c'>Clubs</option>
+                    <option value='h'>Hearts</option>
+                    <option value='d'>Diamonds</option>
+                  </Select>
+                </div>
+              </Flex>
+              <Flex
+                sx={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  mt: [1, 2, 2],
+                }}
+              >
+                <form onSubmit={handleSubmitBid}>
+                  <Button type='submit' variant='bidgroup'>
+                    Bid
                   </Button>
-                </Container>
-              </Box>
-            </Container>
+                </form>
+                <Button
+                  disabled={playerSeat === gameData.dealer && currentBid === 0}
+                  onClick={handlePass}
+                  variant='bidgroup'
+                >
+                  Pass
+                </Button>
+              </Flex>
+              <Container>
+                <h3
+                  sx={{
+                    color: 'indianred',
+                    fontSize: ['1', '1.5em', null],
+                    mb: ['0px', '0px', '10px'],
+                    mt: ['2px', null, '5px'],
+                  }}
+                >
+                  {gameData &&
+                    (gameData.players[gameData.turn].username ??
+                      `${turn + 1} `)}{' '}
+                  Bid or Pass
+                </h3>
+              </Container>
+            </Flex>
           )
         if (!playerTurn)
           return (
@@ -295,7 +316,11 @@ const RoomPage = (props) => {
           )
       } else {
         if (newTrick) {
-          return <div className={`card outline`} sx={{ fontSize: [1, 4, 5] }} />
+          return (
+            <Container>
+              <div className={`card outline`} sx={{ fontSize: [1, 4, 5] }} />
+            </Container>
+          )
         }
         if (!newTrick) {
           // let randomN = Math.floor(Math.random() * 8) - 8

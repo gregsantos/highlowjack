@@ -182,7 +182,7 @@ const Dashboard = (props) => {
         creator: userState.userId,
         members: firebase.firestore.FieldValue.arrayUnion(userState.userId),
         memberProfiles: firebase.firestore.FieldValue.arrayUnion({
-          id: user.uid,
+          id: userState.userId,
           username: userState.userData.username,
           profilePic: userState.userData.profilePic ?? null,
         }),
@@ -206,7 +206,7 @@ const Dashboard = (props) => {
           return history.push(`/room/${newRoomRef.id}`)
         })
         .catch(() => {
-          console.log('Error Creating new game')
+          console.log('Error Creating new Room')
         })
     }
 

@@ -12,8 +12,8 @@ export const HandBox = ({
 }) => {
   const renderCards = () => {
     const renderHand = () => {
-      const seat = roomData.members.includes(user && user.uid) ? playerSeat : 0
-      const playerHand = gameData.players[seat].hand
+      const playerHand = gameData.players[playerSeat].hand
+
       return playerSeat !== null
         ? [
             ...playerHand,

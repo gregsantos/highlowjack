@@ -23,7 +23,6 @@ export const tallyTrick = (members, gameRef) => {
         const gameData = snapshot.data()
         const lastRoundCard = gameData.trick === 6
         const trickCards = gameData.trickCards
-        console.log(trickCards)
         trickCards.map((c, i) => {
           if (c.spot === 'A') return (trickCards[i].spot = '14')
           if (c.spot === 'K') return (trickCards[i].spot = '13')
@@ -31,7 +30,6 @@ export const tallyTrick = (members, gameRef) => {
           if (c.spot === 'J') return (trickCards[i].spot = '11')
           return null
         })
-        console.log(trickCards)
 
         const trickTrumpCards = trickCards.filter(
           (c) => c.suit === gameData.bid.suit
@@ -76,7 +74,6 @@ export const tallyTrick = (members, gameRef) => {
 
         if (!lastRoundCard) {
           // tally trick and advance round
-          console.log('Tally Trick', `roundCards.${trickWinner}`)
           const update = {
             turn: handWinner,
             leader: handWinner,
@@ -108,10 +105,6 @@ export const tallyTrick = (members, gameRef) => {
           const mappedPointCards = t1RoundCards.reduce(mapPointCards, {})
           const mappedPointCards2 = t2RoundCards.reduce(mapPointCards, {})
 
-          console.log('Tally Trick & Round')
-          console.log('mapped round cards 1', mappedPointCards)
-          console.log('mapped round cards 2', mappedPointCards2)
-
           const t1GamePoints =
             (mappedPointCards['10'] * 10 || 0) +
             (mappedPointCards['14'] * 4 || 0) +
@@ -137,8 +130,6 @@ export const tallyTrick = (members, gameRef) => {
             (c) => c.suit === gameData.bid.suit
           )
 
-          console.log('T1 round and trump cards', t1RoundCards, t1TrumpCards)
-
           t1TrumpCards.map((c, i) => {
             if (c.spot === 'A') return (t1TrumpCards[i].spot = '14')
             if (c.spot === 'K') return (t1TrumpCards[i].spot = '13')
@@ -154,8 +145,6 @@ export const tallyTrick = (members, gameRef) => {
           const t2TrumpCards = t2RoundCards.filter(
             (c) => c.suit === gameData.bid.suit
           )
-
-          console.log('T2 round and trump cards', t2RoundCards, t2TrumpCards)
 
           t2TrumpCards.map((c, i) => {
             if (c.spot === 'A') return (t2TrumpCards[i].spot = '14')
@@ -212,9 +201,8 @@ export const tallyTrick = (members, gameRef) => {
             t2RoundScore
           )
 
-          const t1FinalScore = () => {
+          const getT1FinalScore = () => {
             if (gameData.bid.bidder === 0 || gameData.bid.bidder === 2) {
-              console.log('Team 1 Bid')
               return t1RoundScore >= gameData.bid.bid
                 ? t1RoundScore
                 : -Math.abs(gameData.bid.bid)
@@ -223,15 +211,28 @@ export const tallyTrick = (members, gameRef) => {
             }
           }
 
-          const t2FinalScore = () => {
+          const getT2FinalScore = () => {
             if (gameData.bid.bidder === 1 || gameData.bid.bidder === 3) {
-              console.log('Team 2 Bid')
               return t2RoundScore >= gameData.bid.bid
                 ? t2RoundScore
                 : -Math.abs(gameData.bid.bid)
             } else {
               return t2RoundScore
             }
+          }
+
+          const t1FinalScore = getT1FinalScore()
+          const t1GameScore = t1FinalScore + gameData.score[0]
+          const t2FinalScore = getT2FinalScore()
+          const t2GameScore = t2FinalScore + gameData.score[1]
+
+          const endGame = () => {
+            const gameWinner = t1GameScore > t2GameScore ? '1' : '2'
+            console.log('Winner! Team:', gameWinner)
+          }
+
+          if (t1GameScore >= 11 || t2GameScore >= 11) {
+            endGame()
           }
 
           const nextDealer = gameData.dealer === 3 ? 0 : gameData.dealer + 1
@@ -257,8 +258,8 @@ export const tallyTrick = (members, gameRef) => {
             lastCard: {},
             roundCards: { t1: [], t2: [] },
             score: [
-              gameData.score[0] + t1FinalScore(),
-              gameData.score[1] + t2FinalScore(),
+              gameData.score[0] + t1FinalScore,
+              gameData.score[1] + t2FinalScore,
             ],
             state: 'PLAYING',
           }

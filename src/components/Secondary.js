@@ -21,6 +21,7 @@ export const Secondary = ({
       }}
     >
       <HandBox
+        user={user}
         roomData={roomData}
         gameData={gameData}
         playerSeat={playerSeat}

@@ -435,12 +435,8 @@ const RoomPage = (props) => {
             ...Array.from({ length: 4 - data.members.length }, () => null),
           ]
           const getPositions = () => {
-            if (playerSeat === 3) {
-              return membersBySeat
-            }
             if (playerSeat === null && data.members.length < 4) {
               const membersBySeatIfJoin = [user.uid, ...data.members]
-              //membersBySeat.push(user.uid)
               let positionsIfJoin = [
                 ...membersBySeatIfJoin,
                 ...Array.from(
@@ -460,7 +456,6 @@ const RoomPage = (props) => {
             uid: p,
           }))
           setPositions(positions)
-          console.log(positions)
         }
       })
       return () => {

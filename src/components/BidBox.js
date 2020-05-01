@@ -16,20 +16,18 @@ export const BidBox = ({ gameData, getSuit }) => {
         }}
       >
         <Container>
-          <h3 sx={{ color: 'antiquewhite', mb: [0, 0, 1] }}>Bid</h3>
-        </Container>
-        <Container sx={{ mb: ['14px', '0px', '8px'] }}>
-          <h1 sx={{ margin: 0, mb: [0, '5px', 0] }}>
-            {gameData && gameData.bid.bid}
-          </h1>
+          <h3 sx={{ color: 'antiquewhite', mb: 0 }}>Bid</h3>
         </Container>
         <Container>
-          <div sx={{ color: 'antiquewhite', mt: [0, 0, 1], mb: [0, 0, 1] }}>
+          <h1 sx={{ margin: 0 }}>{gameData && gameData.bid.bid}</h1>
+        </Container>
+        <Container>
+          <h3 sx={{ color: 'antiquewhite', mt: 0 }}>
             {gameData &&
             (gameData.bid.bidder === 0 || gameData.bid.bidder === 2)
               ? 'Team 1'
               : 'Team 2'}
-          </div>
+          </h3>
         </Container>
       </Box>
       <Box
@@ -42,19 +40,14 @@ export const BidBox = ({ gameData, getSuit }) => {
         }}
       >
         <Container>
-          <h3 sx={{ color: 'antiquewhite', mb: [0, 0, 1] }}>Trump</h3>
+          <h3 sx={{ color: 'antiquewhite', mb: 0 }}>Trump</h3>
         </Container>
-        <Container sx={{ mb: ['14px', '0px', '8px'] }}>
-          <h1 sx={{ margin: 0, mb: [0, '5px', 0] }}>
+        <Container>
+          <h1 sx={{ margin: 0 }}>
             {gameData && gameData.trick !== 0
               ? getSuit(gameData.bid.suit)
               : '-'}
           </h1>
-        </Container>
-        <Container>
-          <div sx={{ color: 'antiquewhite', mt: [0, 0, 1], mb: [0, 0, 1] }}>
-            Suit
-          </div>
         </Container>
       </Box>
     </Flex>

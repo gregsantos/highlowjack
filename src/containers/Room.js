@@ -181,24 +181,17 @@ const RoomPage = (props) => {
         // Bid Round
         if (playerTurn)
           return (
-            <Flex
-              sx={{
-                flexDirection: 'column',
-                backgroundColor: 'green',
-                color: 'antiquewhite',
-                padding: [1, 2, 4],
-              }}
-            >
+            <div sx={{ width: ['85%', '60%', '70%'] }}>
               <Flex
                 sx={{
-                  justifyContent: 'space-around',
+                  flexDirection: ['column', 'row', 'row'],
                   alignItems: 'center',
+                  justifyContent: 'space-between',
                 }}
               >
-                <div sx={{ mr: 0 }}>
+                <Flex sx={{ flexDirection: ['row', 'column', 'column'] }}>
                   <Label>
                     <Radio
-                      sx={{ mr: 1 }}
                       type='radio'
                       value={2}
                       checked={bidPoint === 2}
@@ -210,7 +203,6 @@ const RoomPage = (props) => {
                   </Label>
                   <Label>
                     <Radio
-                      sx={{ mr: 1 }}
                       type='radio'
                       value={3}
                       checked={bidPoint === 3}
@@ -221,7 +213,6 @@ const RoomPage = (props) => {
                   </Label>
                   <Label>
                     <Radio
-                      sx={{ mr: 1 }}
                       type='radio'
                       value={4}
                       checked={bidPoint === 4}
@@ -230,25 +221,23 @@ const RoomPage = (props) => {
                     />
                     4
                   </Label>
-                </div>
-                <div>
-                  <Select
-                    sx={{
-                      color: 'antiquewhite',
-                      maxWidth: ['90px', '300px', null],
-                      ml: [2, 0, 0],
-                    }}
-                    id='suit'
-                    value={bidSuit}
-                    onChange={handleSelectSuit}
-                    defaultValue='s'
-                  >
-                    <option value='s'>Spades</option>
-                    <option value='c'>Clubs</option>
-                    <option value='h'>Hearts</option>
-                    <option value='d'>Diamonds</option>
-                  </Select>
-                </div>
+                </Flex>
+
+                <Select
+                  sx={{
+                    color: 'antiquewhite',
+                    maxWidth: ['90px', '300px', null],
+                  }}
+                  id='suit'
+                  value={bidSuit}
+                  onChange={handleSelectSuit}
+                  defaultValue='s'
+                >
+                  <option value='s'>Spades</option>
+                  <option value='c'>Clubs</option>
+                  <option value='h'>Hearts</option>
+                  <option value='d'>Diamonds</option>
+                </Select>
               </Flex>
               <Flex
                 sx={{
@@ -285,7 +274,7 @@ const RoomPage = (props) => {
                   Bid or Pass
                 </h3>
               </Container>
-            </Flex>
+            </div>
           )
         if (!playerTurn)
           return (
@@ -316,11 +305,7 @@ const RoomPage = (props) => {
           )
       } else {
         if (newTrick) {
-          return (
-            <Container>
-              <div className={`card outline`} sx={{ fontSize: [1, 4, 5] }} />
-            </Container>
-          )
+          return <div className={`card outline`} sx={{ fontSize: [1, 4, 5] }} />
         }
         if (!newTrick) {
           // let randomN = Math.floor(Math.random() * 8) - 8

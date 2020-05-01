@@ -117,7 +117,13 @@ export const Main = ({
         </Container>
       </Flex>
       <Flex
-        sx={{ flexDirection: 'column', backgroundColor: 'green', padding: 2 }}
+        sx={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'green',
+          color: 'antiquewhite',
+        }}
       >
         {roomData && playerSeat !== null && renderTable()}
         {roomData && roomData.state !== 'FULL' && playerSeat === null && (

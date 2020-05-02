@@ -7,7 +7,7 @@ export const Databox = ({ gameData, getSuit }) => {
   return (
     <Flex
       sx={{
-        flex: [1, 1, 2],
+        flex: [1, 1, '0 1 auto'],
         flexDirection: ['column', 'row', 'row'],
         mr: [2, 2, 0],
       }}

@@ -16,7 +16,7 @@ const Messages = ({ roomId }) => {
     <div
       className='Messages'
       sx={{
-        flex: [1],
+        flex: 'auto',
         backgroundColor: 'white',
         overflowY: 'auto',
         mb: 1,

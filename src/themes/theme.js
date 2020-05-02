@@ -103,7 +103,7 @@ export default {
     bidgroup: {
       color: 'green',
       bg: 'darkseagreen',
-      fontSize: ['0.90em', '0.90em', '1em'],
+      fontSize: ['0.80em', '0.90em', '1em'],
       border: 'solid 2px indianred',
       mx: ['4px', null, '8px'],
       my: ['4px', null, '4px'],

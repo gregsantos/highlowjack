@@ -44,12 +44,12 @@ export const Main = ({
                 border: [
                   `${
                     turn === (positions && positions[2].seat)
-                      ? '0.30em dashed indianred'
+                      ? '0.30em dotted indianred'
                       : ''
                   }`,
                   `${
                     turn === (positions && positions[2].seat)
-                      ? '0.5em dashed indianred'
+                      ? '0.5em dotted indianred'
                       : ''
                   }`,
                   null,
@@ -91,12 +91,12 @@ export const Main = ({
                 border: [
                   `${
                     turn === (positions && positions[1].seat)
-                      ? '0.30em dashed indianred'
+                      ? '0.30em dotted indianred'
                       : ''
                   }`,
                   `${
                     turn === (positions && positions[1].seat)
-                      ? '0.5em dashed indianred'
+                      ? '0.5em dotted indianred'
                       : ''
                   }`,
                   null,
@@ -184,12 +184,12 @@ export const Main = ({
                 border: [
                   `${
                     turn === (positions && positions[3].seat)
-                      ? '0.30em dashed indianred'
+                      ? '0.30em dotted indianred'
                       : ''
                   }`,
                   `${
                     turn === (positions && positions[3].seat)
-                      ? '0.5em dashed indianred'
+                      ? '0.5em dotted indianred'
                       : ''
                   }`,
                   null,
@@ -229,12 +229,12 @@ export const Main = ({
                 border: [
                   `${
                     turn === (positions && positions[0].seat)
-                      ? '0.30em dashed indianred'
+                      ? '0.30em dotted indianred'
                       : ''
                   }`,
                   `${
                     turn === (positions && positions[0].seat)
-                      ? '0.5em dashed indianred'
+                      ? '0.5em dotted indianred'
                       : ''
                   }`,
                   null,

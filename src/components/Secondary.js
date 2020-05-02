@@ -21,6 +21,7 @@ export const Secondary = ({
       }}
     >
       <HandBox
+        sx={{ flex: 1 }}
         user={user}
         roomData={roomData}
         gameData={gameData}
@@ -30,7 +31,8 @@ export const Secondary = ({
       />
       <Flex
         sx={{
-          flex: '1',
+          flex: 2,
+          height: '100%',
           flexDirection: ['row', 'row', 'column'],
           p: 2,
           border: 'thin solid indianred',

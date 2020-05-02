@@ -23,8 +23,6 @@ export const initDeal = (members) => {
 }
 
 export default (members) => {
-  console.log('Members', members)
-
   const deal = initDeal(members)
 
   const gameData = {

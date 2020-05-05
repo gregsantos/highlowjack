@@ -9,6 +9,7 @@ import { ToastContext } from '../contexts/toastContext'
 import firebase from '../firebase.js'
 import ErrorBoundary from '../components/ErrorBoundary'
 import { useSession } from '../App'
+import { getToken } from '../helpers/cloudFunctions'
 
 const Dashboard = (props) => {
   const user = useSession()
@@ -234,6 +235,7 @@ const Dashboard = (props) => {
               Create Room
             </Button>
           </div>
+
           <div>
             <Flex>
               <h2>My Rooms</h2>

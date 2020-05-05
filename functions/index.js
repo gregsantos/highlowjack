@@ -2,6 +2,11 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 admin.initializeApp(functions.config().firebase)
 
+exports.getToken = functions.https.onCall((data, context) => {
+  console.log(data)
+  return `token`
+})
+
 exports.sendPushNotification = functions.https.onCall((data, context) => {
   var message = {
     notification: {
@@ -27,4 +32,3 @@ exports.sendPushNotification = functions.https.onCall((data, context) => {
 })
 
 exports.roomFuncs = require('./roomFuncs')
-exports.vidFuncs = require('./vidFuncs')

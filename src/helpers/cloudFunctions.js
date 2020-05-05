@@ -1,12 +1,26 @@
-import firebase from "../firebase.js";
+import firebase from '../firebase.js'
 
-export const sendPushNotification = data => {
+const functions = firebase.functions()
+
+export const sendPushNotification = (data) => {
   if (data.token) {
-    const push = firebase.functions().httpsCallable("sendPushNotification");
+    const push = firebase.functions().httpsCallable('sendPushNotification')
     push({
       token: data.token,
       title: data.title,
-      body: data.body
-    });
+      body: data.body,
+    })
   }
-};
+}
+
+export const getToken = (data) => {
+  if (data.roomId) {
+    const get = functions.httpsCallable('getToken')
+    get({
+      roomId: data.roomId,
+      username: data.username,
+    })
+      .then((r) => console.log(r))
+      .catch((e) => console.log(e))
+  }
+}

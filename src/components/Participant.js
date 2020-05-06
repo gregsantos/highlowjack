@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Container, Flex } from 'theme-ui'
+import { jsx } from 'theme-ui'
 import { useState, useEffect, useRef } from 'react'
 
 const Participant = ({ participant }) => {

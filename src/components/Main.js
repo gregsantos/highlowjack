@@ -33,25 +33,15 @@ export const Main = ({
       (roomData.memberProfiles[positions[pos].seat].username || '')
     )
   }
-  const getParticipant = (pos) => {
-    const positionUsername = getParticipantNameByPosition(
-      positions && positions[pos].seat
-    )
+
+  const getParticipantComponent = (pos) => {
     const participantComponent =
       remoteParticipants.find(
-        (p) =>
-          p.props.username ===
-          getParticipantNameByPosition(positions && positions[pos].seat)
+        (p) => p.props.username === getParticipantNameByPosition(pos)
       ) || null
     return participantComponent
   }
 
-  console.log(
-    'Participant components',
-    remoteParticipants[0],
-    'Position 1',
-    positions && positions[1].seat
-  )
   return (
     <main
       sx={{
@@ -75,11 +65,11 @@ export const Main = ({
             positions &&
             token &&
             videoRoom &&
-            getParticipant(positions[2].seat) && (
-              <Container>{getParticipant(positions[2].seat)}</Container>
+            getParticipantComponent(2) && (
+              <Container>{getParticipantComponent(2)}</Container>
             )}
           {positions &&
-          !getParticipant(positions[2].seat) &&
+          !getParticipantComponent(2) &&
           roomData.memberProfiles[positions[2].seat] &&
           roomData.memberProfiles[positions[2].seat].profilePic ? (
             <img
@@ -130,11 +120,11 @@ export const Main = ({
             positions &&
             token &&
             videoRoom &&
-            getParticipant(positions[1].seat) && (
-              <Container>{getParticipant(positions[1].seat)}</Container>
+            getParticipantComponent(1) && (
+              <Container>{getParticipantComponent(1)}</Container>
             )}
           {positions &&
-          !getParticipant(positions[1].seat) &&
+          !getParticipantComponent(1) &&
           roomData.memberProfiles[positions[1].seat] &&
           roomData.memberProfiles[positions[1].seat].profilePic ? (
             <img
@@ -231,11 +221,11 @@ export const Main = ({
             positions &&
             token &&
             videoRoom &&
-            getParticipant(positions[3].seat) && (
-              <Container>{getParticipant(positions[3].seat)}</Container>
+            getParticipantComponent(3) && (
+              <Container>{getParticipantComponent(3)}</Container>
             )}
           {positions &&
-          !getParticipant(positions[3].seat) &&
+          !getParticipantComponent(3) &&
           roomData.memberProfiles[positions[3].seat] &&
           roomData.memberProfiles[positions[3].seat].profilePic ? (
             <img
@@ -278,14 +268,13 @@ export const Main = ({
           flexDirection: 'column',
           justifyContent: 'center',
           paddingTop: ['10px', '15px', null],
+          height: '100%',
         }}
       >
         <Container>
           {playerSeat === null && <FaUserSecret size='6em' />}
           {playerSeat !== null && token && videoRoom && (
-            <Container>
-              <Participant participant={videoRoom.localParticipant} />
-            </Container>
+            <Participant participant={videoRoom.localParticipant} />
           )}
 
           {playerSeat !== null && !token && user.photoURL && (

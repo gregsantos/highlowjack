@@ -524,6 +524,7 @@ const RoomPage = (props) => {
           joinRoom={joinRoom}
           joinVideo={joinVideo}
           videoRoom={videoRoom}
+          participants={participants}
           history={history}
         />
         <Secondary

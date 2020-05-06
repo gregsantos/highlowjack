@@ -15,8 +15,43 @@ export const Main = ({
   joinRoom,
   joinVideo,
   videoRoom,
+  participants,
   history,
 }) => {
+  const remoteParticipants = participants.map((participant) => (
+    <Participant
+      key={participant.sid}
+      participant={participant}
+      username={participant.identity}
+    />
+  ))
+
+  const getParticipantNameByPosition = (pos) => {
+    return (
+      roomData &&
+      positions &&
+      (roomData.memberProfiles[positions[pos].seat].username || '')
+    )
+  }
+  const getParticipant = (pos) => {
+    const positionUsername = getParticipantNameByPosition(
+      positions && positions[pos].seat
+    )
+    const participantComponent =
+      remoteParticipants.find(
+        (p) =>
+          p.props.username ===
+          getParticipantNameByPosition(positions && positions[pos].seat)
+      ) || null
+    return participantComponent
+  }
+
+  console.log(
+    'Participant components',
+    remoteParticipants[0],
+    'Position 1',
+    positions && positions[1].seat
+  )
   return (
     <main
       sx={{
@@ -36,7 +71,15 @@ export const Main = ({
         }}
       >
         <Container>
+          {playerSeat !== null &&
+            positions &&
+            token &&
+            videoRoom &&
+            getParticipant(positions[2].seat) && (
+              <Container>{getParticipant(positions[2].seat)}</Container>
+            )}
           {positions &&
+          !getParticipant(positions[2].seat) &&
           roomData.memberProfiles[positions[2].seat] &&
           roomData.memberProfiles[positions[2].seat].profilePic ? (
             <img
@@ -61,7 +104,7 @@ export const Main = ({
               }}
             />
           ) : (
-            <FaUserSecret size='6em' />
+            !token && <FaUserSecret size='6em' />
           )}
         </Container>
         <Container>
@@ -83,7 +126,15 @@ export const Main = ({
         }}
       >
         <Container>
+          {playerSeat !== null &&
+            positions &&
+            token &&
+            videoRoom &&
+            getParticipant(positions[1].seat) && (
+              <Container>{getParticipant(positions[1].seat)}</Container>
+            )}
           {positions &&
+          !getParticipant(positions[1].seat) &&
           roomData.memberProfiles[positions[1].seat] &&
           roomData.memberProfiles[positions[1].seat].profilePic ? (
             <img
@@ -108,7 +159,7 @@ export const Main = ({
               }}
             />
           ) : (
-            <FaUserSecret size='6em' />
+            !token && <FaUserSecret size='6em' />
           )}
         </Container>
         <Container>
@@ -176,7 +227,15 @@ export const Main = ({
         }}
       >
         <Container>
+          {playerSeat !== null &&
+            positions &&
+            token &&
+            videoRoom &&
+            getParticipant(positions[3].seat) && (
+              <Container>{getParticipant(positions[3].seat)}</Container>
+            )}
           {positions &&
+          !getParticipant(positions[3].seat) &&
           roomData.memberProfiles[positions[3].seat] &&
           roomData.memberProfiles[positions[3].seat].profilePic ? (
             <img
@@ -201,7 +260,7 @@ export const Main = ({
               }}
             />
           ) : (
-            <FaUserSecret size='6em' />
+            !token && <FaUserSecret size='6em' />
           )}
         </Container>
         <Container>

@@ -19,6 +19,7 @@ import { tallyTrick, getSuit } from '../helpers/gameHelpers'
 import { UserContext } from '../contexts/userContext'
 import { Main } from '../components/Main'
 import { Secondary } from '../components/Secondary'
+import { getToken } from '../helpers/cloudFunctions'
 import '../css/cards.css'
 
 const RoomPage = (props) => {
@@ -44,6 +45,10 @@ const RoomPage = (props) => {
   const roomRef = db.collection('roomDetail').doc(id)
   const gamesRef = db.collection('games')
   const gameRef = db.collection('games').doc(id)
+
+  const joinVideo = async () => {
+    const token = await getToken({ roomId: id, username: userData.username })
+  }
 
   const joinRoom = () => {
     db.runTransaction((transaction) => {
@@ -482,6 +487,7 @@ const RoomPage = (props) => {
           playerSeat={playerSeat}
           renderTable={renderTable}
           joinRoom={joinRoom}
+          joinVideo={joinVideo}
           history={history}
         />
         <Secondary

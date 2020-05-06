@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, Flex, Button, Container } from 'theme-ui'
-import { FaUserSecret } from 'react-icons/fa'
+import { FaUserSecret, FaVideo } from 'react-icons/fa'
 
 export const Main = ({
   user,
@@ -11,6 +11,7 @@ export const Main = ({
   playerSeat,
   renderTable,
   joinRoom,
+  joinVideo,
   history,
 }) => {
   return (
@@ -247,6 +248,7 @@ export const Main = ({
           <h3 sx={{ mt: ['2px', '10px'] }}>
             {playerSeat === null ? 'Open Seat' : userData.username}
           </h3>
+          <FaVideo sx={{ ml: 2, mb: 1 }} onClick={joinVideo} />
         </Container>
       </Flex>
       <div sx={{ backgroundColor: 'darkseagreen' }} />

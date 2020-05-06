@@ -1,16 +1,8 @@
 /** @jsx jsx */
-import {
-  jsx,
-  Container,
-  Flex,
-  Box,
-  Button,
-  Select,
-  Radio,
-  Label,
-} from 'theme-ui'
+import { jsx, Container, Flex, Button, Select, Radio, Label } from 'theme-ui'
 import { useState, useEffect, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
+import Video from 'twilio-video'
 import { RoomWrapper } from '../components'
 import { useSession } from '../App'
 import firebase from '../firebase.js'
@@ -35,6 +27,10 @@ const RoomPage = (props) => {
   const [bidSuit, setBidSuit] = useState('s')
   const isDealer = gameData && gameData.dealer === playerSeat
   const turn = gameData && gameData.turn
+  // video
+  const [token, setToken] = useState(null)
+  const [videoRoom, setVideoRoom] = useState(null)
+  const [participants, setParticipants] = useState([])
 
   // rout ish
   const { id } = useParams()
@@ -47,7 +43,44 @@ const RoomPage = (props) => {
   const gameRef = db.collection('games').doc(id)
 
   const joinVideo = async () => {
-    const token = await getToken({ roomId: id, username: userData.username })
+    const accessToken = await getToken({
+      roomId: id,
+      username: userData.username,
+    })
+    setToken(accessToken.data)
+
+    const participantConnected = (participant) => {
+      setParticipants((prevParticipants) => [...prevParticipants, participant])
+    }
+    const participantDisconnected = (participant) => {
+      setParticipants((prevParticipants) =>
+        prevParticipants.filter((p) => p !== participant)
+      )
+    }
+    Video.connect(accessToken.data, {
+      name: id,
+    }).then((room) => {
+      setVideoRoom(room)
+      room.on('participantConnected', participantConnected)
+      room.on('participantDisconnected', participantDisconnected)
+      room.participants.forEach(participantConnected)
+    })
+  }
+
+  const disconnectVideo = () => {
+    setVideoRoom((currentRoom) => {
+      if (currentRoom && currentRoom.localParticipant.state === 'connected') {
+        currentRoom.localParticipant.tracks.forEach(function (
+          trackPublication
+        ) {
+          trackPublication.track.stop()
+        })
+        currentRoom.disconnect()
+        return null
+      } else {
+        return currentRoom
+      }
+    })
   }
 
   const joinRoom = () => {
@@ -463,6 +496,7 @@ const RoomPage = (props) => {
       return () => {
         unsubscribe()
         unsubscribeGame()
+        disconnectVideo()
         console.log(user.uid, 'left room')
       }
     } else {
@@ -482,12 +516,14 @@ const RoomPage = (props) => {
           user={user}
           userData={userData}
           roomData={roomData}
+          token={token}
           turn={turn}
           positions={positions}
           playerSeat={playerSeat}
           renderTable={renderTable}
           joinRoom={joinRoom}
           joinVideo={joinVideo}
+          videoRoom={videoRoom}
           history={history}
         />
         <Secondary

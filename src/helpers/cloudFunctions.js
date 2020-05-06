@@ -16,11 +16,11 @@ export const sendPushNotification = (data) => {
 export const getToken = (data) => {
   if (data.roomId) {
     const get = functions.httpsCallable('getToken')
-    get({
+    return get({
       roomId: data.roomId,
       username: data.username,
     })
-      .then((r) => console.log(r))
+      .then((r) => r)
       .catch((e) => console.log(e))
   }
 }

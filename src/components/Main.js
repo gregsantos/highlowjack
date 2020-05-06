@@ -1,17 +1,20 @@
 /** @jsx jsx */
-import { jsx, Flex, Button, Container } from 'theme-ui'
+import { jsx, Flex, Button, Container, Text } from 'theme-ui'
 import { FaUserSecret, FaVideo } from 'react-icons/fa'
+import Participant from '../components/Participant'
 
 export const Main = ({
   user,
   userData,
   roomData,
+  token,
   turn,
   positions,
   playerSeat,
   renderTable,
   joinRoom,
   joinVideo,
+  videoRoom,
   history,
 }) => {
   return (
@@ -220,7 +223,13 @@ export const Main = ({
       >
         <Container>
           {playerSeat === null && <FaUserSecret size='6em' />}
-          {playerSeat !== null && user.photoURL && (
+          {playerSeat !== null && token && videoRoom && (
+            <Container>
+              <Participant participant={videoRoom.localParticipant} />
+            </Container>
+          )}
+
+          {playerSeat !== null && !token && user.photoURL && (
             <img
               alt='userPhoto'
               src={user.photoURL}
@@ -245,9 +254,7 @@ export const Main = ({
           )}
         </Container>
         <Container>
-          <h3 sx={{ mt: ['2px', '10px'] }}>
-            {playerSeat === null ? 'Open Seat' : userData.username}
-          </h3>
+          <Text>{playerSeat === null ? 'Open Seat' : userData.username}</Text>
           <FaVideo sx={{ ml: 2, mb: 1 }} onClick={joinVideo} />
         </Container>
       </Flex>

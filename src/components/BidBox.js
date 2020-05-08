@@ -20,7 +20,7 @@ export const BidBox = ({ gameData, getSuit }) => {
           <h3 sx={{ color: 'antiquewhite' }}>Bid</h3>
         </Container>
         <Container>
-          <h1 sx={{ margin: 0 }}>{gameData && gameData.bid.bid}</h1>
+          <h2 sx={{ margin: 0 }}>{gameData && gameData.bid.bid}</h2>
         </Container>
         <Container>
           <h3 sx={{ color: 'antiquewhite' }}>
@@ -46,11 +46,11 @@ export const BidBox = ({ gameData, getSuit }) => {
           <h3 sx={{ color: 'antiquewhite' }}>Trump</h3>
         </Container>
         <Container>
-          <h1 sx={{ margin: 0 }}>
+          <h2 sx={{ margin: 0 }}>
             {gameData && gameData.trick !== 0
               ? getSuit(gameData.bid.suit)
               : '-'}
-          </h1>
+          </h2>
         </Container>
         <Container>
           <h3 sx={{ color: 'antiquewhite' }}>Suit</h3>

@@ -22,7 +22,7 @@ export const ScoreBox = ({ gameData }) => {
           </Text>
         </Container>
         <Container>
-          <h1 sx={{ margin: 0 }}>{gameData && gameData.score[0]}</h1>
+          <h2 sx={{ margin: 0 }}>{gameData && gameData.score[0]}</h2>
         </Container>
         <Container>
           <Text sx={{ color: 'antiquewhite', mt: 0 }}>
@@ -47,7 +47,7 @@ export const ScoreBox = ({ gameData }) => {
           </Text>
         </Container>
         <Container>
-          <h1 sx={{ margin: 0 }}>{gameData && gameData.score[1]}</h1>
+          <h2 sx={{ margin: 0 }}>{gameData && gameData.score[1]}</h2>
         </Container>
         <Container>
           <Text sx={{ color: 'antiquewhite', mt: 0 }}>

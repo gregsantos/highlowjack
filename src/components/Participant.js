@@ -65,14 +65,19 @@ const Participant = ({ participant }) => {
   }, [audioTracks])
 
   return (
-    <Box sx={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+    <div
+      sx={{
+        width: '100%',
+        height: '100%',
+      }}
+    >
       <video
         sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
         ref={videoRef}
         autoPlay={true}
       />
       <audio ref={audioRef} autoPlay={true} />
-    </Box>
+    </div>
   )
 }
 

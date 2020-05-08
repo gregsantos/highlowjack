@@ -1,6 +1,5 @@
 /** @jsx jsx */
-import { jsx, Box, Container, Button } from 'theme-ui'
-import { FaRegTimesCircle } from 'react-icons/fa'
+import { jsx, Flex, Container, Button } from 'theme-ui'
 
 export const HandBox = ({
   user,
@@ -10,6 +9,12 @@ export const HandBox = ({
   playCard,
   startGame,
 }) => {
+  const getDisabled = (card) => {
+    return (
+      card === 'outline' || gameData.trick === 0 || gameData.turn !== playerSeat
+    )
+  }
+
   const renderCards = () => {
     const renderHand = () => {
       const playerHand = gameData.players[playerSeat].hand
@@ -20,14 +25,12 @@ export const HandBox = ({
             ...Array.from({ length: 6 - playerHand.length }, () => 'outline'),
           ].map((card, i) => (
             <Container key={i}>
-              <div className={`card ${card}`} sx={{ fontSize: [1, 3, 4] }} />
-              {card !== 'outline' &&
-                gameData.trick !== 0 &&
-                gameData.turn === playerSeat && (
-                  <Button variant='card' onClick={() => playCard(i, card)}>
-                    <FaRegTimesCircle />
-                  </Button>
-                )}
+              <button
+                className={`card ${card}`}
+                sx={{ fontSize: [1, 3, 4] }}
+                onClick={() => playCard(i, card)}
+                disabled={getDisabled()}
+              />
             </Container>
           ))
         : null
@@ -38,11 +41,12 @@ export const HandBox = ({
         <div
           sx={{
             backgroundColor: 'green',
-            paddingY: ['2px', '3px', '5px'],
+            width: '100%',
+            paddingY: ['1px', '3px', '5px'],
             display: 'grid',
             justifyContent: 'center',
             gridTemplateColumns: [
-              'repeat(auto-fit, 55px)',
+              'repeat(6, minmax(0px, 1fr))',
               'repeat(6, minmax(80px, 1fr))',
               'repeat(3, minmax(92px, 1fr))',
             ],
@@ -65,8 +69,10 @@ export const HandBox = ({
     }
   }
   return (
-    <Box
+    <Flex
       sx={{
+        flex: ['1 1 80px', 1, 1],
+        justifyContent: 'center',
         border: 'thin solid indianred',
         borderBottom: 'none',
       }}
@@ -116,6 +122,6 @@ export const HandBox = ({
           )}
         </Container>
       )}
-    </Box>
+    </Flex>
   )
 }

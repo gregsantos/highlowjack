@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui'
+import { jsx, Box } from 'theme-ui'
 import { useEffect, useRef } from 'react'
 import { useCollection } from '../helpers/useCollection'
 
@@ -13,14 +13,14 @@ const Messages = ({ roomId }) => {
   })
 
   return (
-    <div
-      className='Messages'
+    <Box
       sx={{
-        flex: 'auto',
+        flex: 1,
         backgroundColor: 'white',
         overflowY: 'auto',
         mb: 1,
         border: 'thin solid indianred',
+        maxHeight: ['257px', '105px', '220px'],
       }}
       ref={scroller}
     >
@@ -38,7 +38,7 @@ const Messages = ({ roomId }) => {
           </div>
         )
       })}
-    </div>
+    </Box>
   )
 }
 

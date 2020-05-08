@@ -9,7 +9,7 @@ const ChatInput = ({ roomId }) => {
   const db = firebase.firestore()
   const roomRef = db.collection('roomDetail').doc(roomId)
   return (
-    <div sx={{ mt: 1, backgroundColor: 'antiquewhite' }}>
+    <div sx={{ flex: '0 0 30px', mt: 1, backgroundColor: 'antiquewhite' }}>
       <form
         onSubmit={(e) => {
           e.preventDefault()
@@ -24,6 +24,7 @@ const ChatInput = ({ roomId }) => {
       >
         <Input
           sx={{ border: 'thin solid indianred' }}
+          autoFocus
           placeholder={`No Table Talk!`}
         />
       </form>

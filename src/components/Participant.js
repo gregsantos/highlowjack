@@ -66,7 +66,11 @@ const Participant = ({ participant }) => {
 
   return (
     <div>
-      <video sx={{ width: '100%' }} ref={videoRef} autoPlay={true} />
+      <video
+        sx={{ width: '100%', height: 'auto' }}
+        ref={videoRef}
+        autoPlay={true}
+      />
       <audio ref={audioRef} autoPlay={true} />
     </div>
   )

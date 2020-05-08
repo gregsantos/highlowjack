@@ -45,11 +45,11 @@ export const Main = ({
   return (
     <main
       sx={{
-        flex: 1,
+        flex: ['0 0 calc(100vw)', 2, 1],
         backgroundColor: 'white',
         display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gridTemplateRows: 'repeat(3, 1fr)',
+        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+        gridTemplateRows: 'repeat(3, minmax(0, 1fr))',
       }}
     >
       <div sx={{ backgroundColor: 'darkseagreen' }} />
@@ -57,7 +57,6 @@ export const Main = ({
         sx={{
           flexDirection: 'column',
           justifyContent: 'center',
-          paddingTop: ['10px', '15px', null],
         }}
       >
         <Container>
@@ -111,7 +110,6 @@ export const Main = ({
         sx={{
           flexDirection: 'column',
           justifyContent: 'center',
-          paddingTop: ['10px', '15px', null],
           backgroundColor: 'antiquewhite',
         }}
       >
@@ -212,7 +210,6 @@ export const Main = ({
         sx={{
           flexDirection: 'column',
           justifyContent: 'center',
-          paddingTop: ['10px', '15px', null],
           backgroundColor: 'antiquewhite',
         }}
       >
@@ -267,7 +264,6 @@ export const Main = ({
         sx={{
           flexDirection: 'column',
           justifyContent: 'center',
-          paddingTop: ['10px', '15px', null],
           height: '100%',
         }}
       >

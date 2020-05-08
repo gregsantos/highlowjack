@@ -1,8 +1,7 @@
 /** @jsx jsx */
 import { jsx, Flex } from 'theme-ui'
-import { Databox } from './DataBox'
-import { ChatBox } from './ChatBox'
 import { HandBox } from './HandBox'
+import { InfoBox } from './InfoBox'
 
 export const Secondary = ({
   user,
@@ -18,10 +17,12 @@ export const Secondary = ({
       sx={{
         flex: ['0 0 200px', '0 0 200px', '0 0 400px'],
         flexDirection: 'column',
+        maxHeight: '100%',
       }}
     >
+      <InfoBox gameData={gameData} getSuit={getSuit} />
+
       <HandBox
-        sx={{ flex: 1 }}
         user={user}
         roomData={roomData}
         gameData={gameData}
@@ -29,18 +30,6 @@ export const Secondary = ({
         startGame={startGame}
         playCard={playCard}
       />
-      <Flex
-        sx={{
-          flex: 2,
-          height: '100%',
-          flexDirection: ['row', 'row', 'column'],
-          p: 2,
-          border: 'thin solid indianred',
-        }}
-      >
-        <Databox gameData={gameData} getSuit={getSuit} />
-        <ChatBox />
-      </Flex>
     </Flex>
   )
 }

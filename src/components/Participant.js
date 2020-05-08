@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui'
+import { jsx, Box } from 'theme-ui'
 import { useState, useEffect, useRef } from 'react'
 
 const Participant = ({ participant }) => {
@@ -65,14 +65,14 @@ const Participant = ({ participant }) => {
   }, [audioTracks])
 
   return (
-    <div>
+    <Box sx={{ width: '100%', height: '100%', overflow: 'hidden' }}>
       <video
-        sx={{ width: '100%', height: 'auto' }}
+        sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
         ref={videoRef}
         autoPlay={true}
       />
       <audio ref={audioRef} autoPlay={true} />
-    </div>
+    </Box>
   )
 }
 

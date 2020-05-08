@@ -264,7 +264,6 @@ export const Main = ({
         sx={{
           flexDirection: 'column',
           justifyContent: 'center',
-          height: '100%',
         }}
       >
         <Container>

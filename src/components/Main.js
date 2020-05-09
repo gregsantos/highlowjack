@@ -45,7 +45,7 @@ export const Main = ({
   return (
     <main
       sx={{
-        height: ['50%', '60%', '100%'],
+        gridArea: 'main',
         backgroundColor: 'white',
         display: 'grid',
         gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',

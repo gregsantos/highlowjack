@@ -6,7 +6,7 @@ export const InfoBox = ({ gameData, getSuit }) => {
   return (
     <Flex
       sx={{
-        flex: 1,
+        gridArea: 'info',
         flexDirection: ['row', 'row', 'column'],
         p: 1,
         border: 'thin solid indianred',
@@ -19,16 +19,19 @@ export const InfoBox = ({ gameData, getSuit }) => {
           flexDirection: 'column',
         }}
       >
-        <Flex sx={{ flex: 1 }}>
+        <Flex
+          sx={{
+            flex: 1,
+            flexDirection: ['row', 'row', 'column'],
+          }}
+        >
           <Flex
             sx={{
-              flexDirection: 'column',
+              flexDirection: ['column', 'row', 'row'],
               justifyContent: 'center',
               flex: 1,
-              border: 'solid',
-              borderWidth: 'medium',
-              borderColor: 'indianred',
-              mr: '.25em',
+              mr: ['.25em', null, '0em'],
+              maxHeight: 'fit-content',
             }}
           >
             <Flex
@@ -37,6 +40,7 @@ export const InfoBox = ({ gameData, getSuit }) => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 flex: 1,
+                height: 'fit-content',
                 border: 'solid',
                 borderWidth: 'medium',
                 borderColor: 'indianred',
@@ -64,6 +68,7 @@ export const InfoBox = ({ gameData, getSuit }) => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 flex: 1,
+                height: 'fit-content',
                 border: 'solid',
                 borderWidth: 'medium',
                 borderColor: 'indianred',
@@ -88,12 +93,9 @@ export const InfoBox = ({ gameData, getSuit }) => {
           </Flex>
           <Flex
             sx={{
-              flexDirection: 'column',
+              flexDirection: ['column', 'row', 'row'],
               justifyContent: 'center',
               flex: 1,
-              border: 'solid',
-              borderWidth: 'medium',
-              borderColor: 'indianred',
             }}
           >
             <Flex
@@ -102,6 +104,7 @@ export const InfoBox = ({ gameData, getSuit }) => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 flex: 1,
+                height: 'fit-content',
                 border: 'solid',
                 borderWidth: 'medium',
                 borderColor: 'indianred',
@@ -118,7 +121,7 @@ export const InfoBox = ({ gameData, getSuit }) => {
               <Container>
                 <h3 sx={{ color: 'antiquewhite' }}>
                   {gameData.bid.bidder
-                    ? gameData.players[gameData.bid.bidder.username]
+                    ? gameData.players[gameData.bid.bidder].username
                     : '-'}
                 </h3>
               </Container>
@@ -129,6 +132,7 @@ export const InfoBox = ({ gameData, getSuit }) => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 flex: 1,
+                height: 'fit-content',
                 border: 'solid',
                 borderWidth: 'medium',
                 borderColor: 'indianred',
@@ -151,6 +155,7 @@ export const InfoBox = ({ gameData, getSuit }) => {
           </Flex>
         </Flex>
       </Flex>
+      <ChatBox />
     </Flex>
   )
 }

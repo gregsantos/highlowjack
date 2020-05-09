@@ -10,11 +10,10 @@ export const ChatBox = () => {
   return (
     <Flex
       sx={{
-        flex: 1,
+        flex: [1, 1, '0 0 200px'],
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        ml: [0, 0, 0],
-        mt: [0, 0, 2],
+        pl: [1, null, '0em'],
       }}
     >
       <Messages roomId={id} />

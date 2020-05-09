@@ -71,7 +71,7 @@ export const HandBox = ({
   return (
     <Flex
       sx={{
-        flex: 1,
+        gridArea: 'hand',
         justifyContent: 'center',
         border: 'thin solid indianred',
         borderBottom: 'none',

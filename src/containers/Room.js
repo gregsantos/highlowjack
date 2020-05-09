@@ -316,6 +316,7 @@ const RoomPage = (props) => {
             <div
               sx={{
                 color: '#daa520',
+                p: 1,
               }}
             >
               <h1

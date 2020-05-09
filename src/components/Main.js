@@ -75,11 +75,19 @@ export const Main = ({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              border: `${
-                turn === (positions && positions[2].seat)
-                  ? '0.3em dotted indianred'
-                  : ''
-              }`,
+              border: [
+                `${
+                  turn === (positions && positions[2].seat)
+                    ? '0.30em dotted indianred'
+                    : ''
+                }`,
+                `${
+                  turn === (positions && positions[2].seat)
+                    ? '0.5em dotted indianred'
+                    : ''
+                }`,
+                null,
+              ],
             }}
           />
         ) : (
@@ -105,11 +113,19 @@ export const Main = ({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              border: `${
-                turn === (positions && positions[1].seat)
-                  ? '0.3em dotted indianred'
-                  : ''
-              }`,
+              border: [
+                `${
+                  turn === (positions && positions[1].seat)
+                    ? '0.30em dotted indianred'
+                    : ''
+                }`,
+                `${
+                  turn === (positions && positions[1].seat)
+                    ? '0.5em dotted indianred'
+                    : ''
+                }`,
+                null,
+              ],
             }}
           />
         ) : (
@@ -182,11 +198,19 @@ export const Main = ({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              border: `${
-                turn === (positions && positions[3].seat)
-                  ? '0.3em dotted indianred'
-                  : ''
-              }`,
+              border: [
+                `${
+                  turn === (positions && positions[3].seat)
+                    ? '0.30em dotted indianred'
+                    : ''
+                }`,
+                `${
+                  turn === (positions && positions[3].seat)
+                    ? '0.5em dotted indianred'
+                    : ''
+                }`,
+                null,
+              ],
             }}
           />
         ) : (
@@ -200,11 +224,7 @@ export const Main = ({
           <FaUserSecret size='6em' sx={{ color: 'antiquewhite' }} />
         )}
         {playerSeat !== null && token && videoRoom && (
-          <Participant
-            participant={videoRoom.localParticipant}
-            turn={turn}
-            positions={positions}
-          />
+          <Participant participant={videoRoom.localParticipant} />
         )}
 
         {playerSeat !== null && !token && user.photoURL && (
@@ -215,11 +235,19 @@ export const Main = ({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              border: `${
-                turn === (positions && positions[0].seat)
-                  ? '0.3em dotted indianred'
-                  : ''
-              }`,
+              border: [
+                `${
+                  turn === (positions && positions[0].seat)
+                    ? '0.30em dotted indianred'
+                    : ''
+                }`,
+                `${
+                  turn === (positions && positions[0].seat)
+                    ? '0.5em dotted indianred'
+                    : ''
+                }`,
+                null,
+              ],
             }}
           />
         )}

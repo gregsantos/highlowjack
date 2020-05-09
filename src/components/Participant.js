@@ -1,8 +1,8 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui'
+import { jsx, Box } from 'theme-ui'
 import { useState, useEffect, useRef } from 'react'
 
-const Participant = ({ participant, turn, positions }) => {
+const Participant = ({ participant }) => {
   const [videoTracks, setVideoTracks] = useState([])
   const [audioTracks, setAudioTracks] = useState([])
 
@@ -69,11 +69,6 @@ const Participant = ({ participant, turn, positions }) => {
       sx={{
         width: '100%',
         height: '100%',
-        border: `${
-          turn === (positions && positions[0].seat)
-            ? '0.3em dotted indianred'
-            : ''
-        }`,
       }}
     >
       <video

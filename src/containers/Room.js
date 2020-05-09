@@ -1,14 +1,5 @@
 /** @jsx jsx */
-import {
-  jsx,
-  Container,
-  Grid,
-  Flex,
-  Button,
-  Select,
-  Radio,
-  Label,
-} from 'theme-ui'
+import { jsx, Container, Flex, Button, Select, Radio, Label } from 'theme-ui'
 import { useState, useEffect, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import Video from 'twilio-video'
@@ -21,8 +12,6 @@ import { UserContext } from '../contexts/userContext'
 import { Main } from '../components/Main'
 import { Secondary } from '../components/Secondary'
 import { getToken } from '../helpers/cloudFunctions'
-import { HandBox } from '../components/HandBox'
-import { InfoBox } from '../components/InfoBox'
 import '../css/cards.css'
 
 const RoomPage = (props) => {
@@ -519,29 +508,10 @@ const RoomPage = (props) => {
 
   return (
     <RoomWrapper>
-      <Grid
+      <Flex
         sx={{
           height: '100%',
-          gridGap: 0,
-          gridTemplate: [
-            `
-            "main" 100vw
-            "info" 1fr
-            "hand" 1fr
-            / 100% 
-            `,
-            `
-            "main" 60%
-            "info" minmax(0, auto)
-            "hand" 1fr
-            / 100% 
-            `,
-            `
-            "main info" minmax(0, 1fr)
-            "main hand" auto
-            / 1fr 400px 
-            `,
-          ],
+          flexDirection: ['column', 'column', 'row'],
         }}
       >
         <Main
@@ -559,16 +529,16 @@ const RoomPage = (props) => {
           participants={participants}
           history={history}
         />
-        {gameData && <InfoBox gameData={gameData} getSuit={getSuit} />}
-        <HandBox
+        <Secondary
           user={user}
           roomData={roomData}
           gameData={gameData}
           playerSeat={playerSeat}
           startGame={startGame}
           playCard={playCard}
+          getSuit={getSuit}
         />
-      </Grid>
+      </Flex>
     </RoomWrapper>
   )
 }

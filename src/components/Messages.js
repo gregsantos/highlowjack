@@ -17,10 +17,10 @@ const Messages = ({ roomId }) => {
       sx={{
         flex: 1,
         backgroundColor: 'white',
-        maxHeight: ['200px', '96px', '250px'],
         overflowY: 'auto',
         mb: 1,
         border: 'thin solid indianred',
+        maxHeight: ['210px', '105px', '220px'],
       }}
       ref={scroller}
     >

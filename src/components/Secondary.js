@@ -15,10 +15,12 @@ export const Secondary = ({
   return (
     <Flex
       sx={{
+        flex: ['0 0 200px', '0 0 200px', '0 0 400px'],
         flexDirection: 'column',
       }}
     >
-      {gameData && <InfoBox gameData={gameData} getSuit={getSuit} />}
+      <InfoBox gameData={gameData} getSuit={getSuit} />
+
       <HandBox
         user={user}
         roomData={roomData}

@@ -1,8 +1,8 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui'
+import { jsx, Box } from 'theme-ui'
 import { useState, useEffect, useRef } from 'react'
 
-const Participant = ({ participant, turn, positions, position }) => {
+const Participant = ({ participant }) => {
   const [videoTracks, setVideoTracks] = useState([])
   const [audioTracks, setAudioTracks] = useState([])
 
@@ -65,28 +65,19 @@ const Participant = ({ participant, turn, positions, position }) => {
   }, [audioTracks])
 
   return (
-<<<<<<< HEAD
     <div
       sx={{
         width: '100%',
         height: '100%',
-        border: `${
-          turn === (positions && positions[position].seat)
-            ? '0.30em dotted indianred'
-            : ''
-        }`,
       }}
     >
-=======
-    <Box sx={{ width: '100%', height: '100%', overflow: 'hidden' }}>
->>>>>>> parent of a9be13f... Update profile pics and vid size and add delay after trick
       <video
         sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
         ref={videoRef}
         autoPlay={true}
       />
       <audio ref={audioRef} autoPlay={true} />
-    </Box>
+    </div>
   )
 }
 

@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 asset-manifest.json,1589060656261,01f600580619039777ef38735766ceb70c7c8f16111b3353addc02bf1ef1b836
 index.html,1589060656240,a76bf210281aead07ae398feb93669af86bbd062b2797f2af2b820e06cae2a59
 service-worker.js,1589060656240,da209a28093b64336355779743559854610b8012efc35759b8cf483cb8b3aac9
@@ -231,6 +232,8 @@ static/js/2.cea091d6.chunk.js,1589040237047,484e4b76523129b396915751967db1af9904
 static/js/2.cea091d6.chunk.js.map,1589040237068,96a2de6b74dde4603d53452d1e6b699af009a5d09c43b282960cc1a42c21ba73
 >>>>>>> parent of e8e0b3e... Switch to grid layout overall
 =======
+=======
+>>>>>>> parent of a9be13f... Update profile pics and vid size and add delay after trick
 asset-manifest.json,1588806966127,d8e1e94f04060bdde62001045c753dff5aead6f9c38d39abbb8695dbd722b793
 firebase-messaging-sw.js,1588806954167,0bef48c1c8d9012576e8897b9833b83b50b388d62bcf6a1e45a8e18ffc1756a7
 favicon.ico,1588806954166,b72f7455f00e4e58792d2bca892abb068e2213838c0316d6b7a0d6d16acd1955
@@ -306,4 +309,7 @@ static/media/joker-red.7c297802.svg,1588806966105,53cd00c402f2f6d575d09467dac331
 static/media/joker.f881b063.svg,1588806966105,af820a148908d5f8aa428f0a12b77f5b660fd79ce8c91c963941bbaad298e185
 static/js/2.318ffc8f.chunk.js,1588806966108,bc099fefe353501c314a1a92da3bb1f738c9f16ee44c2c5a59bdbbbf545a9f60
 static/js/2.318ffc8f.chunk.js.map,1588806966128,44653a269809cb84c63f7455757cd6326e4a58ab969327511010777842ff7b94
+<<<<<<< HEAD
+>>>>>>> parent of a9be13f... Update profile pics and vid size and add delay after trick
+=======
 >>>>>>> parent of a9be13f... Update profile pics and vid size and add delay after trick

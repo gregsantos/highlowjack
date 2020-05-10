@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Flex, Box, Container } from 'theme-ui'
+import { jsx, Flex, Container, Text } from 'theme-ui'
 
 export const BidBox = ({ gameData, getSuit }) => {
   return (
@@ -17,18 +17,17 @@ export const BidBox = ({ gameData, getSuit }) => {
         }}
       >
         <Container>
-          <h3 sx={{ color: 'antiquewhite' }}>Bid</h3>
+          <Text sx={{ color: 'antiquewhite' }}>Bid</Text>
         </Container>
         <Container>
           <h2 sx={{ margin: 0 }}>{gameData && gameData.bid.bid}</h2>
         </Container>
         <Container>
-          <h3 sx={{ color: 'antiquewhite' }}>
-            {gameData &&
-            (gameData.bid.bidder === 0 || gameData.bid.bidder === 2)
-              ? 'Team 1'
-              : 'Team 2'}
-          </h3>
+          <Text sx={{ color: 'antiquewhite' }}>
+            {gameData.bid.bidder
+              ? gameData.players[gameData.bid.bidder.username]
+              : '-'}
+          </Text>
         </Container>
       </Flex>
       <Flex
@@ -43,7 +42,7 @@ export const BidBox = ({ gameData, getSuit }) => {
         }}
       >
         <Container>
-          <h3 sx={{ color: 'antiquewhite' }}>Trump</h3>
+          <Text sx={{ color: 'antiquewhite' }}>Trump</Text>
         </Container>
         <Container>
           <h2 sx={{ margin: 0 }}>
@@ -53,7 +52,7 @@ export const BidBox = ({ gameData, getSuit }) => {
           </h2>
         </Container>
         <Container>
-          <h3 sx={{ color: 'antiquewhite' }}>Suit</h3>
+          <Text sx={{ color: 'antiquewhite' }}>Suit</Text>
         </Container>
       </Flex>
     </Flex>

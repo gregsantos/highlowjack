@@ -1,5 +1,14 @@
 /** @jsx jsx */
-import { jsx, Container, Flex, Button, Select, Radio, Label } from 'theme-ui'
+import {
+  jsx,
+  Container,
+  Flex,
+  Grid,
+  Button,
+  Select,
+  Radio,
+  Label,
+} from 'theme-ui'
 import { useState, useEffect, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import Video from 'twilio-video'
@@ -11,6 +20,9 @@ import { tallyTrick, getSuit } from '../helpers/gameHelpers'
 import { UserContext } from '../contexts/userContext'
 import { Main } from '../components/Main'
 import { Secondary } from '../components/Secondary'
+import { InfoBox } from '../components/InfoBox'
+import { ChatBox } from '../components/ChatBox'
+import { HandBox } from '../components/HandBox'
 import { getToken } from '../helpers/cloudFunctions'
 import '../css/cards.css'
 
@@ -322,6 +334,7 @@ const RoomPage = (props) => {
                 sx={{
                   textAlign: 'center',
                   fontSize: ['1.5em', '2.5em', '3em'],
+                  p: 1,
                 }}
               >
                 Waiting on Bid from
@@ -508,10 +521,32 @@ const RoomPage = (props) => {
 
   return (
     <RoomWrapper>
-      <Flex
+      <Grid
         sx={{
           height: '100%',
-          flexDirection: ['column', 'column', 'row'],
+          gridGap: 0,
+          gridTemplate: [
+            `
+          "main" 1fr
+          "hand" 1fr
+          "info" 1fr
+          "chat" 1fr
+          / 100%;
+          `,
+            `
+          "main" 1fr
+          "hand" 1fr
+          "info" 1fr
+          "chat" 1fr
+          / 100%;
+          `,
+            `
+          "main hand" 1fr
+          "main info" 1fr
+          "main chat" 300px
+          / 1fr 400px;
+          `,
+          ],
         }}
       >
         <Main
@@ -529,16 +564,17 @@ const RoomPage = (props) => {
           participants={participants}
           history={history}
         />
-        <Secondary
+        <HandBox
           user={user}
           roomData={roomData}
           gameData={gameData}
           playerSeat={playerSeat}
           startGame={startGame}
           playCard={playCard}
-          getSuit={getSuit}
         />
-      </Flex>
+        {gameData && <InfoBox gameData={gameData} getSuit={getSuit} />}
+        <ChatBox />
+      </Grid>
     </RoomWrapper>
   )
 }

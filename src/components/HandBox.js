@@ -47,7 +47,7 @@ export const HandBox = ({
             justifyContent: 'center',
             gridTemplateColumns: [
               'repeat(6, minmax(0px, 1fr))',
-              'repeat(6, minmax(80px, 1fr))',
+              'repeat(6, minmax(0px, 1fr))',
               'repeat(3, minmax(92px, 1fr))',
             ],
           }}
@@ -71,7 +71,7 @@ export const HandBox = ({
   return (
     <Flex
       sx={{
-        flex: 1,
+        gridArea: 'hand',
         justifyContent: 'center',
         border: 'thin solid indianred',
         borderBottom: 'none',

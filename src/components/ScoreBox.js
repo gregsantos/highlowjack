@@ -1,9 +1,9 @@
 /** @jsx jsx */
-import { jsx, Flex, Box, Container, Text } from 'theme-ui'
+import { jsx, Flex, Container, Text } from 'theme-ui'
 
 export const ScoreBox = ({ gameData }) => {
   return (
-    <Flex sx={{ flex: 1, mr: ['0em', '.5em'], mb: [1, 0, 0] }}>
+    <Flex sx={{ flex: 1, mr: [1, 1, 0], mb: [0, 0, 1] }}>
       <Flex
         bg='darkseagreen'
         sx={{

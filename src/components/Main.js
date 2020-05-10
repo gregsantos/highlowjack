@@ -45,18 +45,19 @@ export const Main = ({
   return (
     <main
       sx={{
+<<<<<<< HEAD
         height: ['50%', '50%', '100%'],
+=======
+        flex: ['0 0 calc(100vw)', 2, 1],
+>>>>>>> parent of a9be13f... Update profile pics and vid size and add delay after trick
         backgroundColor: 'white',
         display: 'grid',
         gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-        gridTemplateRows: [
-          'repeat(3, minmax(0, 128px))',
-          'repeat(3, minmax(0, 150px))',
-          'repeat(3, minmax(0, 1fr))',
-        ],
+        gridTemplateRows: 'repeat(3, minmax(0, 1fr))',
       }}
     >
       <div sx={{ backgroundColor: 'darkseagreen' }} />
+<<<<<<< HEAD
 
       <Container>
         {playerSeat !== null &&
@@ -117,6 +118,114 @@ export const Main = ({
         )}
       </Container>
 
+=======
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <Container>
+          {playerSeat !== null &&
+            positions &&
+            token &&
+            videoRoom &&
+            getParticipantComponent(2) && (
+              <Container>{getParticipantComponent(2)}</Container>
+            )}
+          {positions &&
+          !getParticipantComponent(2) &&
+          roomData.memberProfiles[positions[2].seat] &&
+          roomData.memberProfiles[positions[2].seat].profilePic ? (
+            <img
+              alt='userPhoto'
+              src={roomData.memberProfiles[positions[2].seat].profilePic}
+              sx={{
+                width: ['65px', '100px', '125px'],
+                padding: ['0.25em', '0.5em'],
+                border: [
+                  `${
+                    turn === (positions && positions[2].seat)
+                      ? '0.30em dotted indianred'
+                      : ''
+                  }`,
+                  `${
+                    turn === (positions && positions[2].seat)
+                      ? '0.5em dotted indianred'
+                      : ''
+                  }`,
+                  null,
+                ],
+              }}
+            />
+          ) : (
+            !token && <FaUserSecret size='6em' />
+          )}
+        </Container>
+        <Container>
+          <h3 sx={{ mt: ['2px', '10px'] }}>
+            {(positions &&
+              roomData.memberProfiles[positions[2].seat] &&
+              roomData.memberProfiles[positions[2].seat].username) ||
+              'Position 2'}
+          </h3>
+        </Container>
+      </Flex>
+      <div sx={{ backgroundColor: 'darkseagreen' }} />
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          backgroundColor: 'antiquewhite',
+        }}
+      >
+        <Container>
+          {playerSeat !== null &&
+            positions &&
+            token &&
+            videoRoom &&
+            getParticipantComponent(1) && (
+              <Container>{getParticipantComponent(1)}</Container>
+            )}
+          {positions &&
+          !getParticipantComponent(1) &&
+          roomData.memberProfiles[positions[1].seat] &&
+          roomData.memberProfiles[positions[1].seat].profilePic ? (
+            <img
+              alt='userPhoto'
+              src={roomData.memberProfiles[positions[1].seat].profilePic}
+              sx={{
+                width: ['65px', '100px', '125px'],
+                padding: ['0.25em', '0.5em'],
+                border: [
+                  `${
+                    turn === (positions && positions[1].seat)
+                      ? '0.30em dotted indianred'
+                      : ''
+                  }`,
+                  `${
+                    turn === (positions && positions[1].seat)
+                      ? '0.5em dotted indianred'
+                      : ''
+                  }`,
+                  null,
+                ],
+              }}
+            />
+          ) : (
+            !token && <FaUserSecret size='6em' />
+          )}
+        </Container>
+        <Container>
+          <h3 sx={{ mt: ['2px', '10px'] }}>
+            {(positions &&
+              roomData.memberProfiles[positions[1].seat] &&
+              roomData.memberProfiles[positions[1].seat].username) ||
+              'Position 1'}
+          </h3>
+        </Container>
+      </Flex>
+>>>>>>> parent of a9be13f... Update profile pics and vid size and add delay after trick
       <Flex
         sx={{
           flexDirection: 'column',
@@ -164,6 +273,7 @@ export const Main = ({
           </div>
         )}
       </Flex>
+<<<<<<< HEAD
 
       <Container sx={{ backgroundColor: 'antiquewhite' }}>
         {playerSeat !== null &&
@@ -193,8 +303,75 @@ export const Main = ({
           !token && <FaUserSecret size='6em' />
         )}
       </Container>
+=======
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          backgroundColor: 'antiquewhite',
+        }}
+      >
+        <Container>
+          {playerSeat !== null &&
+            positions &&
+            token &&
+            videoRoom &&
+            getParticipantComponent(3) && (
+              <Container>{getParticipantComponent(3)}</Container>
+            )}
+          {positions &&
+          !getParticipantComponent(3) &&
+          roomData.memberProfiles[positions[3].seat] &&
+          roomData.memberProfiles[positions[3].seat].profilePic ? (
+            <img
+              alt='userPhoto'
+              src={roomData.memberProfiles[positions[3].seat].profilePic}
+              sx={{
+                width: ['65px', '100px', '125px'],
+                padding: ['0.25em', '0.5em'],
+                border: [
+                  `${
+                    turn === (positions && positions[3].seat)
+                      ? '0.30em dotted indianred'
+                      : ''
+                  }`,
+                  `${
+                    turn === (positions && positions[3].seat)
+                      ? '0.5em dotted indianred'
+                      : ''
+                  }`,
+                  null,
+                ],
+              }}
+            />
+          ) : (
+            !token && <FaUserSecret size='6em' />
+          )}
+        </Container>
+        <Container>
+          <h3>
+            {(positions &&
+              roomData.memberProfiles[positions[3].seat] &&
+              roomData.memberProfiles[positions[3].seat].username) ||
+              'Position 3'}
+          </h3>
+        </Container>
+      </Flex>
+>>>>>>> parent of a9be13f... Update profile pics and vid size and add delay after trick
       <div sx={{ backgroundColor: 'darkseagreen' }} />
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <Container>
+          {playerSeat === null && <FaUserSecret size='6em' />}
+          {playerSeat !== null && token && videoRoom && (
+            <Participant participant={videoRoom.localParticipant} />
+          )}
 
+<<<<<<< HEAD
       <Container>
         {playerSeat === null && (
           <FaUserSecret size='6em' sx={{ color: 'antiquewhite' }} />
@@ -227,6 +404,38 @@ export const Main = ({
           onClick={joinVideo}
         />
       </Container>
+=======
+          {playerSeat !== null && !token && user.photoURL && (
+            <img
+              alt='userPhoto'
+              src={user.photoURL}
+              sx={{
+                width: ['65px', '100px', '125px'],
+                padding: ['0.25em', '0.5em'],
+                border: [
+                  `${
+                    turn === (positions && positions[0].seat)
+                      ? '0.30em dotted indianred'
+                      : ''
+                  }`,
+                  `${
+                    turn === (positions && positions[0].seat)
+                      ? '0.5em dotted indianred'
+                      : ''
+                  }`,
+                  null,
+                ],
+              }}
+            />
+          )}
+        </Container>
+        <Container>
+          <Text>{playerSeat === null ? 'Open Seat' : userData.username}</Text>
+          <FaVideo sx={{ ml: 2, mb: 1 }} onClick={joinVideo} />
+        </Container>
+      </Flex>
+      <div sx={{ backgroundColor: 'darkseagreen' }} />
+>>>>>>> parent of a9be13f... Update profile pics and vid size and add delay after trick
     </main>
   )
 }

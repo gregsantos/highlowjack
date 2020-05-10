@@ -20,7 +20,11 @@ const Messages = ({ roomId }) => {
         overflowY: 'auto',
         mb: 1,
         border: 'thin solid indianred',
+<<<<<<< HEAD
         maxHeight: ['210px', '105px', '220px'],
+=======
+        maxHeight: ['257px', '105px', '220px'],
+>>>>>>> parent of a9be13f... Update profile pics and vid size and add delay after trick
       }}
       ref={scroller}
     >

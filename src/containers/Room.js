@@ -417,9 +417,7 @@ const RoomPage = (props) => {
           [`players.${playerSeat}.hand`]: cardsLeft,
         })
         .then(() => {
-          setTimeout(() => {
-            tallyTrick(roomData.memberProfiles, gameRef)
-          }, 5000)
+          tallyTrick(roomData.memberProfiles, gameRef)
         })
         .catch((error) => {
           console.error('Error updating Trick: ', error)

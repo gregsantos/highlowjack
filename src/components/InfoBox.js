@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx, Flex, Container } from 'theme-ui'
-import { Databox } from './DataBox'
-import { ChatBox } from './ChatBox'
+// import { Databox } from './DataBox'
 
 export const InfoBox = ({ gameData, getSuit }) => {
   return (

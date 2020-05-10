@@ -13,7 +13,7 @@ export const ChatBox = () => {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        ml: [0, 0, 0],
+        p: 2,
         mt: [0, 0, 2],
       }}
     >

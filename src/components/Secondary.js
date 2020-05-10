@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import { jsx, Flex } from 'theme-ui'
-import { HandBox } from './HandBox'
 import { InfoBox } from './InfoBox'
+import { ChatBox } from './ChatBox'
+import { HandBox } from './HandBox'
 
 export const Secondary = ({
   user,
@@ -20,8 +21,6 @@ export const Secondary = ({
         maxHeight: '100%',
       }}
     >
-      {gameData && <InfoBox gameData={gameData} getSuit={getSuit} />}
-
       <HandBox
         user={user}
         roomData={roomData}
@@ -30,6 +29,8 @@ export const Secondary = ({
         startGame={startGame}
         playCard={playCard}
       />
+      {gameData && <InfoBox gameData={gameData} getSuit={getSuit} />}
+      <ChatBox />
     </Flex>
   )
 }

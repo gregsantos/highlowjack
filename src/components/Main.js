@@ -91,7 +91,7 @@ export const Main = ({
             }}
           />
         ) : (
-          <FaUserSecret size='6em' />
+          !getParticipantComponent(2) && <FaUserSecret size='6em' />
         )}
       </Container>
       <div sx={{ backgroundColor: 'darkseagreen' }} />
@@ -129,7 +129,7 @@ export const Main = ({
             }}
           />
         ) : (
-          <FaUserSecret size='6em' />
+          !getParticipantComponent(1) && <FaUserSecret size='6em' />
         )}
       </Container>
 
@@ -214,7 +214,7 @@ export const Main = ({
             }}
           />
         ) : (
-          <FaUserSecret size='6em' />
+          !getParticipantComponent(3) && <FaUserSecret size='6em' />
         )}
       </Container>
       <div sx={{ backgroundColor: 'darkseagreen' }} />

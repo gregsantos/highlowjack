@@ -19,12 +19,12 @@ import initGame from '../helpers/initGame'
 import { tallyTrick, getSuit } from '../helpers/gameHelpers'
 import { UserContext } from '../contexts/userContext'
 import { Main } from '../components/Main'
-import { Secondary } from '../components/Secondary'
 import { InfoBox } from '../components/InfoBox'
 import { ChatBox } from '../components/ChatBox'
 import { HandBox } from '../components/HandBox'
 import { getToken } from '../helpers/cloudFunctions'
 import '../css/cards.css'
+import { ButtonWrapper, RadioButton } from '../components/ButtonGroup'
 
 const RoomPage = (props) => {
   // state session ish
@@ -239,13 +239,36 @@ const RoomPage = (props) => {
                 height: '100%',
               }}
             >
+              <ButtonWrapper>
+                <RadioButton
+                  type='radio'
+                  name='radioButtonTest'
+                  value='1'
+                  id='button1'
+                  checked
+                />
+                <label for='button1'>Button 1</label>
+                <RadioButton
+                  type='radio'
+                  name='radioButtonTest'
+                  value='2'
+                  id='button2'
+                />
+                <label for='button2'>Button 2</label>
+                <RadioButton
+                  type='radio'
+                  name='radioButtonTest'
+                  value='3'
+                  id='button3'
+                />
+                <label for='button3'>Button 3</label>
+              </ButtonWrapper>
               <Flex
                 sx={{
                   flex: 2,
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  mt: 3,
                 }}
               >
                 <Flex sx={{ flexDirection: 'row' }}>

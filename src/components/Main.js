@@ -27,10 +27,13 @@ export const Main = ({
   ))
 
   const getParticipantNameByPosition = (pos) => {
+    const participantSeat = roomData.memberProfiles[positions[pos].seat] || null
+    console.log('Participant Seat', participantSeat)
     return (
       roomData &&
       positions &&
-      (roomData.memberProfiles[positions[pos].seat].username || '')
+      participantSeat &&
+      (participantSeat.username || '')
     )
   }
 
@@ -39,6 +42,8 @@ export const Main = ({
       remoteParticipants.find(
         (p) => p.props.username === getParticipantNameByPosition(pos)
       ) || null
+    console.log('Participant Component', participantComponent)
+
     return participantComponent
   }
 

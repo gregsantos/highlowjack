@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Box } from 'theme-ui'
+import { jsx } from 'theme-ui'
 import { useState, useEffect, useRef } from 'react'
 
 const Participant = ({ participant }) => {

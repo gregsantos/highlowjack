@@ -2,6 +2,7 @@
 import { jsx, Flex, Button, Container, Text } from 'theme-ui'
 import { FaUserSecret, FaVideo } from 'react-icons/fa'
 import Participant from '../components/Participant'
+import RoomMember from '../components/RoomMember'
 
 export const Main = ({
   user,
@@ -28,7 +29,6 @@ export const Main = ({
 
   const getParticipantNameByPosition = (pos) => {
     const participantSeat = roomData.memberProfiles[positions[pos].seat] || null
-    console.log('Participant Seat', participantSeat)
     return (
       roomData &&
       positions &&
@@ -42,7 +42,6 @@ export const Main = ({
       remoteParticipants.find(
         (p) => p.props.username === getParticipantNameByPosition(pos)
       ) || null
-    console.log('Participant Component', participantComponent)
 
     return participantComponent
   }
@@ -64,77 +63,39 @@ export const Main = ({
       <div sx={{ backgroundColor: 'darkseagreen' }} />
 
       <Container>
-        {playerSeat !== null &&
-          positions &&
-          token &&
-          videoRoom &&
-          getParticipantComponent(2)}
-        {positions &&
-        !getParticipantComponent(2) &&
-        roomData.memberProfiles[positions[2].seat] &&
-        roomData.memberProfiles[positions[2].seat].profilePic ? (
-          <img
-            alt='userPhoto'
-            src={roomData.memberProfiles[positions[2].seat].profilePic}
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              border: [
-                `${
-                  turn === (positions && positions[2].seat)
-                    ? '0.30em dotted indianred'
-                    : ''
-                }`,
-                `${
-                  turn === (positions && positions[2].seat)
-                    ? '0.5em dotted indianred'
-                    : ''
-                }`,
-                null,
-              ],
-            }}
+        {playerSeat !== -1 &&
+        positions &&
+        roomData.memberProfiles[positions[2].seat] ? (
+          <RoomMember
+            roomData={roomData}
+            memberPositions={positions}
+            memberPosition={2}
+            turn={turn}
+            token={token}
+            videoRoom={videoRoom}
+            getParticipantComponent={getParticipantComponent}
           />
         ) : (
-          !getParticipantComponent(2) && <FaUserSecret size='6em' />
+          <FaUserSecret size='6em' />
         )}
       </Container>
       <div sx={{ backgroundColor: 'darkseagreen' }} />
 
-      <Container sx={{ backgroundColor: 'antiquewhite' }}>
-        {playerSeat !== null &&
-          positions &&
-          token &&
-          videoRoom &&
-          getParticipantComponent(1)}
-        {positions &&
-        !getParticipantComponent(1) &&
-        roomData.memberProfiles[positions[1].seat] &&
-        roomData.memberProfiles[positions[1].seat].profilePic ? (
-          <img
-            alt='userPhoto'
-            src={roomData.memberProfiles[positions[1].seat].profilePic}
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              border: [
-                `${
-                  turn === (positions && positions[1].seat)
-                    ? '0.30em dotted indianred'
-                    : ''
-                }`,
-                `${
-                  turn === (positions && positions[1].seat)
-                    ? '0.5em dotted indianred'
-                    : ''
-                }`,
-                null,
-              ],
-            }}
+      <Container>
+        {playerSeat !== -1 &&
+        positions &&
+        roomData.memberProfiles[positions[1].seat] ? (
+          <RoomMember
+            roomData={roomData}
+            memberPositions={positions}
+            memberPosition={1}
+            turn={turn}
+            token={token}
+            videoRoom={videoRoom}
+            getParticipantComponent={getParticipantComponent}
           />
         ) : (
-          !getParticipantComponent(1) && <FaUserSecret size='6em' />
+          <FaUserSecret size='6em' />
         )}
       </Container>
 
@@ -186,40 +147,21 @@ export const Main = ({
         )}
       </Flex>
 
-      <Container sx={{ backgroundColor: 'antiquewhite' }}>
-        {playerSeat !== null &&
-          positions &&
-          token &&
-          videoRoom &&
-          getParticipantComponent(3)}
-        {positions &&
-        !getParticipantComponent(3) &&
-        roomData.memberProfiles[positions[3].seat] &&
-        roomData.memberProfiles[positions[3].seat].profilePic ? (
-          <img
-            alt='userPhoto'
-            src={roomData.memberProfiles[positions[3].seat].profilePic}
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              border: [
-                `${
-                  turn === (positions && positions[3].seat)
-                    ? '0.30em dotted indianred'
-                    : ''
-                }`,
-                `${
-                  turn === (positions && positions[3].seat)
-                    ? '0.5em dotted indianred'
-                    : ''
-                }`,
-                null,
-              ],
-            }}
+      <Container>
+        {playerSeat !== -1 &&
+        positions &&
+        roomData.memberProfiles[positions[3].seat] ? (
+          <RoomMember
+            roomData={roomData}
+            memberPositions={positions}
+            memberPosition={3}
+            turn={turn}
+            token={token}
+            videoRoom={videoRoom}
+            getParticipantComponent={getParticipantComponent}
           />
         ) : (
-          !getParticipantComponent(3) && <FaUserSecret size='6em' />
+          <FaUserSecret size='6em' />
         )}
       </Container>
       <div sx={{ backgroundColor: 'darkseagreen' }} />
@@ -246,12 +188,6 @@ export const Main = ({
                     ? '0.30em dotted indianred'
                     : ''
                 }`,
-                `${
-                  turn === (positions && positions[0].seat)
-                    ? '0.5em dotted indianred'
-                    : ''
-                }`,
-                null,
               ],
             }}
           />

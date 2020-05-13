@@ -12,10 +12,10 @@ export const ChatBox = () => {
       sx={{
         gridArea: 'chat',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
         p: 2,
         border: 'thin solid indianred',
         borderTop: 'none',
+        maxHeight: '220px',
       }}
     >
       <Messages roomId={id} />

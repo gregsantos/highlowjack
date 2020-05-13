@@ -20,7 +20,6 @@ const Messages = ({ roomId }) => {
         overflowY: 'auto',
         mb: 1,
         border: 'thin solid indianred',
-        maxHeight: ['78px', '60px', '400px'],
       }}
       ref={scroller}
     >

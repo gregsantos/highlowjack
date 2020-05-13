@@ -74,6 +74,7 @@ export const Main = ({
             turn={positions[2].seat === turn}
             token={token}
             videoRoom={videoRoom}
+            participants={participants}
             getParticipantComponent={getParticipantComponent}
           />
         ) : (
@@ -94,6 +95,7 @@ export const Main = ({
             turn={positions[1].seat === turn}
             token={token}
             videoRoom={videoRoom}
+            participants={participants}
             getParticipantComponent={getParticipantComponent}
           />
         ) : (
@@ -161,6 +163,7 @@ export const Main = ({
             turn={positions[3].seat === turn}
             token={token}
             videoRoom={videoRoom}
+            participants={participants}
             getParticipantComponent={getParticipantComponent}
           />
         ) : (

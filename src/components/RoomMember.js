@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
-// import Participant from '../components/Participant'
+import Participant from './Participant'
 
 export default ({
   roomData,
@@ -11,11 +11,19 @@ export default ({
   turn,
   token,
   videoRoom,
+  participants,
   getParticipantComponent,
 }) => {
-  console.log(turn, username)
-  if (videoRoom && token && getParticipantComponent(memberPosition)) {
-    return getParticipantComponent(memberPosition)
+  const connectedMember = participants.find((p) => p.identity === username)
+  if (connectedMember) {
+    return (
+      <Participant
+        key={connectedMember.sid}
+        participant={connectedMember}
+        username={connectedMember.identity}
+        turn={turn}
+      />
+    )
   } else {
     return (
       <img

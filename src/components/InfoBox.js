@@ -2,7 +2,6 @@
 import { jsx, Flex } from 'theme-ui'
 import { ScoreBox } from './ScoreBox'
 import { BidBox } from './BidBox'
-// import { Databox } from './DataBox'
 
 export const InfoBox = ({ gameData, getSuit }) => {
   return (
@@ -11,9 +10,9 @@ export const InfoBox = ({ gameData, getSuit }) => {
         gridArea: 'info',
         flexDirection: ['row', 'row', 'column'],
         p: 2,
+        pb: 0,
         border: 'thin solid indianred',
         borderBottom: 'none',
-        backgroundColor: 'red',
       }}
     >
       <ScoreBox gameData={gameData} />

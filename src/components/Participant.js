@@ -64,7 +64,6 @@ const Participant = ({ participant, turn }) => {
     }
   }, [audioTracks])
 
-  console.log(turn)
   return (
     <div
       sx={{

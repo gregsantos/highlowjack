@@ -24,6 +24,7 @@ import { ChatBox } from '../components/ChatBox'
 import { HandBox } from '../components/HandBox'
 import { getToken } from '../helpers/cloudFunctions'
 import '../css/cards.css'
+import '../css/button-group.css'
 import { ButtonWrapper, RadioButton } from '../components/ButtonGroup'
 
 const RoomPage = (props) => {
@@ -39,6 +40,9 @@ const RoomPage = (props) => {
   const [bidSuit, setBidSuit] = useState('s')
   const isDealer = gameData && gameData.dealer === playerSeat
   const turn = gameData && gameData.turn
+  // ui ish
+  const [checked, setChecked] = useState('1')
+
   // video
   const [token, setToken] = useState(null)
   const [videoRoom, setVideoRoom] = useState(null)
@@ -153,6 +157,7 @@ const RoomPage = (props) => {
   }
 
   const handleSelectBid = (e) => {
+    console.log(e.target.value)
     setBidPoint(parseInt(e.target.value))
   }
 
@@ -237,100 +242,84 @@ const RoomPage = (props) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: '100%',
+                p: 1,
+                fontSize: ['.7em', '1.25em', 2],
               }}
             >
-              <ButtonWrapper>
-                <RadioButton
+              <div
+                className='stvRadioButtonsWrapper'
+                onChange={handleSelectBid}
+                id='bidPointSelect'
+                sx={{ mt: 2 }}
+              >
+                <input
                   type='radio'
-                  name='radioButtonTest'
-                  value='1'
                   id='button1'
-                  checked
-                />
-                <label for='button1'>Button 1</label>
-                <RadioButton
-                  type='radio'
-                  name='radioButtonTest'
                   value='2'
-                  id='button2'
+                  checked={bidPoint === 2}
+                  defaultChecked={currentBid === 0}
+                  className='stvRadioButton'
                 />
-                <label for='button2'>Button 2</label>
-                <RadioButton
+                <label for='button1'>2</label>
+                <input
                   type='radio'
-                  name='radioButtonTest'
+                  id='button2'
                   value='3'
-                  id='button3'
+                  checked={bidPoint === 3}
+                  className='stvRadioButton'
                 />
-                <label for='button3'>Button 3</label>
-              </ButtonWrapper>
-              <Flex
-                sx={{
-                  flex: 2,
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                <label for='button2'>3</label>
+                <input
+                  type='radio'
+                  id='button3'
+                  className='stvRadioButton'
+                  value='4'
+                  checked={bidPoint === 4}
+                />
+                <label for='button3'>4</label>
+              </div>
+              <div
+                className='stvRadioButtonsWrapper'
+                id='bidSuitSelect'
+                onChange={handleSelectSuit}
+                sx={{ mt: [1, 3, 3], mb: [2, 4, 4] }}
               >
-                <Flex sx={{ flexDirection: 'row' }}>
-                  <Label>
-                    <Radio
-                      type='radio'
-                      value={2}
-                      checked={bidPoint === 2}
-                      onChange={handleSelectBid}
-                      defaultChecked={currentBid === 0}
-                      disabled={currentBid >= 2 && isDealer}
-                    />
-                    2
-                  </Label>
-                  <Label>
-                    <Radio
-                      type='radio'
-                      value={3}
-                      checked={bidPoint === 3}
-                      onChange={handleSelectBid}
-                      defaultChecked={currentBid === 2}
-                    />
-                    3
-                  </Label>
-                  <Label>
-                    <Radio
-                      type='radio'
-                      value={4}
-                      checked={bidPoint === 4}
-                      onChange={handleSelectBid}
-                      defaultChecked={currentBid === 3}
-                    />
-                    4
-                  </Label>
-                </Flex>
+                <input
+                  type='radio'
+                  id='spadeButton'
+                  value='s'
+                  checked={bidSuit === 's'}
+                  defaultChecked='s'
+                  className='stvRadioButton black'
+                />
+                <label for='spadeButton'>♠</label>
+                <input
+                  type='radio'
+                  id='clubButton'
+                  value='c'
+                  checked={bidSuit === 'c'}
+                  className='stvRadioButton black'
+                />
+                <label for='clubButton'>♣</label>
+                <input
+                  type='radio'
+                  id='heartButton'
+                  value='h'
+                  checked={bidSuit === 'h'}
+                  className='stvRadioButton red'
+                />
+                <label for='heartButton'>♥</label>
+                <input
+                  type='radio'
+                  id='diamondButton'
+                  value='d'
+                  checked={bidSuit === 'd'}
+                  className='stvRadioButton red'
+                />
+                <label for='diamondButton'>♦</label>
+              </div>
 
-                <Container sx={{ mt: ['8px', '12px', null] }}>
-                  <Select
-                    sx={{
-                      color: 'antiquewhite',
-                      maxWidth: ['90px', '300px', null],
-                      padding: ['0.25em', '.5em', null],
-                    }}
-                    id='suit'
-                    value={bidSuit}
-                    onChange={handleSelectSuit}
-                    defaultValue='s'
-                  >
-                    <option value='s'>Spades</option>
-                    <option value='c'>Clubs</option>
-                    <option value='h'>Hearts</option>
-                    <option value='d'>Diamonds</option>
-                  </Select>
-                </Container>
-              </Flex>
-              <Flex
-                sx={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
+              <Container>
                 <form onSubmit={handleSubmitBid}>
                   <Button type='submit' variant='bidgroup'>
                     Bid
@@ -343,7 +332,7 @@ const RoomPage = (props) => {
                 >
                   Pass
                 </Button>
-              </Flex>
+              </Container>
             </Flex>
           )
         if (!playerTurn)

@@ -12,7 +12,6 @@ export default ({
   token,
   videoRoom,
   participants,
-  getParticipantComponent,
 }) => {
   const connectedMember = participants.find((p) => p.identity === username)
   if (connectedMember) {

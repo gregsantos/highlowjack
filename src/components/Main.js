@@ -19,7 +19,7 @@ export const Main = ({
   participants,
   history,
 }) => {
-  const remoteParticipants = participants.map((participant) => (
+  /*   const remoteParticipants = participants.map((participant) => (
     <Participant
       key={participant.sid}
       participant={participant}
@@ -44,7 +44,7 @@ export const Main = ({
       ) || null
 
     return participantComponent
-  }
+  } */
 
   return (
     <main
@@ -75,7 +75,6 @@ export const Main = ({
             token={token}
             videoRoom={videoRoom}
             participants={participants}
-            getParticipantComponent={getParticipantComponent}
           />
         ) : (
           <FaUserSecret size='6em' />
@@ -96,7 +95,6 @@ export const Main = ({
             token={token}
             videoRoom={videoRoom}
             participants={participants}
-            getParticipantComponent={getParticipantComponent}
           />
         ) : (
           <FaUserSecret size='6em' />
@@ -164,7 +162,6 @@ export const Main = ({
             token={token}
             videoRoom={videoRoom}
             participants={participants}
-            getParticipantComponent={getParticipantComponent}
           />
         ) : (
           <FaUserSecret size='6em' />

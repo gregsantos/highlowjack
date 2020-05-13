@@ -560,7 +560,7 @@ const RoomPage = (props) => {
           "main" 1fr
           "hand" 1fr
           "info" 1fr
-          "chat" 1fr
+          "chat" 100px
           / 100%;
           `,
             `

@@ -2,7 +2,7 @@
 import { jsx } from 'theme-ui'
 import { useState, useEffect, useRef } from 'react'
 
-const Participant = ({ participant }) => {
+const Participant = ({ participant, turn }) => {
   const [videoTracks, setVideoTracks] = useState([])
   const [audioTracks, setAudioTracks] = useState([])
 
@@ -64,11 +64,13 @@ const Participant = ({ participant }) => {
     }
   }, [audioTracks])
 
+  console.log(turn)
   return (
     <div
       sx={{
         width: '100%',
         height: '100%',
+        border: `${turn ? '0.4em dotted indianred' : ''}`,
       }}
     >
       <video

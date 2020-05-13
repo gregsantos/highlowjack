@@ -70,7 +70,8 @@ export const Main = ({
             roomData={roomData}
             memberPositions={positions}
             memberPosition={2}
-            turn={turn}
+            username={roomData.memberProfiles[positions[2].seat].username}
+            turn={positions[2].seat === turn}
             token={token}
             videoRoom={videoRoom}
             getParticipantComponent={getParticipantComponent}
@@ -89,7 +90,8 @@ export const Main = ({
             roomData={roomData}
             memberPositions={positions}
             memberPosition={1}
-            turn={turn}
+            username={roomData.memberProfiles[positions[1].seat].username}
+            turn={positions[1].seat === turn}
             token={token}
             videoRoom={videoRoom}
             getParticipantComponent={getParticipantComponent}
@@ -155,7 +157,8 @@ export const Main = ({
             roomData={roomData}
             memberPositions={positions}
             memberPosition={3}
-            turn={turn}
+            username={roomData.memberProfiles[positions[3].seat].username}
+            turn={positions[3].seat === turn}
             token={token}
             videoRoom={videoRoom}
             getParticipantComponent={getParticipantComponent}
@@ -171,7 +174,10 @@ export const Main = ({
           <FaUserSecret size='6em' sx={{ color: 'antiquewhite' }} />
         )}
         {playerSeat !== null && token && videoRoom && (
-          <Participant participant={videoRoom.localParticipant} />
+          <Participant
+            participant={videoRoom.localParticipant}
+            turn={turn === playerSeat}
+          />
         )}
 
         {playerSeat !== null && !token && user.photoURL && (
@@ -182,13 +188,11 @@ export const Main = ({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              border: [
-                `${
-                  turn === (positions && positions[0].seat)
-                    ? '0.30em dotted indianred'
-                    : ''
-                }`,
-              ],
+              border: `${
+                turn === (positions && positions[0].seat)
+                  ? '0.4em dotted indianred'
+                  : ''
+              }`,
             }}
           />
         )}

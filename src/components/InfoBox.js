@@ -13,10 +13,11 @@ export const InfoBox = ({ gameData, getSuit }) => {
         p: 2,
         border: 'thin solid indianred',
         borderBottom: 'none',
+        backgroundColor: 'red',
       }}
     >
-      {gameData && <ScoreBox gameData={gameData} />}
-      {gameData && <BidBox gameData={gameData} getSuit={getSuit} />}
+      <ScoreBox gameData={gameData} />
+      <BidBox gameData={gameData} getSuit={getSuit} />
     </Flex>
   )
 }

@@ -566,7 +566,7 @@ const RoomPage = (props) => {
             `
           "main hand" 1fr
           "main info" 1fr
-          "main chat" 300px
+          "main chat" 1fr
           / 1fr 400px;
           `,
           ],
@@ -595,6 +595,18 @@ const RoomPage = (props) => {
           startGame={startGame}
           playCard={playCard}
         />
+        {!gameData && (
+          <Flex
+            sx={{
+              gridArea: 'info',
+              flexDirection: ['row', 'row', 'column'],
+              p: 2,
+              border: 'thin solid indianred',
+              borderBottom: 'none',
+            }}
+          />
+        )}
+
         {gameData && <InfoBox gameData={gameData} getSuit={getSuit} />}
         <ChatBox />
       </Grid>

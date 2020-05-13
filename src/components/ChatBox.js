@@ -14,7 +14,6 @@ export const ChatBox = () => {
         flexDirection: 'column',
         justifyContent: 'flex-end',
         p: 2,
-        pt: [0],
         border: 'thin solid indianred',
         borderTop: 'none',
       }}

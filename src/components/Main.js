@@ -63,7 +63,7 @@ export const Main = ({
       <div sx={{ backgroundColor: 'darkseagreen' }} />
 
       <Container>
-        {playerSeat !== -1 &&
+        {playerSeat !== null &&
         positions &&
         roomData.memberProfiles[positions[2].seat] ? (
           <RoomMember
@@ -83,7 +83,7 @@ export const Main = ({
       <div sx={{ backgroundColor: 'darkseagreen' }} />
 
       <Container>
-        {playerSeat !== -1 &&
+        {playerSeat !== null &&
         positions &&
         roomData.memberProfiles[positions[1].seat] ? (
           <RoomMember
@@ -150,7 +150,7 @@ export const Main = ({
       </Flex>
 
       <Container>
-        {playerSeat !== -1 &&
+        {playerSeat !== null &&
         positions &&
         roomData.memberProfiles[positions[3].seat] ? (
           <RoomMember

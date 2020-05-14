@@ -37,7 +37,7 @@ const RoomPage = (props) => {
   const [playerSeat, setPlayerSeat] = useState(null)
   const [positions, setPositions] = useState(null)
   const [bidPoint, setBidPoint] = useState(0)
-  const [bidSuit, setBidSuit] = useState('s')
+  const [bidSuit, setBidSuit] = useState('')
   const isDealer = gameData && gameData.dealer === playerSeat
   const turn = gameData && gameData.turn
   // ui ish
@@ -257,7 +257,7 @@ const RoomPage = (props) => {
                   id='button1'
                   value='2'
                   checked={bidPoint === 2}
-                  disabled={!isDealer && currentBid >= 2}
+                  disabled={currentBid >= 2 && !isDealer}
                   className='stvRadioButton'
                 />
                 <label for='button1'>2</label>
@@ -266,15 +266,17 @@ const RoomPage = (props) => {
                   id='button2'
                   value='3'
                   checked={bidPoint === 3}
+                  disabled={currentBid >= 3 && !isDealer}
                   className='stvRadioButton'
                 />
                 <label for='button2'>3</label>
                 <input
                   type='radio'
                   id='button3'
-                  className='stvRadioButton'
                   value='4'
                   checked={bidPoint === 4}
+                  disabled={currentBid === 4 && !isDealer}
+                  className='stvRadioButton'
                 />
                 <label for='button3'>4</label>
               </div>

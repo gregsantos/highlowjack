@@ -2,20 +2,10 @@
 import { jsx } from 'theme-ui'
 import Participant from './Participant'
 
-export default ({
-  roomData,
-  playerSeat,
-  memberPositions,
-  memberPosition,
-  username,
-  turn,
-  token,
-  videoRoom,
-  participants,
-}) => {
+export default ({ profilePic, username, turn, participants }) => {
   const connectedMember = participants.find((p) => p.identity === username)
 
-  console.log(connectedMember)
+  console.log('Hi', participants, username, connectedMember)
 
   if (connectedMember) {
     return (
@@ -30,10 +20,7 @@ export default ({
     return (
       <img
         alt='userPhoto'
-        src={
-          roomData.memberProfiles[memberPositions[memberPosition].seat]
-            .profilePic
-        }
+        src={profilePic}
         sx={{
           width: '100%',
           height: '100%',

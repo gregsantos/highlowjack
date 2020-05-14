@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Flex, Button, Container, Text } from 'theme-ui'
+import { jsx, Flex, Button, Container } from 'theme-ui'
 import { FaUserSecret, FaVideo } from 'react-icons/fa'
 import Participant from '../components/Participant'
 import RoomMember from '../components/RoomMember'
@@ -19,7 +19,7 @@ export const Main = ({
   participants,
   history,
 }) => {
-  /*   const remoteParticipants = participants.map((participant) => (
+  const remoteParticipants = participants.map((participant) => (
     <Participant
       key={participant.sid}
       participant={participant}
@@ -44,7 +44,7 @@ export const Main = ({
       ) || null
 
     return participantComponent
-  } */
+  }
 
   return (
     <main
@@ -67,14 +67,13 @@ export const Main = ({
         positions &&
         roomData.memberProfiles[positions[2].seat] ? (
           <RoomMember
-            roomData={roomData}
-            memberPositions={positions}
-            memberPosition={2}
+            profilePic={
+              roomData && roomData.memberProfiles[positions[2].seat].profilePic
+            }
             username={roomData.memberProfiles[positions[2].seat].username}
             turn={positions[2].seat === turn}
-            token={token}
-            videoRoom={videoRoom}
             participants={participants}
+            getParticipantComponent={getParticipantComponent}
           />
         ) : (
           <FaUserSecret size='6em' />
@@ -87,14 +86,13 @@ export const Main = ({
         positions &&
         roomData.memberProfiles[positions[1].seat] ? (
           <RoomMember
-            roomData={roomData}
-            memberPositions={positions}
-            memberPosition={1}
+            profilePic={
+              roomData && roomData.memberProfiles[positions[1].seat].profilePic
+            }
             username={roomData.memberProfiles[positions[1].seat].username}
             turn={positions[1].seat === turn}
-            token={token}
-            videoRoom={videoRoom}
             participants={participants}
+            getParticipantComponent={getParticipantComponent}
           />
         ) : (
           <FaUserSecret size='6em' />
@@ -154,14 +152,13 @@ export const Main = ({
         positions &&
         roomData.memberProfiles[positions[3].seat] ? (
           <RoomMember
-            roomData={roomData}
-            memberPositions={positions}
-            memberPosition={3}
+            profilePic={
+              roomData && roomData.memberProfiles[positions[3].seat].profilePic
+            }
             username={roomData.memberProfiles[positions[3].seat].username}
             turn={positions[3].seat === turn}
-            token={token}
-            videoRoom={videoRoom}
             participants={participants}
+            getParticipantComponent={getParticipantComponent}
           />
         ) : (
           <FaUserSecret size='6em' />

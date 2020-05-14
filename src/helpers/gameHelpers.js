@@ -35,21 +35,16 @@ export const tallyTrick = (members, gameRef) => {
           (c) => c.suit === gameData.bid.suit
         )
 
+        const trickSortedTrump = [...trickTrumpCards].sort(
+          (a, b) => b.spot - a.spot
+        )
+
         const trickSuitedCards = trickCards.filter(
           (c) => c.suit === gameData.trickCards[0].suit
         )
 
-        const trickSortedTrump = [...trickTrumpCards].sort(
-          (a, b) => b.spot - a.spot
-        )
         const trickSortedSuited = [...trickSuitedCards].sort(
           (a, b) => b.spot - a.spot
-        )
-
-        console.log(
-          'Trick Cards Sorted',
-          trickSortedTrump[0] || {},
-          trickSortedSuited[0] || {}
         )
 
         const winningCard = trickSortedTrump[0] || trickSortedSuited[0]
@@ -61,16 +56,7 @@ export const tallyTrick = (members, gameRef) => {
             ? [...gameData.roundCards.t1, ...gameData.trickCards]
             : [...gameData.roundCards.t2, ...gameData.trickCards]
 
-        console.log(
-          'Winning card:',
-          winningCard,
-          'Trick Winner',
-          trickWinner,
-          'Player :',
-          handWinner,
-          'Trick Cards',
-          trickCards
-        )
+        console.log('Winning card: ', winningCard, 'Trick Winner: ', handWinner)
 
         if (!lastRoundCard) {
           // tally trick and advance round
@@ -167,8 +153,6 @@ export const tallyTrick = (members, gameRef) => {
             return 0
           }
 
-          console.log('Jack Winner', getJackWinner())
-
           const t1High = t1SortedHigh[0] ? t1SortedHigh[0].spot : 0
           const t2High = t2SortedHigh[0] ? t2SortedHigh[0].spot : 0
           const t1Low = t1SortedLow[0] ? t1SortedLow[0].spot : 0
@@ -194,11 +178,18 @@ export const tallyTrick = (members, gameRef) => {
 
           // Final Score
           const [t1RoundScore, t2RoundScore] = scoreRound()
+
           console.log(
-            'T1 Round Score',
-            t1RoundScore,
-            'T2 Round Score',
-            t2RoundScore
+            'T1 Round Cards: ',
+            t1RoundCards,
+            'T2 Round Cards',
+            t2RoundCards,
+            'High Winner',
+            highWinner,
+            'Low Winner',
+            lowWinner,
+            'Jack Winner',
+            getJackWinner()
           )
 
           const getT1FinalScore = () => {
@@ -225,6 +216,17 @@ export const tallyTrick = (members, gameRef) => {
           const t1GameScore = t1FinalScore + gameData.score[0]
           const t2FinalScore = getT2FinalScore()
           const t2GameScore = t2FinalScore + gameData.score[1]
+
+          console.log(
+            'T1 Round Score',
+            t1RoundScore,
+            'T1 Final Score',
+            t1FinalScore,
+            'T2 Round Score',
+            t2RoundScore,
+            'T2 Final Score',
+            t2FinalScore
+          )
 
           const endGame = () => {
             const gameWinner = t1GameScore > t2GameScore ? '1' : '2'

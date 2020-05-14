@@ -155,17 +155,19 @@ export const tallyTrick = (members, gameRef) => {
 
           const t1High = t1SortedHigh[0] ? t1SortedHigh[0].spot : 0
           const t2High = t2SortedHigh[0] ? t2SortedHigh[0].spot : 0
-          const t1Low = t1SortedLow[0] ? t1SortedLow[0].spot : 0
-          const t2Low = t2SortedLow[0] ? t2SortedLow[0].spot : 0
+          const t1Low = t1SortedLow[0] ? t1SortedLow[0].spot : 100
+          const t2Low = t2SortedLow[0] ? t2SortedLow[0].spot : 100
           const highWinner = t1High > t2High ? 1 : 2
           const lowWinner = t1Low < t2Low ? 1 : 2
+
+          console.log('High', t1High, t2High, 'Low', t1Low, t2Low)
 
           const scoreRound = () => {
             let t1Score = 0
             let t2Score = 0
-            highWinner === 0 ? t1Score++ : t2Score++
-            lowWinner === 0 ? t1Score++ : t2Score++
-            gameWinner === 0 ? t1Score++ : t2Score++
+            highWinner === 1 ? t1Score++ : t2Score++
+            lowWinner === 1 ? t1Score++ : t2Score++
+            gameWinner === 1 ? t1Score++ : t2Score++
             let jackWinner = getJackWinner()
             if (jackWinner === 1) {
               t1Score++

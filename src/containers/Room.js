@@ -257,7 +257,7 @@ const RoomPage = (props) => {
                   id='button1'
                   value='2'
                   checked={bidPoint === 2}
-                  defaultChecked={currentBid === 0}
+                  disabled={!isDealer && currentBid >= 2}
                   className='stvRadioButton'
                 />
                 <label for='button1'>2</label>
@@ -289,7 +289,6 @@ const RoomPage = (props) => {
                   id='spadeButton'
                   value='s'
                   checked={bidSuit === 's'}
-                  defaultChecked='s'
                   className='stvRadioButton black'
                 />
                 <label for='spadeButton'>♠</label>
@@ -444,7 +443,7 @@ const RoomPage = (props) => {
         .then(() => {
           setTimeout(() => {
             tallyTrick(roomData.memberProfiles, gameRef)
-          }, 5000)
+          }, 3000)
         })
         .catch((error) => {
           console.error('Error updating Trick: ', error)

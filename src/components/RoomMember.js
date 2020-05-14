@@ -14,6 +14,9 @@ export default ({
   participants,
 }) => {
   const connectedMember = participants.find((p) => p.identity === username)
+
+  console.log(connectedMember)
+
   if (connectedMember) {
     return (
       <Participant
